@@ -251,7 +251,7 @@ if (typeof module !== "undefined" && module.exports) {
 /* ---------------- player (browser only) ---------------- */
 
 if (typeof document !== "undefined") (function () {
-  const APP_VERSION = "1.0.0"; // shown on the title screen and in Settings; bump to release
+  const APP_VERSION = "1.0.1"; // shown on the title screen and in Settings; bump to release
   const $ = (id) => document.getElementById(id);
   const SAVE_KEY = "plana_save";
   const SETTINGS_KEY = "plana_settings";
@@ -1581,12 +1581,12 @@ if (typeof document !== "undefined") (function () {
       if (e.key === "ArrowRight" || e.key === "ArrowDown") {
         choiceSel = flowLeaves[(cur + 1) % m].optIdx; renderChoiceSel(); return true;
       }
-      if (e.key === "Enter" || e.key === " ") { commitChoice(choiceSel); return true; }
+      if (e.key === "Enter" || e.key === " ") { if (e.repeat) return true; commitChoice(choiceSel); return true; }
       return false;
     }
     if (e.key === "ArrowUp") { choiceSel = (choiceSel + n - 1) % n; renderChoiceSel(); return true; }
     if (e.key === "ArrowDown") { choiceSel = (choiceSel + 1) % n; renderChoiceSel(); return true; }
-    if (e.key === "Enter" || e.key === " ") { commitChoice(choiceSel); return true; }
+    if (e.key === "Enter" || e.key === " ") { if (e.repeat) return true; commitChoice(choiceSel); return true; }
     return false;
   }
 

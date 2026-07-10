@@ -848,11 +848,19 @@ The fix is a market. Permits to build robots or compute are capped and auctioned
 
 President: So now I'm the man who has to decide what to do with fifty trillion dollars a year that no worker earned. There's no chapter in any book for this.
 
-Most of it goes to the thing coming straight at everyone. A Citizen's Dividend. Every American adult, forty-five thousand dollars, climbing fast.
+Most of it goes to the thing coming straight at everyone. A Citizen's Dividend, paid to every American adult. It starts at forty-five thousand dollars a year.
+
+It does not stay there. As the permit money swells, so does the check. By 2035 it is closer to a million dollars a year, per person.
+
+There is one catch, and it matters. The Dividend is American. It comes out of American permit revenue, and it goes to American adults. A French pensioner, an Indian teacher, a Nigerian nurse gets none of it.
+
+Washington does start sending money abroad, to the roughly four billion people outside the US and China. But it is a different order of magnitude. About twelve hundred dollars a year at first, while an American collects a hundred times that, and climbing.
+
+The gap narrows over the decade. It does not close for years. For a long stretch an American's dividend is counted in the millions and the rest of the world's in the thousands.
 
 @cg cg_chart_labor fade
 
-It arrives just in time. The line for work done by people is falling. The line for work done by machines is about to cross it and keep climbing.
+It arrives just in time, at least at home. The line for work done by people is falling. The line for work done by machines is about to cross it, and keep climbing.
 
 @bg bg_westwing fade
 
