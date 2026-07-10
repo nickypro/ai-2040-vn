@@ -256,7 +256,7 @@ if (typeof module !== "undefined" && module.exports) {
 /* ---------------- player (browser only) ---------------- */
 
 if (typeof document !== "undefined") (function () {
-  const APP_VERSION = "1.3.0"; // shown on the title screen and in Settings; bump to release
+  const APP_VERSION = "1.4.0"; // shown on the title screen and in Settings; bump to release
   const $ = (id) => document.getElementById(id);
   const SAVE_KEY = "plana_save";
   const SETTINGS_KEY = "plana_settings";

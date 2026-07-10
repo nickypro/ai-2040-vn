@@ -1,5 +1,7 @@
 # PLAN A — an AI 2040 visual novel
 
+Current release: **v1.4.0** · [Changelog](CHANGELOG.md)
+
 An interactive visual-novel adaptation of **[ai-2040.com](https://ai-2040.com)** ("Plan A",
 by the [AI Futures Project](https://ai-futures.org): Larsen, Dean, Halstead, Lifland,
 Greenblatt, Kokotajlo). **Unofficial fan work** — not affiliated with or endorsed by the
@@ -38,11 +40,12 @@ Click / tap / Space to advance. Arrow keys roll back through past beats. The men
 | Path | What |
 |---|---|
 | `index.html` + `engine.js` | The whole engine: 16:9 cqh-scaled stage, script compiled to an instruction list, autosave, seek-by-replay, branching (`@choice`/`@label`/`@jump`), rollback, chapter menu. Vanilla JS, no framework. |
-| `script.md` | The stage script. 14 chapters + 5 branches, ~480 instructions. Plain text; `@directive` staging + `Speaker: line` dialogue. |
+| `script.md` | The stage script. 14 chapters + 5 plans, three Plan A turning points, and postgame POV extras (~690 instructions). Plain text; `@directive` staging + `Speaker: line` dialogue. |
 | `assets/manifest.json` | Indirection for every art/audio id. Missing image → labeled placeholder card; missing audio → silent no-op. |
 | `assets/{bg,cg,sprites,ui,audio}` | Art (Dossier Red style) and music. |
 | `tools/validate.js` | Script + manifest validator (unknown directives, undeclared speakers, dead jumps, branch DFS, files-exist). Exit 1 on error. |
 | `tools/e2e.js` | Playwright click-through of all five branches + save/resume/rollback. |
+| `CHANGELOG.md` | Versioned release history. |
 | `tools/gen.py`, `cutout.py`, `gen_music.py`, `make_loops.py` | Art + audio generation pipeline (OpenRouter). |
 | `claude-notes/` | Design doc, engine contract (`ENGINE-NOTES.md`), art pipeline + style bible, source text. |
 
