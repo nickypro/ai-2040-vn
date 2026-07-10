@@ -1,0 +1,281 @@
+{
+  "provenance": "Exact rows extracted from ai-2040.com's bundled data/datacenter_timeline_2040_no_overlaps.json on 2026-07-10.",
+  "snapshots": {
+    "2027-01-01": [
+      [
+        "Alibaba Zhangbei Zhangjiakou Hebei",
+        41.1852,
+        114.7004,
+        227524.56
+      ],
+      [
+        "Amazon Canton Mississippi",
+        32.5903,
+        -90.0931,
+        315268.23
+      ],
+      [
+        "Anthropic-Amazon Project Rainier New Carlisle Indiana",
+        41.6933,
+        -86.4608,
+        1008858.36
+      ],
+      [
+        "Google New Albany Ohio",
+        40.0611,
+        -82.7642,
+        346269.91
+      ],
+      [
+        "Google Omaha Nebraska",
+        41.3375,
+        -96.0858,
+        161614.77
+      ],
+      [
+        "Meta Prometheus New Albany Ohio",
+        40.0681,
+        -82.75,
+        1168370.47
+      ],
+      [
+        "Microsoft Fairwater Fayetteville Georgia",
+        33.4486,
+        -84.5222,
+        781243.53
+      ],
+      [
+        "xAI Colossus 1 Memphis Tennessee",
+        35.0597,
+        -90.1564,
+        405646.97
+      ],
+      [
+        "xAI Colossus 2 Memphis Tennessee",
+        34.9958,
+        -90.0347,
+        2043842.33
+      ],
+      [
+        "Amazon Ridgeland Mississippi",
+        32.4,
+        -90.2033,
+        252214.58
+      ],
+      [
+        "Coreweave Helios Afton Texas",
+        33.7742,
+        -100.8689,
+        234672.46
+      ],
+      [
+        "Google Pryor Oklahoma",
+        36.2411,
+        -95.3306,
+        758483.19
+      ],
+      [
+        "OpenAI-Oracle Stargate Abilene Texas",
+        32.4997,
+        -99.7839,
+        749161.13
+      ],
+      [
+        "OpenAI-Oracle Stargate Abu Dhabi",
+        24.1542,
+        54.4442,
+        371607.69
+      ],
+      [
+        "Switch Citadel North Las Vegas Nevada",
+        36.4621,
+        -115.1653,
+        1778415.79
+      ],
+      [
+        "Google Boulder Colorado",
+        40.0174,
+        -105.2029,
+        2621454.56
+      ],
+      [
+        "Microsoft Centennial Colorado",
+        39.5218,
+        -104.9907,
+        1548077.13
+      ],
+      [
+        "Oracle Oakland California",
+        37.8144,
+        -122.1748,
+        2462250.3
+      ],
+      [
+        "Vantage Parker Colorado",
+        39.4645,
+        -104.7624,
+        1425048.79
+      ],
+      [
+        "Sabey Edmonds Washington",
+        47.7557,
+        -122.4278,
+        1100607.76
+      ],
+      [
+        "Amazon Ridgefield Washington",
+        45.647,
+        -122.8424,
+        1805274.33
+      ],
+      [
+        "Meta Del Valle Texas",
+        30.1798,
+        -97.6877,
+        1116161.7
+      ],
+      [
+        "Microsoft Federal Way Washington",
+        47.3637,
+        -122.3336,
+        1970623.41
+      ],
+      [
+        "QTS Matthews North Carolina",
+        35.1573,
+        -80.6637,
+        5608639.71
+      ],
+      [
+        "CyrusOne Austin Texas",
+        30.2688,
+        -97.8291,
+        3708955.44
+      ],
+      [
+        "CoreWeave Brighton Colorado",
+        40.0287,
+        -104.903,
+        4975422.48
+      ],
+      [
+        "Google Antioch Tennessee",
+        36.0877,
+        -86.6917,
+        3426988.4
+      ],
+      [
+        "Amazon Renton Washington",
+        47.4238,
+        -122.161,
+        4561815.77
+      ],
+      [
+        "Meta Thornton Colorado",
+        39.9054,
+        -104.91,
+        2537898.94
+      ],
+      [
+        "Novva Bountiful Utah",
+        40.9452,
+        -111.8017,
+        2839771.83
+      ],
+      [
+        "Huawei Jiangning Nanjing Jiangsu",
+        31.7893,
+        118.9466,
+        561707.8
+      ],
+      [
+        "Tencent Chang'an Xi'an Shaanxi",
+        34.1925,
+        108.8755,
+        1261507.44
+      ],
+      [
+        "ByteDance Jiangxia Wuhan Hubei",
+        30.5131,
+        114.5099,
+        2954600.25
+      ]
+    ],
+    "2034-01-01": [
+      [
+        "Canadian R&D Cluster",
+        56.1304,
+        -106.3468,
+        17288956432.75402
+      ],
+      [
+        "Mongolian R&D Cluster",
+        42.5,
+        103,
+        17288956432.75402
+      ],
+      [
+        "Australia Inference Site",
+        -25.3444,
+        131.0369,
+        6692024895.535585
+      ],
+      [
+        "Brazil Inference Site",
+        5,
+        -43,
+        3346012447.8102646
+      ],
+      [
+        "India Inference Site",
+        28.6,
+        77.2,
+        6692024895.535585
+      ],
+      [
+        "Germany Inference Site",
+        50.1109,
+        8.6821,
+        3346012447.8102646
+      ],
+      [
+        "Saudi Arabia Inference Site",
+        24.7136,
+        46.6753,
+        3346012447.8102646
+      ]
+    ],
+    "2040-01-01": [
+      [
+        "Floating Hawaii Cluster",
+        23.5,
+        -162.5,
+        750000000000.0074
+      ],
+      [
+        "Canada Ocean Inference Site",
+        59.5,
+        -85,
+        83333333333.33417
+      ],
+      [
+        "Brazil Ocean Inference Site",
+        2,
+        -38,
+        41666666666.66708
+      ],
+      [
+        "India Ocean Inference Site",
+        12,
+        68,
+        83333333333.33417
+      ],
+      [
+        "Germany Ocean Inference Site",
+        47.4,
+        -11.5,
+        41666666666.66708
+      ]
+    ]
+  }
+}
