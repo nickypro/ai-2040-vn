@@ -390,8 +390,16 @@
     position: relative; margin-top: 1.4cqh; height: 34cqh;
     border: 0.3cqh solid #16130d; border-radius: 0.6cqh; overflow: hidden;
     background-color: #f6eedd;
-    background-image: radial-gradient(#bf3a2e 30%, transparent 34%);
-    background-size: 1.5cqh 1.5cqh;
+  }
+  /* The source HUD's red halftone is atmosphere, not the plot itself. Fade it
+     away toward the graph origin so the axes and baseline remain legible. */
+  .dash-field::before {
+    content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background-image: radial-gradient(#bf3a2e 29%, transparent 34%);
+    background-size: 1.35cqh 1.35cqh;
+    opacity: 0.48;
+    -webkit-mask-image: linear-gradient(155deg, #000 0%, #0008 43%, transparent 78%);
+    mask-image: linear-gradient(155deg, #000 0%, #0008 43%, transparent 78%);
   }
   .df-yeartag {
     position: absolute; left: 1.6cqh; top: 1.4cqh; z-index: 3;
@@ -400,41 +408,38 @@
     border-radius: 0.5cqh; padding: 0.4cqh 1.2cqh;
   }
   .dash-field .dash-globe {
-    position: absolute; left: 2.4cqh; top: 6.4cqh; z-index: 2;
-    width: 20cqh; height: 20cqh; margin: 0;
+    position: absolute; right: 3cqh; top: 2.4cqh; z-index: 1;
+    width: 12cqh; height: 12cqh; margin: 0; opacity: 0.62;
   }
-  .df-curve { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
-  .dfc-ceiling { stroke: #16130d55; stroke-width: 0.6; stroke-dasharray: 2.4 2.4; }
+  .df-curve { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; }
+  .dfc-grid { stroke: #16130d28; stroke-width: 0.55; vector-effect: non-scaling-stroke; }
+  .dfc-vgrid { stroke: #16130d18; }
+  .dfc-axis { stroke: #16130d99; stroke-width: 0.85; vector-effect: non-scaling-stroke; }
   .dfc-future {
-    fill: none; stroke: #16130d; stroke-width: 1.5; stroke-dasharray: 3.4 3.4;
-    stroke-linecap: round;
+    fill: none; stroke: #16130d; stroke-width: 1.5; stroke-dasharray: 4 4;
+    stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke;
+    opacity: 0.82;
   }
-  .dfc-past { fill: none; stroke: #d64533; stroke-width: 2.6; stroke-linecap: round; }
-  .dfc-dot { fill: #d64533; stroke: #fbf6ea; stroke-width: 1.8; }
-  .dfc-ceil-lbl {
-    position: absolute; left: 1.8cqh; z-index: 2; transform: translateY(50%);
-    font-family: var(--sans); font-size: 1.3cqh; letter-spacing: 0.16em;
-    text-transform: uppercase; color: #16130d; opacity: 0.6;
-    background: #f6eeddcc; padding: 0 0.5cqh; border-radius: 0.3cqh;
+  .dfc-past {
+    fill: none; stroke: #b31f16; stroke-width: 2.7; stroke-linecap: round;
+    stroke-linejoin: round; vector-effect: non-scaling-stroke;
   }
-  .df-scrub {
-    position: absolute; left: 2.4cqh; right: 2.4cqh; bottom: 1.8cqh; z-index: 3;
-    display: flex; align-items: center; gap: 1.4cqh;
+  .dfc-dot {
+    fill: #b31f16; stroke: #fbf6ea; stroke-width: 1.7;
+    vector-effect: non-scaling-stroke;
   }
-  .df-scrub-lbl {
-    font-family: var(--sans); font-size: 1.5cqh; letter-spacing: 0.1em;
-    text-transform: uppercase; color: #16130d; white-space: nowrap; font-weight: 600;
+  .dfc-ylabel, .dfc-xlabel, .dfc-axis-title, .dfc-point-label {
+    font-family: var(--sans); fill: #16130d;
   }
-  .df-scrub-track {
-    position: relative; flex: 1; height: 0.4cqh; border-radius: 0.4cqh; background: #16130d33;
+  .dfc-ylabel { font-size: 5.1px; text-anchor: end; opacity: 0.72; }
+  .dfc-xlabel { font-size: 5.1px; text-anchor: middle; opacity: 0.72; }
+  .dfc-axis-title {
+    font-size: 5.2px; text-anchor: end; text-transform: uppercase;
+    letter-spacing: 0.7px; font-weight: 700; opacity: 0.7;
   }
-  .df-scrub-track i {
-    position: absolute; left: 0; top: 0; bottom: 0; border-radius: 0.4cqh; background: #d64533;
-  }
-  .df-scrub-track b {
-    position: absolute; top: 50%; width: 2.1cqh; height: 2.1cqh; border-radius: 50%;
-    transform: translate(-50%, -50%); background: #d64533; border: 0.35cqh solid #fbf6ea;
-    box-shadow: 0 0 0 0.2cqh #16130d;
+  .dfc-point-label {
+    font-size: 5.5px; font-weight: 700; paint-order: stroke;
+    stroke: #f6eedd; stroke-width: 3px; stroke-linejoin: round;
   }
   /* ---- caption (trajectory + capability readout) ---- */
   .dash-caption {
@@ -473,7 +478,10 @@
   .dt-trend.up, .dt-trend.down { color: #d64533; }
   .dt-trend.flat { color: #9a9484; }
   /* ---- workforce dot-rows (Human Labor vs Reliable Agents) ---- */
-  .dash-rows { margin-top: 2cqh; display: flex; flex-direction: column; gap: 1.4cqh; }
+  .dash-rows {
+    margin-top: 1.5cqh; padding-right: 49cqh;
+    display: flex; flex-direction: column; gap: 0.9cqh;
+  }
   .dr-row { display: flex; align-items: center; gap: 1.6cqh; }
   .dr-marker {
     flex: 0 0 auto; width: 1.7cqh; height: 1.7cqh; border-radius: 50%;
@@ -481,16 +489,17 @@
   }
   .dr-agent .dr-marker { background: #d64533; border-color: #d64533; }
   .dr-dots {
-    display: grid; grid-template-columns: repeat(16, 1fr); gap: 0.55cqh;
-    flex: 0 0 40cqh; width: 40cqh;
+    display: grid; grid-template-columns: repeat(28, 1fr); gap: 0.34cqh;
+    flex: 0 0 42cqh; width: 42cqh;
   }
   .dr-dot {
-    width: 1.7cqh; height: 1.7cqh; border-radius: 50%;
-    border: 0.24cqh solid #16130d33; background: transparent;
+    width: 1.18cqh; height: 1.18cqh; border-radius: 50%;
+    border: 0.2cqh solid #16130d33; background: transparent;
   }
+  .dr-cloud { grid-template-rows: repeat(3, 1.18cqh); row-gap: 0.34cqh; }
   .dr-dot.on { opacity: 0; animation: drpop 0.32s ease forwards; }
   /* human labor: near-full row of hollow dots (present, at x1 speed) */
-  .dr-human .dr-dot.on { border-color: #16130d; border-width: 0.32cqh; background: transparent; }
+  .dr-human .dr-dot.on { border-color: #16130d; border-width: 0.24cqh; background: transparent; }
   /* reliable agents / coders: filled red, head-count on a log scale */
   .dr-agent .dr-dot.on { background: #d64533; border-color: #d64533; }
   @keyframes drpop {
@@ -506,11 +515,25 @@
   .dr-speed {
     font-family: var(--sans); font-size: 1.7cqh; font-weight: 700; color: #8a2b20;
   }
+  .dash-income-note {
+    position: absolute; right: 4.4cqh; bottom: 3cqh; width: 44cqh;
+    display: flex; flex-direction: column; align-items: flex-end; gap: 0.22cqh;
+    font-family: var(--sans); font-size: 1.35cqh; line-height: 1.2;
+    letter-spacing: 0.025em; color: #6a6252; text-align: right;
+  }
+  .dash-income-note span:first-child { color: #8a2b20; font-style: italic; margin-bottom: 0.25cqh; }
+  .dash-income-note b { color: #16130d; }
 
   /* ---- built-in data charts (engine-drawn SVG CGs) ---- */
-  .chart-layer { display: flex; align-items: center; justify-content: center; background: #14100a; }
+  /* Chart CGs share the stage with the dialogue box. Keep the whole dossier in
+     the unobstructed upper band instead of centering it behind the bottom 27.5%
+     occupied by #textbox. */
+  .chart-layer {
+    display: flex; align-items: flex-start; justify-content: center;
+    padding-top: 1.5cqh; background: #14100a;
+  }
   .chart-card {
-    width: 150cqh; max-width: 94%; height: 82cqh; max-height: 94%;
+    width: 150cqh; max-width: 94%; height: 69cqh; max-height: 69cqh;
     background: #f2ead9; color: #16130d;
     border: 0.35cqh solid #16130d; border-radius: 0.9cqh;
     box-shadow: 0 1.2cqh 4.5cqh #000000aa;
@@ -519,7 +542,7 @@
     padding: 3.2cqh 4cqh 2.6cqh;
     display: flex; flex-direction: column;
   }
-  .chart-head { text-align: center; }
+  .chart-head { position: relative; text-align: center; }
   .chart-title {
     font-family: var(--serif); font-weight: 700; font-size: 4.4cqh; color: #16130d;
     line-height: 1.05;
@@ -534,6 +557,17 @@
     text-align: center; font-family: var(--serif); font-style: italic;
     font-size: 2.4cqh; color: #8a2b20;
   }
+  .chart-scale-toggle {
+    position: absolute; right: 0; top: 0; display: flex; gap: 0.35cqh;
+    padding: 0.35cqh; border: 0.2cqh solid #16130d; border-radius: 0.45cqh;
+    background: #fbf6ea; pointer-events: auto;
+  }
+  .chart-scale-btn {
+    appearance: none; border: 0; border-radius: 0.3cqh; padding: 0.35cqh 0.75cqh;
+    background: transparent; color: #16130d; cursor: pointer;
+    font-family: var(--sans); font-size: 1.35cqh; line-height: 1;
+  }
+  .chart-scale-btn.active { background: #16130d; color: #fbf6ea; }
   /* svg text classes */
   .ch-barval { font-family: var(--sans); font-weight: 700; font-size: 8px; fill: #16130d; text-anchor: middle; }
   .ch-axis { font-family: var(--sans); font-size: 7px; fill: #6a6252; text-anchor: middle; }

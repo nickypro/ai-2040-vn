@@ -15,6 +15,7 @@ const DASH_KEYS = new Set([
   // ai-2040 widget schema
   "year", "employment", "income", "safety", "slowdown",
   "humanlabor", "agents", "agentspeed", "tier", "capability", "trajectory",
+  "usdividend", "worlddividend",
   // legacy keys (still accepted so older @dashboard blocks / saves don't warn)
   "dividend", "workforce", "compute", "gdp",
 ]);
@@ -406,6 +407,7 @@ if (typeof document !== "undefined") (function () {
     if (kind === "cg" && CHART_IDS.has(id)) {
       wrap.classList.add("chart-layer");
       wrap.innerHTML = chartCardHTML(id);
+      if (id === "cg_chart_labor") wireLaborChartScale(wrap);
       return wrap;
     }
     const path2 = assetPath(kind, id);
@@ -856,8 +858,8 @@ if (typeof document !== "undefined") (function () {
   /* ---------- dashboard (end-of-chapter status readout, dossier-red) ----------
      A blocking beat like @overlay: renders a cream/halftone card of the year,
      a trajectory label, a row of stat tiles (each with a trend arrow vs the
-     PREVIOUS dashboard's numeric value where both parse), and a 0-100 AI
-     capability bar with labeled stops + a ~88 ceiling marker. State-effect
+     PREVIOUS dashboard's numeric value where both parse), and AI 2040's
+     origin-based, log-scale capability trajectory. State-effect
      no-op during silent seek (prevDash is tracked in the walk); rendered only
      on the live step that lands on it. */
   // Core four tiles, named exactly as the ai-2040.com stats widget.
@@ -867,7 +869,6 @@ if (typeof document !== "undefined") (function () {
     { key: "safety",     label: "Safety Researchers" },
     { key: "slowdown",   label: "Total Slowdown" },
   ];
-  const CAP_CEILING = 88; // top-human-expert pause line
   function dashNum(str) {
     if (str == null) return null;
     const s = String(str).replace(/,/g, "");
@@ -919,47 +920,91 @@ if (typeof document !== "undefined") (function () {
         hot +
       '</g></svg>';
   }
-  /* ---- trajectory field ----
-     The ai-2040 widget's signature: a halftone-red field where the "Reliable
-     Agent" curve climbs left-to-right. Here x is time (2027..2045) and y is AI
-     capability (0..100). The traveled portion is a solid red curve up to the
-     current (year, capability) point; the looming intelligence explosion carries
-     on as a dashed black curve to the top-right corner. A faint horizontal line
-     marks the ~88 ceiling — during Plan A's pause the solid curve flattens along
-     it while the dashed future keeps rocketing up. */
-  function yearFrac(yr) {
-    if (yr == null || !isFinite(yr)) return null;
-    return Math.max(0, Math.min(1, (yr - 2027) / (2045 - 2027)));
+  /* ---- capability trajectory field ----
+     This is the source chart from ai-2040, not a made-up 0..100 interpolation.
+     The original defines capability as the speed-up to AI R&D relative to
+     unassisted humans, on a log scale. Its shared 2024-2029 trunk starts at the
+     lower-left 1x origin, then forks into the five plans. Values below were
+     extracted from the site's extrapolatedGraphData.json (2026-07-10 build).
+     We keep the past solid red and the not-yet-reached portion dashed black,
+     as in the site's HUD; the globe is a separate decorative layer. */
+  const CAP_GRAPH_SHARED = [[2024,1],[2025,1.0582],[2025.333,1.0749],[2025.667,1.0952],[2026,1.1197],[2026.333,1.15],[2026.667,1.1875],[2027,1.2335],[2027.333,1.2887],[2027.667,1.354],[2028,1.4321],[2028.333,1.5258],[2028.667,1.639]];
+  const CAP_GRAPH = {
+    A: [[2029,1.78443],[2029.333,1.87261],[2029.667,1.87261],[2030,1.87261],[2030.333,2.70807],[2030.667,3.70297],[2031,4.52415],[2031.333,5.56371],[2031.667,6.91029],[2032,8.57484],[2032.333,10.7048],[2032.667,13.4613],[2033,16.8694],[2033.333,20.6671],[2033.667,24.7102],[2034,28.9939],[2034.333,33.1557],[2034.667,36.9471],[2035,40.4719],[2035.333,41.1165],[2035.667,41.6719],[2036,42.1662],[2036.333,42.6155],[2036.667,43.0301],[2037,43.4169],[2037.333,43.7798],[2037.667,44.1191],[2038,44.4362],[2038.333,44.7303],[2038.667,45.0035],[2039,45.2565],[2039.333,45.4863],[2039.667,45.6932],[2040,50.1971],[2040.333,91.6534],[2040.667,164.299],[2041,285.358],[2041.333,491.457],[2041.667,811.365],[2042,1307.82],[2042.333,2098.71],[2042.667,3280.68],[2043,5082.19],[2043.333,7929.14],[2043.667,12162.9],[2044,18149.6],[2044.333,27151.1],[2044.667,40758.5],[2045,60116.2]],
+    B: [[2029,1.784],[2029.097,1.838],[2029.205,1.896],[2029.302,1.961],[2029.405,2.034],[2029.503,2.12],[2029.603,2.232],[2029.7,2.378],[2029.802,2.567],[2029.899,2.807],[2029.991,3.114],[2030,3.114],[2030.097,3.305],[2030.205,3.528],[2030.302,3.774],[2030.405,4.099],[2030.503,4.442],[2030.603,4.892],[2030.7,5.425],[2030.802,6.035],[2030.899,6.815],[2031,7.722],[2031.097,8.792],[2031.205,10.21],[2031.302,11.81],[2031.405,14.3],[2031.503,17.44],[2031.603,21.58],[2031.611,22],[2031.7,22.72],[2031.802,23.55],[2031.899,24.39],[2031.969,25],[2032,25.52],[2032.333,31.63],[2032.666,39.46],[2032.689,40],[2033,3248],[2033.336,1442000000],[2033.667,11500000000],[2034,24400000000],[2034.336,38000000000],[2034.667,52300000000],[2035,66500000000]],
+    C: [[2029,1.784],[2029.097,1.839],[2029.205,1.896],[2029.302,1.962],[2029.405,2.034],[2029.503,2.121],[2029.603,2.232],[2029.7,2.38],[2029.802,2.567],[2029.899,2.811],[2029.991,3.132],[2030,3.132],[2030.097,3.63],[2030.205,4.359],[2030.302,5.468],[2030.405,7.144],[2030.503,9.734],[2030.603,14.25],[2030.691,22],[2030.7,22],[2030.802,22],[2030.899,22],[2030.941,22],[2031,33.62],[2031.097,82.67],[2031.205,349.5],[2031.302,1860],[2031.405,131200],[2031.503,24220000],[2031.603,531000000],[2031.7,2110000000],[2031.802,4690000000],[2031.899,7850000000],[2032,11300000000],[2032.333,24320000000]],
+    D: [[2029,1.784],[2029.1,1.838],[2029.2,1.896],[2029.3,1.961],[2029.4,2.034],[2029.5,2.12],[2029.6,2.232],[2029.7,2.378],[2029.8,2.567],[2029.9,2.807],[2030,3.136],[2030.1,3.703],[2030.2,4.598],[2030.3,6.029],[2030.4,8.363],[2030.5,12.24],[2030.6,20.91],[2030.7,42.22],[2030.8,114.9],[2030.9,595.7],[2031,3248],[2031.1,772500],[2031.2,131000000],[2032,24400000000]],
+    S: [[2029,1.784],[2030,1.784],[2031,1.784],[2032,1.784],[2033,1.784],[2034,1.784],[2035,1.784],[2036,1.784],[2037,1.784],[2038,1.784],[2039,1.784],[2040,1.784],[2041,1.784],[2042,1.784],[2043,1.784],[2044,1.784],[2045,1.784]],
+  };
+  function capGraphPlan(data) {
+    const t = String(data.trajectory || "").toLowerCase();
+    if (/control lost|race ending/.test(t)) return "D";
+    if (/tiny circle/.test(t)) return "C";
+    if (/handoff|war/.test(t)) return "B";
+    if (/frozen/.test(t)) return "S";
+    // Before the deal there is only the default trajectory; from 2029 onward
+    // an unlabelled dashboard is on the canonical Plan A path.
+    return dashNum(data.year) < 2029 ? "D" : "A";
   }
-  function trajectoryFieldSvg(data, cur) {
-    const x0 = 16, x1 = 244, yTop = 12, yBot = 104;
-    const yr = dashNum(data.year);
-    const tf = yearFrac(yr);
-    const capN = cur.capability;
-    const capOk = capN != null && isFinite(capN);
-    const tx = tf != null ? tf : 0.30;
-    const px = x0 + tx * (x1 - x0);
-    const capC = capOk ? Math.max(0, Math.min(100, capN)) : 0;
-    const py = yBot - (capC / 100) * (yBot - yTop);
-    const ceilY = yBot - (CAP_CEILING / 100) * (yBot - yTop);
-    // traveled: gentle exponential bow from origin up to the current point
-    const cbx = x0 + (px - x0) * 0.62, cby = yBot - (yBot - py) * 0.16;
-    const traveled = 'M' + x0 + ',' + yBot + ' Q' + cbx.toFixed(1) + ',' + cby.toFixed(1) +
-      ' ' + px.toFixed(1) + ',' + py.toFixed(1);
-    // future: holds near the current height, then rockets to the corner
-    const fbx = px + (x1 - px) * 0.60;
-    const future = 'M' + px.toFixed(1) + ',' + py.toFixed(1) + ' Q' + fbx.toFixed(1) + ',' +
-      py.toFixed(1) + ' ' + x1 + ',' + yTop;
-    return '<svg class="df-curve" viewBox="0 0 260 122" preserveAspectRatio="none" aria-hidden="true">' +
-        '<line class="dfc-ceiling" x1="' + x0 + '" y1="' + ceilY.toFixed(1) + '" x2="' + x1 +
-          '" y2="' + ceilY.toFixed(1) + '"/>' +
-        '<path class="dfc-future" d="' + future + '"/>' +
-        '<path class="dfc-past" d="' + traveled + '"/>' +
-        (capOk || tf != null ? '<circle class="dfc-dot" cx="' + px.toFixed(1) + '" cy="' +
-          py.toFixed(1) + '" r="4.2"/>' : '') +
-      '</svg>' +
-      '<div class="dfc-ceil-lbl" style="bottom:' + (100 * (yBot - ceilY) / (yBot - yTop)).toFixed(1) +
-        '%">ceiling</div>';
+  function capGraphValueAt(points, yr) {
+    if (yr <= points[0][0]) return points[0][1];
+    for (let i = 1; i < points.length; i++) {
+      if (yr <= points[i][0]) {
+        const a = points[i - 1], b = points[i];
+        const f = (yr - a[0]) / (b[0] - a[0]);
+        // Interpolate in log space: that is the chart's actual y geometry.
+        return Math.pow(10, Math.log10(a[1]) + f * (Math.log10(b[1]) - Math.log10(a[1])));
+      }
+    }
+    return points[points.length - 1][1];
+  }
+  function capGraphPath(points, X, Y) {
+    return points.map((p, i) => (i ? "L" : "M") + X(p[0]).toFixed(1) + "," + Y(p[1]).toFixed(1)).join(" ");
+  }
+  function trajectoryFieldSvg(data) {
+    // The wide viewBox matches the dashboard field's aspect ratio, so SVG
+    // labels stay normally proportioned instead of stretching horizontally.
+    const x0 = 80, x1 = 504, yTop = 10, yBot = 98;
+    const minYear = 2024, maxYear = 2045, logMax = 5; // 1x .. 100,000x
+    const X = (yr) => x0 + Math.max(0, Math.min(1, (yr - minYear) / (maxYear - minYear))) * (x1 - x0);
+    const Y = (v) => yBot - Math.max(0, Math.min(1, Math.log10(Math.max(1, v)) / logMax)) * (yBot - yTop);
+    const yrRaw = dashNum(data.year);
+    const yr = yrRaw != null && isFinite(yrRaw) ? Math.max(minYear, Math.min(maxYear, yrRaw)) : 2029;
+    const plan = capGraphPlan(data);
+    const series = CAP_GRAPH_SHARED.concat(CAP_GRAPH[plan]);
+    const nowValue = capGraphValueAt(series, yr);
+    const now = [yr, nowValue];
+    const past = series.filter((p) => p[0] < yr).concat([now]);
+    const future = [now].concat(series.filter((p) => p[0] > yr));
+    const px = X(yr), py = Y(nowValue);
+    const yTicks = [[1,"1\u00d7"],[10,"10\u00d7"],[1000,"1k\u00d7"],[100000,"100k\u00d7"]];
+    const xTicks = [2024,2030,2040,2045];
+    let grid = "", labels = "";
+    for (const t of yTicks) {
+      const y = Y(t[0]);
+      grid += '<line class="dfc-grid" x1="' + x0 + '" y1="' + y.toFixed(1) + '" x2="' + x1 + '" y2="' + y.toFixed(1) + '"/>';
+      labels += '<text class="dfc-ylabel" x="' + (x0 - 6) + '" y="' + (y + 2.2).toFixed(1) + '">' + t[1] + '</text>';
+    }
+    for (const xyr of xTicks) {
+      const x = X(xyr);
+      grid += '<line class="dfc-grid dfc-vgrid" x1="' + x.toFixed(1) + '" y1="' + yTop + '" x2="' + x.toFixed(1) + '" y2="' + yBot + '"/>';
+      labels += '<text class="dfc-xlabel" x="' + x.toFixed(1) + '" y="110">' + xyr + '</text>';
+    }
+    const labelLeft = px > 385;
+    const labelX = labelLeft ? px - 10 : px + 10;
+    const labelAnchor = labelLeft ? "end" : "start";
+    const labelY = Math.max(16, py - 6);
+    return '<svg class="df-curve" viewBox="0 0 520 118" preserveAspectRatio="xMidYMid meet" role="img" aria-label="AI research capability trajectory from a 1x human baseline">' +
+        grid +
+        '<line class="dfc-axis" x1="' + x0 + '" y1="' + yTop + '" x2="' + x0 + '" y2="' + yBot + '"/>' +
+        '<line class="dfc-axis" x1="' + x0 + '" y1="' + yBot + '" x2="' + x1 + '" y2="' + yBot + '"/>' +
+        labels +
+        (future.length > 1 ? '<path class="dfc-future" d="' + capGraphPath(future, X, Y) + '"/>' : '') +
+        '<path class="dfc-past" d="' + capGraphPath(past, X, Y) + '"/>' +
+        '<circle class="dfc-dot" cx="' + px.toFixed(1) + '" cy="' + py.toFixed(1) + '" r="3.5"/>' +
+        '<text class="dfc-point-label" text-anchor="' + labelAnchor + '" x="' + labelX.toFixed(1) + '" y="' + labelY.toFixed(1) + '">' + dashEsc(data.tier || "AI") + '</text>' +
+        '<text class="dfc-axis-title" x="' + x1 + '" y="7">AI R&amp;D speedup</text>' +
+      '</svg>';
   }
 
   /* One workforce dot-row (Human Labor / Reliable Agents), matching ai-2040's
@@ -976,19 +1021,29 @@ if (typeof document !== "undefined") (function () {
   function dotRowHtml(label, countStr, speedStr, cls, opts) {
     opts = opts || {};
     const n = dashNum(countStr);
-    const filled = (n != null && isFinite(n) && n > 0)
-      ? Math.max(1, Math.min(16, Math.round(16 * (Math.log10(n) - 6) / (10 - 6))))
-      : 0; // qualitative magnitude (e.g. "frozen") → no filled dots, text still shows
+    const numeric = n != null && isFinite(n) && n > 0;
+    const isAgent = /\bdr-agent\b/.test(cls);
+    const isCosmic = isAgent && /cosmic|infinite|\u221e/i.test(String(countStr || ""));
+    // Human labor stays a single reference row. Agent labor grows into a
+    // three-line field: 20–40M agents already register, while 120–190M nearly
+    // saturate all 84 marks, reproducing the source HUD's overwhelming swarm.
+    const total = isAgent ? (numeric || isCosmic ? 84 : 0) : 28;
+    const filled = isCosmic ? total : numeric
+      ? (isAgent
+          ? Math.max(1, Math.min(total, Math.round(12 + 72 * Math.max(0, Math.min(1,
+              (Math.log10(n) - 7) / (Math.log10(2e8) - 7))))))
+          : Math.max(1, Math.min(total, Math.round(total * (Math.log10(n) - 6) / 4))))
+      : 0; // other qualitative magnitudes render as text only; "cosmic" saturates
     let dots = "";
-    for (let i = 0; i < 16; i++) {
+    for (let i = 0; i < total; i++) {
       const on = i < filled;
       dots += '<span class="dr-dot' + (on ? " on" : "") + '"' +
-        (on ? ' style="animation-delay:' + (i * 45) + 'ms"' : "") + '></span>';
+        (on ? ' style="animation-delay:' + (i * (isAgent ? 18 : 30)) + 'ms"' : "") + '></span>';
     }
     const spd = fmtSpeed(speedStr, opts.atUpTo);
     return '<div class="dr-row ' + cls + '">' +
         '<span class="dr-marker"></span>' +
-        '<div class="dr-dots">' + dots + '</div>' +
+        '<div class="dr-dots' + (isAgent ? ' dr-cloud' : '') + '">' + dots + '</div>' +
         '<div class="dr-meta">' +
           '<span class="dr-count">' + (countStr != null ? dashEsc(countStr) : "&mdash;") + '</span>' +
           '<span class="dr-label">' + dashEsc(label) + '</span>' +
@@ -1012,30 +1067,23 @@ if (typeof document !== "undefined") (function () {
     const prev = prevNums || {};
     const year = data.year != null ? dashEsc(data.year) : "—";
     const traj = data.trajectory != null ? dashEsc(data.trajectory) : "";
+    const hasDividend = data.usdividend != null || data.worlddividend != null;
     let tiles = "";
     for (const t of DASH_TILES) {
       if (data[t.key] == null) continue;
       tiles +=
         '<div class="dash-tile">' +
-          '<div class="dt-label">' + dashEsc(t.label) + '</div>' +
+          '<div class="dt-label">' + dashEsc(t.label) + (t.key === "income" && hasDividend ? '<sup>*</sup>' : '') + '</div>' +
           '<div class="dt-value">' + dashEsc(data[t.key]) + trendArrow(cur[t.key], prev[t.key]) + '</div>' +
         '</div>';
     }
     const capN = cur.capability;
     const capOk = capN != null && isFinite(capN);
-    const tf = yearFrac(dashNum(data.year));
-    const scrubPct = ((tf != null ? tf : 0.30) * 100).toFixed(1);
-    const tier = data.tier != null ? dashEsc(data.tier) : "Reliable Agent";
     const field =
       '<div class="dash-field">' +
         '<div class="df-yeartag">' + year + '</div>' +
         dashGlobeSvg() +
-        trajectoryFieldSvg(data, cur) +
-        '<div class="df-scrub">' +
-          '<span class="df-scrub-lbl">' + tier + '</span>' +
-          '<span class="df-scrub-track"><i style="width:' + scrubPct + '%"></i>' +
-            '<b style="left:' + scrubPct + '%"></b></span>' +
-        '</div>' +
+        trajectoryFieldSvg(data) +
       '</div>';
     const caption =
       '<div class="dash-caption">' +
@@ -1049,6 +1097,11 @@ if (typeof document !== "undefined") (function () {
         dotRowHtml("Human Labor", data.humanlabor, "1x", "dr-human") +
         dotRowHtml(pluralTier(data.tier), data.agents, data.agentspeed, "dr-agent", { atUpTo: true }) +
       '</div>';
+    const incomeNote = hasDividend
+      ? '<div class="dash-income-note"><span>* Median income is mostly Citizen\'s Dividend</span>' +
+          '<span>U.S. Citizen Dividend: <b>' + dashEsc(data.usdividend || "—") + '</b></span>' +
+          '<span>World Dividend: <b>' + dashEsc(data.worlddividend || "—") + '</b></span></div>'
+      : '';
     return '<div class="dash-card">' +
         '<div class="dash-top">' +
           '<div class="dash-eyebrow">' + (eyebrow || "Status Dossier &middot; Plan A") + '</div>' +
@@ -1058,6 +1111,7 @@ if (typeof document !== "undefined") (function () {
         caption +
         '<div class="dash-tiles">' + tiles + '</div>' +
         rows +
+        incomeNote +
       '</div>';
   }
   /* ---------- built-in data charts (engine-drawn SVG, dossier-red) ----------
@@ -1095,26 +1149,43 @@ if (typeof document !== "undefined") (function () {
     return '<svg class="chart-svg" viewBox="0 0 320 150" preserveAspectRatio="xMidYMid meet">' + g + '</svg>';
   }
 
-  // Human, AI & Robot population (human-equivalent labor), 2025-2040
-  function chartLaborBody() {
-    const x0 = 40, x1 = 300, yb = 128, yt = 24, vmax = 400;
+  // Human, AI & Robot population in billions of human-equivalent workers.
+  // Exact annual series from ai-2040.com's live labor-population dataset:
+  // humans = cognitive + physical human labor; AI = cognitive AI labor;
+  // robots = physical robot labor. The source chart offers linear/log views.
+  const LABOR_GRAPH = {
+    humans: [3.5,3.480162,3.470809,3.456813,3.443243,3.45956,3.425072,3.517205,3.736164,3.931175,3.836778,3.545257,2.983958,2.472887,2.237098,1.805776],
+    ai: [0.034,0.089397,0.20206032,0.40716,0.63,1.5,2.26512,7.12381068,30.97297875,114,194,279,332,352,367,400],
+    robots: [0.01,0.01276,0.01596,0.01989,0.02548,0.0345,0.06069,0.1296,0.34,0.9729,2.5,6.328,16.368,42.5,110,280],
+  };
+  function chartLaborBody(scale) {
+    scale = scale === "linear" ? "linear" : "log";
+    const x0 = 42, x1 = 300, yb = 128, yt = 20;
     const X = (yr) => x0 + ((yr - 2025) / 15) * (x1 - x0);
-    const Y = (v) => yb - (v / vmax) * (yb - yt);
+    const Y = scale === "linear"
+      ? (v) => yb - (v / 400) * (yb - yt)
+      : (v) => yb - (Math.log10(Math.max(0.01, v)) + 2) / 5 * (yb - yt); // 10M..1T
     const line = (pts) => pts.map((p, i) => (i ? "L" : "M") + X(p[0]).toFixed(1) + "," + Y(p[1]).toFixed(1)).join(" ");
-    const humans = [[2025, 4], [2032, 4], [2040, 3]];
-    const ai = [[2025, 0.5], [2030, 5], [2033, 40], [2035, 120], [2037, 250], [2040, 400]];
-    const robots = [[2032, 1], [2034, 20], [2036, 60], [2038, 110], [2040, 165]];
+    const points = (series) => series.map((v, i) => [2025 + i, v]);
+    const humans = points(LABOR_GRAPH.humans);
+    const ai = points(LABOR_GRAPH.ai);
+    const robots = points(LABOR_GRAPH.robots);
     let g = "";
     // axes
     g += '<line x1="' + x0 + '" y1="' + yt + '" x2="' + x0 + '" y2="' + yb + '" stroke="' + CHART_INK + '" stroke-width="1"/>';
     g += '<line x1="' + x0 + '" y1="' + yb + '" x2="' + x1 + '" y2="' + yb + '" stroke="' + CHART_INK + '" stroke-width="1"/>';
-    [0, 100, 200, 300, 400].forEach((v) => {
-      g += '<text class="ch-axis ch-yr" x="' + (x0 - 5) + '" y="' + (Y(v) + 2).toFixed(1) + '">' + (v ? v + "B" : "0") + '</text>';
+    const yTicks = scale === "linear"
+      ? [[0,"0"],[100,"100B"],[200,"200B"],[300,"300B"],[400,"400B"]]
+      : [[0.01,"10M"],[0.1,"100M"],[1,"1B"],[10,"10B"],[100,"100B"],[1000,"1T"]];
+    yTicks.forEach((tick) => {
+      const y = Y(tick[0]);
+      g += '<line x1="' + x0 + '" y1="' + y.toFixed(1) + '" x2="' + x1 + '" y2="' + y.toFixed(1) + '" stroke="' + CHART_INK + '" stroke-opacity="0.12" stroke-width="0.7"/>';
+      g += '<text class="ch-axis ch-yr" x="' + (x0 - 5) + '" y="' + (y + 2).toFixed(1) + '">' + tick[1] + '</text>';
     });
     [2025, 2030, 2035, 2040].forEach((yr) => {
       g += '<text class="ch-axis" x="' + X(yr).toFixed(1) + '" y="' + (yb + 12) + '">' + yr + '</text>';
     });
-    g += '<path d="' + line(humans) + '" fill="none" stroke="' + CHART_INK + '" stroke-width="1.6"/>';
+    g += '<path d="' + line(humans) + '" fill="none" stroke="' + CHART_INK + '" stroke-width="2.6"/>';
     g += '<path d="' + line(robots) + '" fill="none" stroke="' + CHART_RED + '" stroke-width="1.8" stroke-dasharray="4 3"/>';
     g += '<path d="' + line(ai) + '" fill="none" stroke="' + CHART_RED + '" stroke-width="2.4"/>';
     // legend
@@ -1125,8 +1196,27 @@ if (typeof document !== "undefined") (function () {
         '" stroke-width="2.2"' + (L[2] ? ' stroke-dasharray="4 3"' : "") + '/>';
       g += '<text class="ch-legend" x="' + (lx + 21) + '" y="' + (ly + 3) + '">' + L[0] + '</text>';
     });
-    g += '<text class="ch-axis ch-ylabel" x="14" y="' + ((yt + yb) / 2) + '" transform="rotate(-90 14 ' + ((yt + yb) / 2) + ')">human-equivalents</text>';
-    return '<svg class="chart-svg" viewBox="0 0 320 150" preserveAspectRatio="xMidYMid meet">' + g + '</svg>';
+    g += '<text class="ch-axis ch-ylabel" x="13" y="' + ((yt + yb) / 2) + '" transform="rotate(-90 13 ' + ((yt + yb) / 2) + ')">human-equivalent workers</text>';
+    return '<svg class="chart-svg" viewBox="0 0 320 150" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Human, AI, and robot populations on a ' + scale + ' scale">' + g + '</svg>';
+  }
+  function wireLaborChartScale(wrap) {
+    const body = wrap.querySelector(".chart-body");
+    const buttons = Array.from(wrap.querySelectorAll(".chart-scale-btn"));
+    const setScale = (scale) => {
+      if (body) body.innerHTML = chartLaborBody(scale);
+      buttons.forEach((b) => {
+        const active = b.dataset.scale === scale;
+        b.classList.toggle("active", active);
+        b.setAttribute("aria-pressed", active ? "true" : "false");
+      });
+    };
+    buttons.forEach((b) => {
+      b.addEventListener("pointerdown", (e) => e.stopPropagation());
+      b.addEventListener("click", (e) => {
+        e.preventDefault(); e.stopPropagation(); setScale(b.dataset.scale || "log");
+      });
+    });
+    setScale("log");
   }
 
   // Citizen's Dividend — permit revenue flowing to citizens (US vs abroad)
@@ -1166,14 +1256,19 @@ if (typeof document !== "undefined") (function () {
       body = chartComputeBody(); foot = "20 million in 2026 &rarr; 60 billion";
     } else if (id === "cg_chart_labor") {
       title = "Human, AI &amp; Robot Population"; sub = "in human-equivalent labor";
-      body = chartLaborBody(); foot = "Human labor becomes a rounding error";
+      body = chartLaborBody("log"); foot = "Human labor remains visible on the logarithmic view";
     } else if (id === "cg_dividend") {
       title = "The Citizen's Dividend"; sub = "where the permit money goes";
       body = chartDividendBody(); foot = "American, and paid whether you work or not";
     }
+    const controls = id === "cg_chart_labor"
+      ? '<div class="chart-scale-toggle" role="group" aria-label="Chart scale">' +
+          '<button class="chart-scale-btn" type="button" data-scale="linear" aria-pressed="false">linear</button>' +
+          '<button class="chart-scale-btn active" type="button" data-scale="log" aria-pressed="true">log</button></div>'
+      : '';
     return '<div class="chart-card">' +
         '<div class="chart-head"><div class="chart-title">' + title + '</div>' +
-          (sub ? '<div class="chart-sub">' + sub + '</div>' : '') + '</div>' +
+          (sub ? '<div class="chart-sub">' + sub + '</div>' : '') + controls + '</div>' +
         '<div class="chart-body">' + body + '</div>' +
         (foot ? '<div class="chart-foot">' + foot + '</div>' : '') +
       '</div>';

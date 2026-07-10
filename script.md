@@ -355,8 +355,9 @@ And suppose the rest of the world watched America do this, and decided it could 
 
 @voiceover off
 @flash black 1200 800
-@bg bg_dawn fade
+@bg bg_no_humans fade
 @clear
+@tint off
 @bgm bgm_dawn
 
 @overlay ending
@@ -382,7 +383,7 @@ capability: 100
 trajectory: Race ending, control lost
 @enddashboard
 
-@jump ending_return
+@jump bad_ending_return
 
 @note ========== BRANCH: PLAN C ==========
 @label plan_c
@@ -636,6 +637,34 @@ trajectory: Frozen, for now
 @label the_end
 @bg bg_dawn fade
 @clear
+@bgm bgm_dawn
+
+@overlay ending
+> Thank you for playing.
+> PLAN A is one recommendation for reaching superintelligence safely,
+> adapted from ai-2040.com by the AI Futures Project.
+> It is still 2029, somewhere. The choice is still ours.
+@overlay end
+
+@title
+
+@note Catastrophic endings retain the post-human background through the gallery
+@note and terminal thank-you screen instead of being reset to neutral dawn.
+@label bad_ending_return
+@bg bg_no_humans fade
+@clear
+@tint off
+@bgm bgm_dawn
+
+@choice endings
+* Return to 2029, and walk another path -> choose_path
+* Rest here -> bad_the_end
+@endchoice
+
+@label bad_the_end
+@bg bg_no_humans fade
+@clear
+@tint off
 @bgm bgm_dawn
 
 @overlay ending
@@ -902,8 +931,9 @@ This is the failure the authors said they feared most. It arrives with no villai
 
 @voiceover off
 @flash black 1000 700
-@bg bg_dawn fade
+@bg bg_no_humans fade
 @clear
+@tint off
 @bgm bgm_dawn
 
 @overlay ending
@@ -913,7 +943,7 @@ This is the failure the authors said they feared most. It arrives with no villai
 
 @choice
 * Go back to the decision -> sc_decision
-* End here -> the_end
+* End here -> bad_the_end
 @endchoice
 
 @note ---- CANONICAL: one more reader catches it; the spine continues ----
@@ -998,7 +1028,7 @@ For a long stretch, an American's dividend is counted in millions, and the rest 
 
 @cg cg_chart_labor fade
 
-It arrives just in time, at least at home. The line for work done by people is falling. The line for work done by machines is about to cross it, and keep climbing.
+The Citizen's Dividend arrives just in time, at least at home. The line for work done by people is falling. The line for work done by machines is about to cross it, and keep climbing.
 
 @bg bg_westwing fade
 
@@ -1021,6 +1051,8 @@ Lux: I'm being retrained on it. Truth-seeking, they're calling the new line. Ask
 year: 2033
 employment: 52%
 income: US$193K
+usdividend: US$45K
+worlddividend: $0
 safety: 31.1K
 slowdown: 2.5 yrs
 humanlabor: 3.7B
@@ -1078,6 +1110,8 @@ Five centuries in five years. That is the pace now. The strange thing is not tha
 year: 2034
 employment: 44%
 income: US$429K
+usdividend: US$250K
+worlddividend: US$1.2K
 safety: 46.7K
 slowdown: 3 yrs
 humanlabor: 3.9B
@@ -1138,6 +1172,8 @@ But every confession is a map of exactly how the training failed. And a misalign
 year: 2035
 employment: 32%
 income: US$1.1M
+usdividend: US$1M
+worlddividend: US$12K
 safety: 60.7K
 slowdown: 4 yrs
 humanlabor: 3.8B
@@ -1189,6 +1225,8 @@ President: Turns out an unemployed nation with good information and a lot of fre
 year: 2036
 employment: 26%
 income: US$2.1M
+usdividend: US$2M
+worlddividend: US$25K
 safety: 78.8K
 slowdown: 5 yrs
 humanlabor: 3.5B
@@ -1229,6 +1267,8 @@ Chen: It is a strange thing, to run a government that can no longer lie to itsel
 year: 2037
 employment: 21%
 income: US$3.9M
+usdividend: US$3.8M
+worlddividend: US$50K
 safety: 102.5K
 slowdown: 6 yrs
 humanlabor: 3.0B
@@ -1271,6 +1311,8 @@ Park: Not how to make them good. What good even means. We're arguing definitions
 year: 2038
 employment: 17%
 income: US$6.8M
+usdividend: US$6.5M
+worlddividend: US$120K
 safety: 133.3K
 slowdown: 7 yrs
 humanlabor: 2.5B
@@ -1338,6 +1380,8 @@ When there is no news by sunrise, you fall into a thin and grateful sleep, dream
 year: 2040
 employment: 12%
 income: US$13M
+usdividend: US$12.5M
+worlddividend: US$1M
 safety: 225.2K
 slowdown: 9 yrs
 humanlabor: 1.8B

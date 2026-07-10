@@ -2,23 +2,27 @@
 
 The dashboard mirrors the ai-2040.com stats widget. Signature elements:
 
-- **Trajectory field** — a halftone-red field where the "Reliable Agent" curve
-  climbs left-to-right. x = time (2027..2045), y = AI capability (0..100). The
-  traveled portion is a solid red curve to the current (year, capability) point;
-  the looming intelligence explosion carries on as a dashed black curve to the
-  top-right corner. A faint horizontal line marks the ~88 ceiling — during Plan
-  A's pause the solid curve flattens along it while the dashed future keeps
-  rocketing up. A dot-matrix globe + year tag sit top-left; a "Reliable Agent"
-  scrubber runs along the bottom (fill = year progress).
+- **Capability trajectory** — an origin-based log chart extracted from AI 2040's
+  `extrapolatedGraphData.json`, not an interpolation of the dashboard's 0–100
+  summary score. x = time (2024..2045), y = AI-assisted R&D speedup over the 1x
+  human baseline (1x..100,000x). The shared 2024–2029 trunk and the separate
+  Plan A/B/C/D/S curves use the source site's data. The traveled portion is solid
+  red and the future is dashed black. The year and globe remain visual callbacks
+  to the source widget, but the smaller globe is decorative and no longer masks
+  the graph origin. Plan A's curve rises to top-expert level, pauses through the
+  late 2030s, then rises toward superintelligence after 2040.
 - **Core-four tiles**, named exactly as ai-2040: Employment · Median Income ·
   Safety Researchers · Total Slowdown. Each carries a trend arrow vs the previous
   dashboard where both values parse.
-- **Workforce dot-rows** — Human Labor (@ ×1 speed) and Reliable Agents (@ ×N
-  speed). Filled dots scale to log10(head-count) over 1e6..1e10; the ×speed
-  multiplier rides alongside. Agent dots animate in on reveal.
+- **Workforce dot-rows** — Human Labor (@ ×1 speed) stays a single 28-dot
+  reference row. Reliable Agents (@ ×N speed) expand into a three-row,
+  84-dot cloud: 20–40M agents occupy part of it, while 120–190M nearly
+  saturate it. The ×speed multiplier rides alongside; dots animate in on reveal.
 
 `@dashboard` keys: `year, employment, income, safety, slowdown, humanlabor,
-agents, agentspeed, tier, capability, trajectory`. (Legacy keys `dividend,
+agents, agentspeed, tier, capability, trajectory, usdividend, worlddividend`.
+The two dividend fields add the post-2032 median-income asterisk and its
+U.S./world breakdown. (Legacy keys `dividend,
 workforce, compute, gdp` are still accepted by the parser but no longer
 rendered.) `tier` is the capability milestone name (Reliable Agent → Automated
 coder → Top-Expert-Dominating AI → Superintelligent); it drives the scrubber
@@ -48,8 +52,9 @@ trajectory bends at the ceiling for 2035–2040, then crosses to ASI in 2045.
 | 14 | 2045 | Superintelligent | post-work | galaxy-share | vast | lifted | 1B | cosmic | ∞ | 100 |
 
 Notes:
-- ch14 values are qualitative (post-scarcity); qualitative magnitudes render as
-  text with no filled dots and no trend arrow.
+- ch14 values are qualitative (post-scarcity); the `cosmic` agent magnitude
+  deliberately saturates all 84 dots, while other qualitative values remain
+  text-only and do not receive trend arrows.
 - Median income absorbs the old Citizen's Dividend arc (US$47K → US$13M → galaxy-share).
 - 2029/2030 rows are interpolated (no scrubbed screenshot at those exact years);
   everything else is read off the widget.

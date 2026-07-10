@@ -14,6 +14,7 @@
     "bg_preserve": "assets/bg/bg_preserve.png",
     "bg_party": "assets/bg/bg_party.png",
     "bg_space": "assets/bg/bg_space.png",
+    "bg_no_humans": "assets/bg/bg_no_humans.png",
     "bg_dawn": "assets/bg/bg_dawn.png"
   },
   "cg": {
