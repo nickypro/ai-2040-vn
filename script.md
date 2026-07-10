@@ -137,11 +137,12 @@ The race goes on, better lit.
 @dashboard
 year: 2027
 employment: 96%
-dividend: not yet
-safety: 5k
-workforce: millions (coding)
-compute: 20M H100e
-gdp: +3%
+income: $47k
+safety: 1.2k
+slowdown: 0 mo
+humanlabor: 165M
+agents: 3M
+agentspeed: 1x
 capability: 42
 trajectory: Default race, no deal
 @enddashboard
@@ -224,11 +225,12 @@ You spend election night the way you spent the last one. A hotel ballroom full o
 @dashboard
 year: 2028
 employment: 94%
-dividend: not yet
+income: $49k
 safety: 8k
-workforce: tens of millions
-compute: 40M H100e
-gdp: +6%
+slowdown: 0 mo
+humanlabor: 164M
+agents: 30M
+agentspeed: 2x
 capability: 55
 trajectory: Election, path undecided
 @enddashboard
@@ -367,11 +369,12 @@ And suppose the rest of the world watched America do this, and decided it could 
 @dashboard
 year: 2031
 employment: falling fast
-dividend: none
+income: —
 safety: 200
-workforce: superhuman, uncontrolled
-compute: exploding
-gdp: unmeasured
+slowdown: 0 mo
+humanlabor: collapsing
+agents: uncontrolled
+agentspeed: ∞
 capability: 100
 trajectory: Race ending, control lost
 @enddashboard
@@ -446,11 +449,12 @@ Either way, the rest of the world was never in the room.
 @dashboard
 year: 2031
 employment: 72%
-dividend: none yet
+income: $60k
 safety: 2k
-workforce: superhuman, few hands
-compute: soaring
-gdp: +180%
+slowdown: 3 mo
+humanlabor: 120M
+agents: 200M
+agentspeed: 40x
 capability: 96
 trajectory: A tiny circle decides
 @enddashboard
@@ -524,11 +528,11 @@ He stares at the doors, and the third one you just described. The scene does not
 @dashboard
 year: 2031
 employment: wartime footing
-dividend: none
+income: —
 safety: 1k
-workforce: militarized
-compute: contested
-gdp: unstable
+slowdown: 6 mo
+humanlabor: militarized
+agents: contested
 capability: 92
 trajectory: Handoff, or war
 @enddashboard
@@ -597,11 +601,12 @@ Better here than there. But this is a pause, and everyone knows it. The question
 @dashboard
 year: 2035
 employment: 90%
-dividend: none
+income: $52k
 safety: banned
-workforce: frozen at 2029
-compute: capped
-gdp: +8%
+slowdown: frozen
+humanlabor: 160M
+agents: frozen
+agentspeed: 1x
 capability: 55
 trajectory: Frozen, for now
 @enddashboard
@@ -643,11 +648,12 @@ trajectory: Frozen, for now
 @dashboard
 year: 2029
 employment: 92%
-dividend: not yet
-safety: 12k
-workforce: training paused
-compute: declared
-gdp: +5%
+income: $50k
+safety: 8k
+slowdown: 2 mo
+humanlabor: 163M
+agents: 40M
+agentspeed: 3x
 capability: 60
 trajectory: The deal begins
 @enddashboard
@@ -711,11 +717,12 @@ You expected the hard part to be here. The hard part, it turns out, is still com
 @dashboard
 year: 2029
 employment: 91%
-dividend: not yet
+income: $50k
 safety: 12k
-workforce: inference only
-compute: ~1% hidden
-gdp: +4%
+slowdown: 4 mo
+humanlabor: 163M
+agents: 40M
+agentspeed: 1x
 capability: 60
 trajectory: Plan A, crude halt
 @enddashboard
@@ -779,11 +786,12 @@ They call it Mutually Assured Compute Destruction. Everyone hates it. Nobody has
 @dashboard
 year: 2030
 employment: 90%
-dividend: not yet
+income: $52k
 safety: 20k
-workforce: Consortium models
-compute: growing
-gdp: +9%
+slowdown: 6 mo
+humanlabor: 162M
+agents: 80M
+agentspeed: 4x
 capability: 63
 trajectory: Transparency on
 @enddashboard
@@ -830,11 +838,12 @@ President: That's the job now. Two tired men on a phone, deciding what the machi
 @dashboard
 year: 2031
 employment: 88%
-dividend: not yet
+income: $55k
 safety: 40k
-workforce: 33% of cognitive work
-compute: scaling
-gdp: +18%
+slowdown: 9 mo
+humanlabor: 160M
+agents: 120M
+agentspeed: 8x
 capability: 70
 trajectory: Slowdown holding
 @enddashboard
@@ -1001,11 +1010,12 @@ Lux: I'm being retrained on it. Truth-seeking, they're calling the new line. Ask
 @dashboard
 year: 2033
 employment: 70%
-dividend: $45k
+income: $90k
 safety: 120k
-workforce: 60M @ 20x
-compute: 5B GPUs
-gdp: +50%
+slowdown: 14 mo
+humanlabor: 115M
+agents: 200M
+agentspeed: 20x
 capability: 78
 trajectory: Controlled explosion
 @enddashboard
@@ -1056,11 +1066,12 @@ Five centuries in five years. That is the pace now. The strange thing is not tha
 @dashboard
 year: 2034
 employment: 55%
-dividend: $120k
+income: $250k
 safety: 200k
-workforce: 200M @ 50x
-compute: 60B (5 TW)
-gdp: +80%
+slowdown: 18 mo
+humanlabor: 90M
+agents: 400M
+agentspeed: 50x
 capability: 82
 trajectory: Mutually assured compute
 @enddashboard
@@ -1114,11 +1125,12 @@ But every confession is a map of exactly how the training failed. And a misalign
 @dashboard
 year: 2035
 employment: 40%
-dividend: $1M
+income: $1M
 safety: 300k
-workforce: top-expert, paused
-compute: capped 4x/yr
-gdp: +90%
+slowdown: 24 mo
+humanlabor: 66M
+agents: 600M
+agentspeed: 100x
 capability: 87
 trajectory: Pause at the ceiling
 @enddashboard
@@ -1163,11 +1175,12 @@ President: Turns out an unemployed nation with good information and a lot of fre
 @dashboard
 year: 2036
 employment: 26%
-dividend: $2M
+income: $2M
 safety: 450k
-workforce: 200M AIs, 2B robots
-compute: huge
-gdp: +100%
+slowdown: 30 mo
+humanlabor: 43M
+agents: 2B
+agentspeed: 100x
 capability: 87
 trajectory: Life after work
 @enddashboard
@@ -1201,11 +1214,12 @@ Chen: It is a strange thing, to run a government that can no longer lie to itsel
 @dashboard
 year: 2037
 employment: 24%
-dividend: $4M
+income: $4M
 safety: 600k
-workforce: +lie detectors
-compute: huge
-gdp: +100%
+slowdown: 36 mo
+humanlabor: 40M
+agents: 5B
+agentspeed: 100x
 capability: 87
 trajectory: Truth arrives
 @enddashboard
@@ -1241,11 +1255,12 @@ Park: Not how to make them good. What good even means. We're arguing definitions
 @dashboard
 year: 2038
 employment: 22%
-dividend: $6M
+income: $6M
 safety: 800k
-workforce: aligned, watched
-compute: huge
-gdp: +100%
+slowdown: 42 mo
+humanlabor: 36M
+agents: 10B
+agentspeed: 100x
 capability: 88
 trajectory: Alignment is a science
 @enddashboard
@@ -1306,11 +1321,12 @@ When there is no news by sunrise, you fall into a thin and grateful sleep, dream
 @dashboard
 year: 2040
 employment: 20%
-dividend: $10M
+income: $10M
 safety: 1M
-workforce: autonomous, sworn
-compute: uncapped in space
-gdp: +100%
+slowdown: 48 mo
+humanlabor: 33M
+agents: 60B
+agentspeed: 100x
 capability: 88
 trajectory: Passing the torch
 @enddashboard
@@ -1378,11 +1394,12 @@ Whether anyone chooses it is still, as it was in 2029, up to the people in the r
 @dashboard
 year: 2045
 employment: post-work
-dividend: galaxy-share
+income: galaxy-share
 safety: vast
-workforce: superintelligent
-compute: cosmic
-gdp: explosive
+slowdown: —
+humanlabor: post-work
+agents: cosmic
+agentspeed: ∞
 capability: 100
 trajectory: Life after ASI
 @enddashboard

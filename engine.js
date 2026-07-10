@@ -12,7 +12,11 @@
 
 // recognized @dashboard keys; anything else is ignored (validator WARN, not error)
 const DASH_KEYS = new Set([
-  "year", "employment", "dividend", "safety", "workforce", "compute", "gdp", "capability", "trajectory",
+  // ai-2040 widget schema
+  "year", "employment", "income", "safety", "slowdown",
+  "humanlabor", "agents", "agentspeed", "capability", "trajectory",
+  // legacy keys (still accepted so older @dashboard blocks / saves don't warn)
+  "dividend", "workforce", "compute", "gdp",
 ]);
 
 function parseScript(text) {
@@ -251,7 +255,7 @@ if (typeof module !== "undefined" && module.exports) {
 /* ---------------- player (browser only) ---------------- */
 
 if (typeof document !== "undefined") (function () {
-  const APP_VERSION = "1.1.2"; // shown on the title screen and in Settings; bump to release
+  const APP_VERSION = "1.2.0"; // shown on the title screen and in Settings; bump to release
   const $ = (id) => document.getElementById(id);
   const SAVE_KEY = "plana_save";
   const SETTINGS_KEY = "plana_settings";
@@ -849,13 +853,12 @@ if (typeof document !== "undefined") (function () {
      capability bar with labeled stops + a ~88 ceiling marker. State-effect
      no-op during silent seek (prevDash is tracked in the walk); rendered only
      on the live step that lands on it. */
+  // Core four tiles, named exactly as the ai-2040.com stats widget.
   const DASH_TILES = [
     { key: "employment", label: "Employment" },
-    { key: "dividend",   label: "Citizen Dividend" },
+    { key: "income",     label: "Median Income" },
     { key: "safety",     label: "Safety Researchers" },
-    { key: "workforce",  label: "AI Workforce" },
-    { key: "compute",    label: "Compute" },
-    { key: "gdp",        label: "GDP Growth" },
+    { key: "slowdown",   label: "Total Slowdown" },
   ];
   const CAP_CEILING = 88; // top-human-expert pause line
   function dashNum(str) {
@@ -903,6 +906,79 @@ if (typeof document !== "undefined") (function () {
         hot +
       '</g></svg>';
   }
+  /* ---- trajectory field ----
+     The ai-2040 widget's signature: a halftone-red field where the "Reliable
+     Agent" curve climbs left-to-right. Here x is time (2027..2045) and y is AI
+     capability (0..100). The traveled portion is a solid red curve up to the
+     current (year, capability) point; the looming intelligence explosion carries
+     on as a dashed black curve to the top-right corner. A faint horizontal line
+     marks the ~88 ceiling — during Plan A's pause the solid curve flattens along
+     it while the dashed future keeps rocketing up. */
+  function yearFrac(yr) {
+    if (yr == null || !isFinite(yr)) return null;
+    return Math.max(0, Math.min(1, (yr - 2027) / (2045 - 2027)));
+  }
+  function trajectoryFieldSvg(data, cur) {
+    const x0 = 16, x1 = 244, yTop = 12, yBot = 104;
+    const yr = dashNum(data.year);
+    const tf = yearFrac(yr);
+    const capN = cur.capability;
+    const capOk = capN != null && isFinite(capN);
+    const tx = tf != null ? tf : 0.30;
+    const px = x0 + tx * (x1 - x0);
+    const capC = capOk ? Math.max(0, Math.min(100, capN)) : 0;
+    const py = yBot - (capC / 100) * (yBot - yTop);
+    const ceilY = yBot - (CAP_CEILING / 100) * (yBot - yTop);
+    // traveled: gentle exponential bow from origin up to the current point
+    const cbx = x0 + (px - x0) * 0.62, cby = yBot - (yBot - py) * 0.16;
+    const traveled = 'M' + x0 + ',' + yBot + ' Q' + cbx.toFixed(1) + ',' + cby.toFixed(1) +
+      ' ' + px.toFixed(1) + ',' + py.toFixed(1);
+    // future: holds near the current height, then rockets to the corner
+    const fbx = px + (x1 - px) * 0.60;
+    const future = 'M' + px.toFixed(1) + ',' + py.toFixed(1) + ' Q' + fbx.toFixed(1) + ',' +
+      py.toFixed(1) + ' ' + x1 + ',' + yTop;
+    return '<svg class="df-curve" viewBox="0 0 260 122" preserveAspectRatio="none" aria-hidden="true">' +
+        '<line class="dfc-ceiling" x1="' + x0 + '" y1="' + ceilY.toFixed(1) + '" x2="' + x1 +
+          '" y2="' + ceilY.toFixed(1) + '"/>' +
+        '<path class="dfc-future" d="' + future + '"/>' +
+        '<path class="dfc-past" d="' + traveled + '"/>' +
+        (capOk || tf != null ? '<circle class="dfc-dot" cx="' + px.toFixed(1) + '" cy="' +
+          py.toFixed(1) + '" r="4.2"/>' : '') +
+      '</svg>' +
+      '<div class="dfc-ceil-lbl" style="bottom:' + (100 * (yBot - ceilY) / (yBot - yTop)).toFixed(1) +
+        '%">ceiling</div>';
+  }
+
+  /* One workforce dot-row (Human Labor / Reliable Agents). Filled dots scale to
+     the log of the head-count; the ×speed multiplier rides alongside. */
+  function fmtSpeed(s) {
+    if (s == null) return "";
+    const t = String(s).trim().replace(/^×/, "").replace(/x$/i, "");
+    if (!t) return "";
+    return "&times;" + dashEsc(t) + " speed";
+  }
+  function dotRowHtml(label, countStr, speedStr, cls) {
+    const n = dashNum(countStr);
+    const filled = (n != null && isFinite(n) && n > 0)
+      ? Math.max(1, Math.min(16, Math.round(16 * (Math.log10(n) - 6) / (10 - 6))))
+      : 0; // qualitative magnitude (e.g. "frozen") → no filled dots, text still shows
+    let dots = "";
+    for (let i = 0; i < 16; i++) {
+      const on = i < filled;
+      dots += '<span class="dr-dot' + (on ? " on" : "") + '"' +
+        (on ? ' style="animation-delay:' + (i * 45) + 'ms"' : "") + '></span>';
+    }
+    const spd = fmtSpeed(speedStr);
+    return '<div class="dr-row ' + cls + '">' +
+        '<div class="dr-dots">' + dots + '</div>' +
+        '<div class="dr-meta">' +
+          '<span class="dr-count">' + (countStr != null ? dashEsc(countStr) : "&mdash;") + '</span>' +
+          '<span class="dr-label">' + dashEsc(label) + '</span>' +
+          (spd ? '<span class="dr-speed">' + spd + '</span>' : "") +
+        '</div>' +
+      '</div>';
+  }
+
   /* Builds the inner cream-paper card HTML. Shared by the in-play @dashboard
      beat and the "Where Things Stand" run-overview panel. `eyebrow` is the
      small caps line top-left; `metaHTML` (optional) is an extra strip inserted
@@ -923,35 +999,41 @@ if (typeof document !== "undefined") (function () {
         '</div>';
     }
     const capN = cur.capability;
-    const capPct = (capN != null && isFinite(capN)) ? Math.max(0, Math.min(100, capN)) : null;
-    const capText = data.capability != null ? dashEsc(data.capability) : "—";
-    const bar =
-      '<div class="dash-cap">' +
-        '<div class="dc-head"><span class="dc-label">AI Capability</span>' +
-          '<span class="dc-val">' + capText + (capPct != null ? ' <span class="dc-slash">/ 100</span>' : '') + '</span></div>' +
-        '<div class="dc-track">' +
-          (capPct != null ? '<div class="dc-fill" style="width:' + capPct + '%"></div>' : '') +
-          '<div class="dc-ceiling" style="left:' + CAP_CEILING + '%"><span class="dc-ceiling-lbl">ceiling</span></div>' +
-          (capPct != null ? '<div class="dc-marker" style="left:' + capPct + '%"><span class="dc-dot"></span></div>' : '') +
+    const capOk = capN != null && isFinite(capN);
+    const tf = yearFrac(dashNum(data.year));
+    const scrubPct = ((tf != null ? tf : 0.30) * 100).toFixed(1);
+    const field =
+      '<div class="dash-field">' +
+        '<div class="df-yeartag">' + year + '</div>' +
+        dashGlobeSvg() +
+        trajectoryFieldSvg(data, cur) +
+        '<div class="df-scrub">' +
+          '<span class="df-scrub-lbl">Reliable Agent</span>' +
+          '<span class="df-scrub-track"><i style="width:' + scrubPct + '%"></i>' +
+            '<b style="left:' + scrubPct + '%"></b></span>' +
         '</div>' +
-        '<div class="dc-stops">' +
-          '<span class="dc-s0">sub-human</span>' +
-          '<span class="dc-s1">human-expert</span>' +
-          '<span class="dc-s2">superintelligence</span>' +
-        '</div>' +
+      '</div>';
+    const caption =
+      '<div class="dash-caption">' +
+        (traj ? '<span class="dcap-traj">' + traj + '</span>' : '<span></span>') +
+        '<span class="dcap-cap">AI Capability ' +
+          (data.capability != null ? dashEsc(data.capability) : "&mdash;") +
+          (capOk ? ' <span class="dcap-slash">/ 100</span>' : "") + '</span>' +
+      '</div>';
+    const rows =
+      '<div class="dash-rows">' +
+        dotRowHtml("Human Labor", data.humanlabor, "1x", "dr-human") +
+        dotRowHtml("Reliable Agents", data.agents, data.agentspeed, "dr-agent") +
       '</div>';
     return '<div class="dash-card">' +
         '<div class="dash-top">' +
           '<div class="dash-eyebrow">' + (eyebrow || "Status Dossier &middot; Plan A") + '</div>' +
-          dashGlobeSvg() +
-        '</div>' +
-        '<div class="dash-hero">' +
-          '<div class="dash-year">' + year + '</div>' +
-          (traj ? '<div class="dash-traj">' + traj + '</div>' : '') +
         '</div>' +
         (metaHTML || '') +
+        field +
+        caption +
         '<div class="dash-tiles">' + tiles + '</div>' +
-        bar +
+        rows +
       '</div>';
   }
   function showDashboard(c, prevNums) {
@@ -2016,9 +2098,9 @@ if (typeof document !== "undefined") (function () {
      before it drives the trend arrows). Before any dashboard is reached it
      falls back to the 2027 baseline. Adds the current plan + endings-seen. */
   const DASH_BASELINE = { // ch1 / 2027 baseline (see claude-notes/DASHBOARD-DATA.md)
-    year: "2027", employment: "96%", dividend: "not yet",
-    workforce: "millions (coding)", compute: "20M H100e",
-    gdp: "+3%", capability: "42", trajectory: "Default race, no deal",
+    year: "2027", employment: "96%", income: "$47k", safety: "1.2k", slowdown: "0 mo",
+    humanlabor: "165M", agents: "3M", agentspeed: "1x",
+    capability: "42", trajectory: "Default race, no deal",
   };
   function currentPlan() {
     for (let k = path.length - 1; k >= 0; k--) {
@@ -2107,7 +2189,7 @@ if (typeof document !== "undefined") (function () {
         '<span class="mo-stat"><span class="mo-k">Endings</span> ' + seenN + ' of ' + ENDINGS_LIST.length + '</span>' +
       '</div>' +
       '<div class="mo-row">' +
-        stat("Employment", d.employment) + stat("Dividend", d.dividend) +
+        stat("Employment", d.employment) + stat("Median Income", d.income) +
         (isFinite(cap) ? '<span class="mo-stat"><span class="mo-k">Capability</span> ' + cap + '/100</span>' : "") +
       '</div>';
   }
