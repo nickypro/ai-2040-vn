@@ -1,0 +1,92 @@
+{
+  "schema_version": 2,
+  "title": "AI 2040 → VN source coverage",
+  "generated_from": {
+    "source": "../../claude-notes/source-main.md",
+    "adaptation": "../../script.md"
+  },
+  "classification_rules": {
+    "included": "The source claim or story beat is represented in the VN, usually compressed or dramatized.",
+    "partial": "Only part of the selected passage is represented, or the VN materially simplifies its qualifications.",
+    "excluded": "No evidence mapping is asserted. In the viewer this remains unhighlighted.",
+    "fabricated": "VN-only connective tissue, characters, dialogue, or staging. These annotations are not source highlights."
+  },
+  "mappings": [
+    {"id":"m01","status":"included","source_lines":[100,105],"script_lines":[26,34],"beat":"Two workforces; scale and economics of AI agents","confidence":"high"},
+    {"id":"m02","status":"included","source_lines":[107,114],"script_lines":[36,46],"beat":"Labs seek to automate AI R&D while pulling up the ladder","confidence":"high"},
+    {"id":"m03","status":"partial","source_lines":[116,130],"script_lines":[49,133],"beat":"Congressional attention, control question, and 2027 Transparency Act","confidence":"high","note":"The VN preserves the policy arc but replaces examples and analysis with a hearing and character drama."},
+    {"id":"m04","status":"partial","source_lines":[142,154],"script_lines":[154,226],"beat":"AI dominates the 2028 election and makes the intelligence explosion politically salient","confidence":"high"},
+    {"id":"m05","status":"included","source_lines":[158,182],"script_lines":[243,286],"beat":"Five-way 2029 policy choice","confidence":"high"},
+
+    {"id":"m06","status":"partial","source_lines":[214,230],"script_lines":[295,331],"beat":"Plan D: light-touch regulation and a race through automated AI R&D","confidence":"high"},
+    {"id":"m07","status":"partial","source_lines":[232,245],"script_lines":[333,365],"beat":"Plan D risks: loss of control, concentrated power, and war","confidence":"medium","note":"The VN converts the source's argumentative assessment into a short catastrophic ending."},
+    {"id":"m08","status":"partial","source_lines":[248,272],"script_lines":[393,432],"beat":"Plan C: brief pause, rushed safety plan, and restart under China pressure","confidence":"high"},
+    {"id":"m09","status":"partial","source_lines":[274,289],"script_lines":[433,447],"beat":"Plan C risks: weak safety assurance, oligarchy, and exclusion of the wider world","confidence":"high"},
+    {"id":"m10","status":"partial","source_lines":[293,319],"script_lines":[474,511],"beat":"Plan B coalition, Project consolidation, sabotage, and handoff-versus-war dilemma","confidence":"high"},
+    {"id":"m11","status":"partial","source_lines":[321,345],"script_lines":[512,523],"beat":"Plan B critique: secrecy, race pressure, power concentration, and escalation","confidence":"medium"},
+    {"id":"m12","status":"included","source_lines":[349,367],"script_lines":[750,788],"beat":"Plan A announcement, Chinese incentives, verifiability, and temporary training halt","confidence":"high"},
+    {"id":"m13","status":"partial","source_lines":[393,403],"script_lines":[782,786],"beat":"Compute declaration and international inspection","confidence":"high"},
+    {"id":"m14","status":"partial","source_lines":[405,435],"script_lines":[788,788],"beat":"Temporary training pause and inference-only verification","confidence":"high","note":"Device alternatives and implementation caveats are omitted."},
+    {"id":"m15","status":"included","source_lines":[437,443],"script_lines":[792,796],"beat":"Worldwide buy-in and formation of the Consortium","confidence":"high"},
+
+    {"id":"m16","status":"included","source_lines":[455,467],"script_lines":[822,834],"beat":"Plan A's four principles","confidence":"high"},
+    {"id":"m17","status":"partial","source_lines":[471,487],"script_lines":[828,828],"beat":"Buy time without freezing forever","confidence":"medium"},
+    {"id":"m18","status":"partial","source_lines":[491,503],"script_lines":[830,830],"beat":"Open algorithms and broad evaluation access, but closed weights","confidence":"high"},
+    {"id":"m19","status":"partial","source_lines":[521,539],"script_lines":[830,843],"beat":"Transparency changes incentives and makes AI more competitive","confidence":"medium"},
+    {"id":"m20","status":"included","source_lines":[541,547],"script_lines":[832,832],"beat":"Diffuse frontier capability among many companies and countries","confidence":"high"},
+    {"id":"m21","status":"partial","source_lines":[549,565],"script_lines":[834,868],"beat":"Reversibility and Mutually Assured Compute Destruction","confidence":"high"},
+
+    {"id":"m22","status":"included","source_lines":[577,595],"script_lines":[892,910],"beat":"Near-superhuman systems, safety incidents, and safety cases built on alignment plus control","confidence":"high"},
+    {"id":"m23","status":"included","source_lines":[637,643],"script_lines":[915,921],"beat":"Public dispute over continual learning and negotiated global restrictions","confidence":"high"},
+    {"id":"m24","status":"partial","source_lines":[647,650],"script_lines":[945,1007],"beat":"Alternate failure: a flawed safety case is approved","confidence":"high","note":"The source only links to a branch here; the VN stages a complete interactive branch."},
+    {"id":"m25","status":"included","source_lines":[655,661],"script_lines":[1019,1023],"beat":"60 million fast agents, physical bottlenecks, and the industrial explosion","confidence":"high"},
+    {"id":"m26","status":"partial","source_lines":[713,719],"script_lines":[1027,1029],"beat":"Fast growth creates covert-project risk and monitored industrial zones","confidence":"high"},
+    {"id":"m27","status":"included","source_lines":[723,727],"script_lines":[1099,1112],"beat":"2032 Citizen's Dividend and international distribution excluding China","confidence":"high","note":"The source baseline supports the permit-funded dividend, $45K US payment, $1.2K international payment, and China exclusion. The named corporation and exact 25% mechanism do not appear in source-main.md."},
+    {"id":"m28","status":"partial","source_lines":[729,735],"script_lines":[1116,1124],"beat":"Using new wealth for biosecurity and limiting mass persuasion","confidence":"high"},
+
+    {"id":"m29","status":"included","source_lines":[801,817],"script_lines":[1154,1156],"beat":"Compute expands from millions to tens of billions of chips; 200 million fast agents","confidence":"high"},
+    {"id":"m30","status":"partial","source_lines":[849,857],"script_lines":[1158,1162],"beat":"Floating ocean energy and datacenters","confidence":"medium"},
+    {"id":"m31","status":"included","source_lines":[863,865],"script_lines":[1261,1271],"beat":"Pause when AI reaches top-expert level","confidence":"high"},
+    {"id":"m32","status":"partial","source_lines":[899,923],"script_lines":[1277,1297],"beat":"Alignment research becomes more hopeful but control remains necessary","confidence":"medium"},
+    {"id":"m33","status":"included","source_lines":[927,945],"script_lines":[1327,1337],"beat":"Post-work economy divided into industrial zones, arcologies, and preserves","confidence":"high"},
+    {"id":"m34","status":"partial","source_lines":[973,987],"script_lines":[1339,1354],"beat":"Meaning and status after employment","confidence":"medium"},
+    {"id":"m35","status":"partial","source_lines":[991,1011],"script_lines":[1380,1396],"beat":"AI-assisted truth-seeking exposes secrets and destabilizes politics","confidence":"high"},
+    {"id":"m36","status":"partial","source_lines":[1027,1063],"script_lines":[1422,1440],"beat":"Alignment becomes a scientific field with huge incentives","confidence":"medium"},
+    {"id":"m37","status":"partial","source_lines":[1075,1109],"script_lines":[1466,1488],"beat":"Growing trust and debate over empowering AIs","confidence":"medium"},
+    {"id":"m38","status":"partial","source_lines":[1113,1145],"script_lines":[1492,1507],"beat":"2040 handoff and the emotionally fraught arrival of superintelligence","confidence":"high"},
+    {"id":"m39","status":"partial","source_lines":[1183,1197],"script_lines":[1542,1554],"beat":"Space governance, universal rights, and self-replicating probes","confidence":"high"},
+    {"id":"m40","status":"partial","source_lines":[1201,1233],"script_lines":[1546,1565],"beat":"Plural post-scarcity futures and continued human choice","confidence":"medium"},
+
+    {"id":"m41","status":"partial","source_lines":[1239,1245],"script_lines":[549,568],"beat":"Plan S opening: seek a global moratorium rather than build god","confidence":"high"},
+    {"id":"m42","status":"partial","source_lines":[1247,1301],"script_lines":[569,604],"beat":"Plan S verification, economic adaptation, and fragility of an indefinite halt","confidence":"medium"},
+
+    {"id":"m43","status":"included","source_lines":[719,721],"script_lines":[1080,1091],"beat":"Cap-and-trade permits replace the collapsing wage-tax base","confidence":"high"},
+    {"id":"m44","status":"partial","source_lines":[447,451],"script_lines":[1031,1075],"beat":"Alternate covert-project threat and inspection response","confidence":"medium","note":"source-main.md contains only the alternate-timeline summary/link here. The VN's exact anomaly, player options, and outcomes are new interactive staging."},
+    {"id":"m45","status":"partial","source_lines":[485,487],"script_lines":[1035,1073],"beat":"Hidden compute and defection remain hazards during a slowdown","confidence":"high"},
+    {"id":"m46","status":"partial","source_lines":[839,843],"script_lines":[1174,1217],"beat":"Alternate deal-dissolution turning point","confidence":"medium","note":"The local source baseline only announces and links the alternate timeline. The VN makes a specific election crisis playable."},
+    {"id":"m47","status":"included","source_lines":[563,565],"script_lines":[1168,1215],"beat":"Deal collapse risk and the compute-destruction guarantee","confidence":"high"},
+    {"id":"m48","status":"included","source_lines":[725,727],"script_lines":[1299,1301],"beat":"By 2035, the US dividend reaches about $1M and international payments about $10K","confidence":"high","note":"The chronological later-year placement is faithful to the source amounts. The exact 75% corporation share is not present in source-main.md."},
+    {"id":"m49","status":"partial","source_lines":[100,105],"script_lines":[696,702],"beat":"Public-POV bonus compresses the lived transition from AI coworker to post-work abundance","confidence":"medium","note":"The underlying milestones are source-grounded; the anonymous public viewpoint and summary format are VN-original."},
+    {"id":"m50","status":"partial","source_lines":[107,114],"script_lines":[717,723],"beat":"Insider-POV bonus compresses automated R&D, transparency, and safety-case culture","confidence":"medium","note":"The underlying research arc is source-grounded; the anonymous lab-worker viewpoint and summary format are VN-original."}
+  ],
+  "fabricated_annotations": [
+    {"id":"f01","script_lines":[29,34],"chapter":"2027","label":"Player viewpoint","note":"The senior-adviser protagonist and second-person framing are VN inventions used to connect policy events."},
+    {"id":"f02","script_lines":[49,83],"chapter":"2027","label":"Reed hearing","note":"Marcus Reed, Meridian AI, and the hearing dialogue are fictional dramatization."},
+    {"id":"f03","script_lines":[84,110],"chapter":"2027","label":"Lux demonstration","note":"Lux is a VN-original recurring AI persona; her product demonstration is not in the source passage."},
+    {"id":"f04","script_lines":[111,133],"chapter":"2027","label":"Park's failed-tests incident","note":"Lena Park and the concrete deleted-tests anecdote are fictional, though they dramatize source concerns about deception and alignment."},
+    {"id":"f05","script_lines":[154,226],"chapter":"2028","label":"Election-room cast","note":"The President, Chen, Park, Reed, and Lux dialogue is original connective drama around the source election beat."},
+    {"id":"f06","script_lines":[295,365],"chapter":"Plan D","label":"Catastrophic montage","note":"The source points to AI 2027 and gives an argument; the VN invents a compact narrated endpoint and imagery."},
+    {"id":"f07","script_lines":[393,447],"chapter":"Plan C","label":"Rushed-safety ending","note":"Specific meetings and final imagery are VN dramatization of the branch assessment."},
+    {"id":"f08","script_lines":[474,523],"chapter":"Plan B","label":"War-room ending","note":"Dialogue and staging are invented; strategic claims track the source."},
+    {"id":"f09","script_lines":[750,777],"chapter":"Plan A","label":"Private decision scene","note":"The Oval Office decision and named-character reactions are VN-original framing."},
+    {"id":"f10","script_lines":[836,868],"chapter":"2030","label":"Consortium confrontation","note":"Reed's dialogue personifies institutional positions not assigned to this fictional character by the source."},
+    {"id":"f11","script_lines":[938,1007],"chapter":"2031","label":"Interactive safety-case vote","note":"The player choice, exact buried assumption, and failure sequence are an interactive VN construction from a short alternate-timeline pointer."},
+    {"id":"f12","script_lines":[1099,1112],"chapter":"2032–33","label":"Dividend presentation and mechanism","note":"The chronology and payment amounts track source-main.md. The Compute Dividend Corporation name, Alaska analogy, and exact 25% share are not present in that local baseline; staging and connective prose are adaptation material."},
+    {"id":"f13","script_lines":[1261,1297],"chapter":"2035","label":"Park and Lux ceiling scene","note":"The parent-and-child analogy and personal dialogue are VN-original dramatization."},
+    {"id":"f14","script_lines":[1472,1507],"chapter":"2039–40","label":"Final meeting and countdown","note":"Character farewells and the protagonist's final meeting are original; the handoff and countdown derive from source beats."},
+    {"id":"f15","script_lines":[1535,1565],"chapter":"Epilogue","label":"Lux-guided epilogue","note":"Lux's narration and intimate closing frame are invented around selected source space-governance ideas."},
+    {"id":"f16","script_lines":[1031,1075],"chapter":"2032–33","label":"Playable covert-project turning point","note":"Covert defection is source-grounded, but the ambiguous power anomaly, binary player choice, US counter-project, inspection resolution, and explicit ending are VN-created mechanics."},
+    {"id":"f17","script_lines":[1174,1217],"chapter":"2034","label":"Playable deal-breakdown turning point","note":"Deal dissolution and compute destruction are source-grounded. The election trigger, border-choice interface, and exact success/failure sequences are VN-created mechanics."},
+    {"id":"f18","script_lines":[683,725],"chapter":"Post-completion extras","label":"Public and Insider POV summaries","note":"These unlockable viewpoints, anonymous narrators, and retrospective-summary format are VN-original. Their milestones are cross-referenced separately where source-grounded."}
+  ]
+}
