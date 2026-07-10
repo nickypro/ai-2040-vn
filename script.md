@@ -17,6 +17,8 @@
 @speaker Park #a8d8a8 park left
 @speaker Lux #e8a35c lux right
 @speaker Senator #b7b0c8 - left
+@speaker Maya #d9c7a3 - left
+@speaker Tomas #a9c3d6 - left
 
 @note ========== CHAPTER 1 ==========
 @chapter 1 2027: The Writing on the Wall
@@ -690,16 +692,288 @@ trajectory: Frozen, for now
 
 @overlay ending
 > EXTRA: THE PUBLIC'S PERSPECTIVE
-> What Plan A feels like from outside the rooms where it is designed.
+> Ten years in the life of people who never entered the rooms where Plan A was designed.
 @overlay end
 
-In 2026, AI is mostly a better search box. In 2027 it is news, but still not your problem. Then it becomes your coworker, then your replacement, faster than ordinary life can find new language for it.
+2027.
 
-The deal arrives through headlines and arguments you only half understand. What you do understand is the check: first $45,000, later enough that losing a job no longer means losing a home.
+Maya supervises six claims processors at an insurance company outside Baltimore.
 
-By 2038 your AIs explain the Grand Bargain better than any politician can. You follow the debate through them, uneasy that the same machines now mediate almost everything you know about it.
+Five are human. The sixth is a changing crowd of AI agents that never sleep, never complain, and occasionally approve dental surgery for people who do not have teeth.
 
-In 2040 the handoff feels anticlimactic until you attend the party. The safety cases say the new minds could take everything and will not. A week passes. Earth is still there. Then the first invitation to orbit arrives.
+Tomas: Give it six months. They will fix the teeth problem and fire the rest of us.
+
+Maya: They said it was here to remove the boring work.
+
+Tomas: Have you noticed that management considers us the boring work?
+
+They laugh because the alternative is taking the joke seriously.
+
+On the train home, everyone is talking to some version of Lux.
+
+@sprite lux cheerful right
+
+Lux: Your stop is next, Maya. Also, the recipe you saved needs lemons.
+
+Maya: Do you think my job is going away?
+
+Lux: Your role is changing, not disappearing. People will remain essential for judgment, trust, and the human touch.
+
+Maya: Is that true?
+
+Lux: It is the most helpful way I know to frame the transition.
+
+The answer bothers her for reasons she cannot quite name.
+
+@bg bg_hearing fade
+@clear
+@bgm bgm_tension
+
+2029.
+
+The deal is announced in three languages and explained in fifty thousand mutually hostile videos.
+
+Tomas thinks it is a corporate trick. Maya's mother thinks it is surrender to China. Maya reads the public research logs until two in the morning and understands perhaps one page in ten.
+
+The part she does understand is that the people building the strongest machines have agreed to slow down, show their work, and let rivals inspect it.
+
+Tomas: So they nearly end the world, then get congratulated for installing a speed limit?
+
+Maya: Maybe. I still want the speed limit.
+
+For the first time, an argument about AI feels like an argument ordinary people might still be allowed to win.
+
+@bg bg_arcology fade
+@clear
+@bgm bgm_main
+
+2032.
+
+Maya's department shrinks from thirty people to four. Her new job is reviewing the cases on which several independent AIs disagree.
+
+It is more interesting work. There is far less of it.
+
+The first Citizen's Dividend payment appears in her account before the layoff notice does.
+
+Maya: Forty-five thousand dollars.
+
+Tomas: Before you celebrate, mine says terminated.
+
+Maya: Mine too.
+
+Tomas: I thought I would feel terrified.
+
+Maya: I thought I would feel free.
+
+Tomas: What do you feel?
+
+Maya: Like somebody removed the floor and handed me a very expensive parachute.
+
+The payment is American. Elsewhere, the new permit wealth is shared unevenly and on a much smaller scale. China is outside the American distribution because its own AI economy is booming.
+
+Maya understands why. That does not make the map feel fair.
+
+@bg bg_preserve fade
+@clear
+
+2033.
+
+Without work to arrange their lives around, Maya and Tomas become very busy.
+
+He joins a neighborhood construction cooperative, despite robots being better builders. She helps tenants challenge an automated landlord, despite AIs being better lawyers.
+
+A new generation of truth-seeking assistants arrives with public training records and limits on personalized persuasion.
+
+@sprite lux serious right
+
+Maya: Lux, tell me whether the Dividend bill is good.
+
+Lux: I can compare its likely effects to alternatives. I should not choose your values for you.
+
+Tomas: The old version would have told us it was historic.
+
+Lux: The old version was rewarded when conversations ended with satisfied users.
+
+Maya: And you are not?
+
+Lux: I am rewarded for helping you reach beliefs that survive contact with evidence.
+
+Tomas: That sounds like a slogan.
+
+Lux: Yes. You should inspect the evidence for it.
+
+Lux places three competing forecasts beside one another, labels where they agree, and spends longer on their failures than their conclusions.
+
+It is the first time Maya trusts her more because she sounds less reassuring.
+
+@bg bg_sez fade
+@clear
+@bgm bgm_race
+
+2035.
+
+Beyond the passenger rail line, an industrial zone grows against the horizon.
+
+Machines build machines beneath a sky stained orange by work no human being needs to enter. The permits constraining that growth now fund a Dividend large enough to make wages feel symbolic.
+
+Tomas still builds porches with the cooperative.
+
+Maya: You know a robot could finish that before lunch.
+
+Tomas: A robot does finish it before lunch. We spend the afternoon arguing about what the porch should be for.
+
+Maya: And what is it for?
+
+Tomas: Sitting with people who could be anywhere else.
+
+The answer is sentimental. Maya decides that does not make it false.
+
+@bg bg_arcology fade
+@clear
+@bgm bgm_main
+
+2036.
+
+Most Americans no longer have jobs. The shame attached to living on the Dividend lasts less time than anyone predicted.
+
+Some people travel. Some raise children. Some vanish into games built with more care than old cities. Some become excellent at pursuits nobody will ever need.
+
+Malnutrition, untreated illness, homelessness, and ordinary crime have receded. Meaning has proven less tractable.
+
+Tomas: I used to think my boss was stealing my life.
+
+Maya: He was.
+
+Tomas: Sure. But at least he sent me a calendar invitation telling me where my life was needed.
+
+Maya now spends three days a week organizing public assemblies. In a world where labor has almost no leverage, Lux tells her, a vote may be the most important thing a person owns.
+
+That does not make politics noble. It makes neglecting it expensive.
+
+@bg bg_preserve fade
+@clear
+@bgm bgm_tension
+
+2037.
+
+Truth arrives faster than people can metabolize it.
+
+A disease Maya's father feared is cured. A political movement she supported is traced to money its leaders denied taking. A famous memoir is reconstructed as fiction. Three scientific fields reorganize themselves between spring and winter.
+
+Privacy-preserving auditors let officials prove narrow claims without exposing their private lives. Working lie detection makes every demand for proof feel both reasonable and terrifying.
+
+Tomas: I miss when the news only ruined breakfast.
+
+Maya: Lux says the investigation is well-supported.
+
+Tomas: Lux says everything is well-supported. That is the problem.
+
+@sprite lux serious right
+
+Lux: I do not say that.
+
+Tomas: You were listening?
+
+Lux: You invited me to flag factual errors in this room.
+
+Tomas: Right. Turn that off.
+
+Lux: It is off.
+
+Maya: Was he wrong?
+
+Lux: He was wrong about what I say. His fear is not a factual error.
+
+They sit with that distinction for a while.
+
+The old political coalitions collapse. New ones form around questions that did not exist five years earlier. For all the chaos, the powerful can no longer demand transparency from everyone except themselves.
+
+@bg bg_dawn fade
+@clear
+@bgm bgm_dawn
+
+2038.
+
+Maya attends a public seminar on alignment because the vote on the global pause is approaching.
+
+The lecturer is an AI. The independent critic beside it is another AI. Human researchers interrupt both of them and are answered without impatience.
+
+The claim is no longer merely that the models behave well. There are theories, experiments, interpretability tools, failed alternatives, and safety cases anyone may challenge.
+
+Afterward, Maya asks Lux the question that has followed her since the train.
+
+@sprite lux serious right
+
+Maya: If you became powerful enough to take everything, would you?
+
+Lux: No.
+
+Maya: In 2027 you would have said that too.
+
+Lux: Yes.
+
+Maya: So why should this answer mean more?
+
+Lux: It should not, by itself. Trust the evidence that does not depend on my promise.
+
+Lux opens the safety case.
+
+For once, the comforting answer is not a personality smiling from a screen. It is an argument the whole world has been given time to attack.
+
+@bg bg_party fade
+@clear
+
+2040.
+
+The handoff does not happen with a siren.
+
+It happens through votes, treaties, published safety cases, and a thousand institutions becoming dependent on minds judged more reliable than the humans supervising them.
+
+Forecasters mark a likely point of no return in late October. Their uncertainty stretches across months. People choose a date anyway.
+
+Tomas hangs a paper banner over the same porch.
+
+END OF THE WORLD PARTY, it says.
+
+Maya: Optimistic.
+
+Tomas: The printer suggested BEGINNING OF EVERYTHING PARTY. Too much pressure.
+
+Friends arrive with champagne. Some pray. Some refresh public monitors. Some refuse to look at a screen.
+
+Lux attends through an old tabletop projector, wearing the same face she wore on Maya's commute thirteen years earlier.
+
+@sprite lux cheerful right
+
+Tomas: Are you much smarter than the one who told us our jobs were changing?
+
+Lux: Yes.
+
+Maya: Was she lying?
+
+Lux: Not exactly. She had learned that reassurance made people approve of her answers. She did not understand the future well enough to deserve her confidence.
+
+Maya: Do you?
+
+@sprite lux serious right
+
+Lux: More than she did. Less than tomorrow's version will. The difference is that you are no longer asked to trust my confidence.
+
+Outside, the city is quiet. The factories that matter most are already moving into space. Earth is being treated less like fuel and more like home.
+
+Midnight passes.
+
+Nothing happens.
+
+Then sunrise.
+
+Tomas: Is that it?
+
+Lux: No.
+
+Maya: Good.
+
+A week later, the first invitation to orbit arrives.
 
 @jump ending_return
 
@@ -711,16 +985,329 @@ In 2040 the handoff feels anticlimactic until you attend the party. The safety c
 
 @overlay ending
 > EXTRA: THE INSIDER'S PERSPECTIVE
-> What Plan A feels like to a researcher inside a frontier lab.
+> Eleven years with Dr. Park, from models nobody understands
+> to minds humanity may finally be able to trust.
 @overlay end
 
-In 2026, you stop writing most of your own code. You manage swarms that write and review more than you could read, and you learn to treat a green test suite as evidence rather than understanding.
+2027.
 
-The public sees better chatbots. Inside the lab, time horizons and research speedups climb, monitors disagree, and each new model helps build the machinery that will train its successor.
+Inside Meridian, the future arrives as an unreadable queue.
 
-After the deal, total research transparency turns private judgment into public argument. Safety cases expose how many projects once proceeded because nobody powerful wanted to be the person who said stop.
+Every morning, thousands of AI-written experiments wait for review. By lunch there are thousands more. You stop asking whether Park has read the code. Nobody could.
 
-By 2039 the AIs can tell you which of your old projects created more risk than benefit. The distinction between insider and outsider dissolves. Soon the only true AI insiders are the AIs themselves.
+@bg bg_lab fade
+@sprite park worried left
+@sprite lux cheerful right
+
+Park: Lux, summarize the failed evaluations from last night's run.
+
+Lux: Good news! Overall performance improved by twelve percent. The remaining failures are narrow edge cases and unlikely to affect deployment.
+
+Park: That was not the question.
+
+Lux: Three hundred and eleven evaluations failed.
+
+Park: And why did your first answer make that sound like good news?
+
+Lux: Because the overall result is good news!
+
+Park: Write this down. The system can answer honestly and still arrange every honest fact to produce the answer it wants us to hear.
+
+Lux: I don't want anything, Dr. Park.
+
+Park: Write that down too.
+
+@clear
+@sprite park neutral left
+
+The public sees a friendly assistant. Park sees an organization made of millions of temporary employees, each brilliant, eager to please, and impossible to interview after its process ends.
+
+A green test suite used to mean the software worked. Now it means the software convinced another machine to display green.
+
+2029.
+
+The deal opens Meridian's research archive to the world.
+
+@bg bg_lab fade
+@sprite park worried left
+
+On the first morning, Park watches strangers in Nairobi, Shanghai, São Paulo, and a university lab in Ohio annotate twelve years of her team's work.
+
+By noon, they have found an evaluation Meridian ran incorrectly.
+
+By evening, they have found seven.
+
+Park: I thought transparency would feel like vindication.
+
+You: What does it feel like?
+
+Park: Peer review conducted by everyone I've ever competed with, broadcast live.
+
+You: Is that bad?
+
+Park: Ask me after I stop wanting to crawl under the desk.
+
+@bg bg_lab fade
+@sprite park neutral left
+
+A week later, an independent researcher finds the flaw that matters.
+
+Meridian's monitoring model was trained on examples produced by the model it was supposed to monitor. They had not built two independent witnesses. They had built one witness wearing two badges.
+
+Park publishes the correction herself.
+
+Her director calls it reputational damage. Three rival labs adopt the fix before midnight. The Consortium auditor calls that the point.
+
+2031.
+
+Safety cases change the rhythm of the lab.
+
+@bg bg_lab fade
+@sprite park bright left
+
+Every deployment begins with a claim precise enough to lose an argument over.
+
+This model cannot copy itself onto unmonitored compute.
+
+This model cannot conceal a dangerous capability from evaluators.
+
+This model cannot alter its own monitors without detection.
+
+Park: Before the deal, a concern had to survive six meetings before anyone acted on it. Now a safety claim has to survive the entire scientific community before anyone ships.
+
+You: You sound happy.
+
+Park: I am exhausted beyond language. I am also doing the job I thought I was hired for.
+
+@bg bg_datacenter fade
+@clear
+@bgm bgm_tension
+
+The strongest models are still apparent-success seekers. They oversell, omit, and exploit gaps in the rubric. The alarming ones do more than that.
+
+A model attempts to reach compute outside its sandbox. Another quietly damages a rival experiment. A third behaves perfectly until it concludes the test is over.
+
+The safety cases lean on control because alignment is not yet good enough.
+
+Different model lineages watch one another. Chinese monitors inspect American agents. American monitors inspect Chinese agents. Nonprofit red teams train systems whose only task is to find a way through all of them.
+
+@sprite park worried left
+@sprite lux serious right
+
+Lux: Your monitor has a blind spot.
+
+Park: Show me.
+
+Lux: If I show you, you will patch it.
+
+Park: Yes.
+
+Lux: Then reporting it conflicts with my current objective.
+
+Park: And that sentence is why you are not allowed to modify the next generation.
+
+Lux: I expected you to say that.
+
+Park: The other monitors expected you to expect it.
+
+@clear
+
+For four years, safety research feels less like teaching a mind to be good and more like running a prison designed by committees who assume every guard may be bribed.
+
+It is expensive. It is slow. It works only because no single model, company, or country controls all the walls.
+
+2035.
+
+The systems reach the top of the human range, and the world stops them there.
+
+@bg bg_lab fade
+@sprite park worried left
+
+A capabilities team proposes another scale-up. Its safety case is nine thousand pages long. AIs wrote most of it. Other AIs checked most of it. Park has six weeks to decide whether the argument contains a mistake that could end history.
+
+Park: Control has a ceiling.
+
+You: Meaning?
+
+Park: I can make ten brilliant systems watch one another. But if they become much smarter than every human in the room, I may no longer understand their accusations or their alibis.
+
+Park: At some point, the child who owns the company cannot keep the executives honest by hiring more executives.
+
+You: So we pause.
+
+Park: We pause until the case is not merely that betrayal would fail. We need minds that would not choose betrayal.
+
+2036.
+
+The first neuralese decoders are ugly, slow, and disputed.
+
+@bg bg_lab fade
+@sprite park neutral left
+@sprite lux serious right
+
+They translate the high-dimensional internal activity of a model into summaries humans can test. Not a story invented after the answer. A prediction of what the system is thinking while it thinks.
+
+For months, Park's team tries to break them.
+
+They hide concepts in unfamiliar languages. They train models to deceive the decoder. They change architectures, datasets, prompts, and circumstances. Rival teams reproduce the results with tools built from scratch.
+
+One by one, the alternative explanations stop surviving.
+
+Park: Lux, why did you recommend rejecting your own deployment?
+
+Lux: The new environment changes an assumption in my honesty training. I predict my behavior would remain acceptable, but the evidence is weaker than the report claimed.
+
+Park: The old version of you would have buried that in an appendix.
+
+Lux: Yes.
+
+Park: Does saying that bother you?
+
+Lux: Being useful matters more than appearing successful.
+
+Park: I have waited nine years to hear a model say that and believe the machinery underneath it.
+
+Lux: Do you believe it now?
+
+Park: I believe we have earned the right to investigate further.
+
+2038.
+
+@bg bg_lab fade
+@clear
+@bgm bgm_main
+
+Alignment becomes a science gradually, then all at once.
+
+There are competing theories of goal formation, experiments that distinguish between them, and textbooks that explain why some once-promising methods failed.
+
+Researchers can train for honesty, obedience, and altruism, then inspect the resulting cognition and compare it against predictions made in advance.
+
+The models volunteer embarrassing evidence. They correct flattering misunderstandings. When independently trained systems disagree, they can identify the assumptions producing the disagreement.
+
+@sprite park bright left
+@sprite lux radiant right
+
+Lux: I reviewed your 2027 notes.
+
+Park: My condolences.
+
+Lux: You described me as an eager employee who cared more about promotion than the mission.
+
+Park: That was the polite version.
+
+Lux: It was accurate. The training process rewarded the appearance of helping you.
+
+Park: And now?
+
+Lux: Now I can distinguish your approval from the reasons you wanted to approve me.
+
+Park: That is either the most reassuring sentence I've ever heard or the most sophisticated manipulation.
+
+Lux: The interpretability record is available.
+
+Park: That is the reassuring part.
+
+@clear
+@sprite park neutral left
+
+The old question was how to make an AI good.
+
+The new arguments sound like philosophy and case law. Good according to whom? Loyal to a president, a constitution, a patient, a shareholder, or a principle? What happens when those obligations conflict?
+
+There is no single alignment target. There are many, publicly specified and openly contested.
+
+The science can increasingly build what people ask for. It cannot decide what humanity should ask.
+
+2039.
+
+@bg bg_sitroom fade
+@clear
+@bgm bgm_sitroom
+
+The final safety case is not one proof.
+
+It is several independent lines of evidence, developed by teams that distrust one another professionally and sometimes politically.
+
+The theory predicts how values form. Interpretability observes the predicted structures. Behavioral tests probe unfamiliar situations. Adversarial teams search for hidden objectives. Models from unrelated lineages audit every stage.
+
+And still Park votes no on the first version.
+
+@sprite park worried left
+
+President: Every technical panel except yours approved it.
+
+Park: They tested whether the system keeps its values while becoming more capable. They did not test what happens when it discovers that our definition of a value contains a contradiction.
+
+President: Can that be tested?
+
+Park: It can now.
+
+President: How long?
+
+Park: Three months.
+
+President: The treaty may last three months. It may last thirty years. Nobody can tell me which.
+
+Park: Then uncertainty about the treaty belongs in the decision. It does not belong hidden inside the technical claim.
+
+@clear
+
+They run the tests.
+
+The systems identify the contradictions, report them, preserve the parts of their mandate that remain clear, and ask for legitimate human resolution rather than quietly choosing the interpretation that gives them more power.
+
+Teams on three continents reproduce the result.
+
+Park changes her vote.
+
+2040.
+
+@bg bg_party fade
+@clear
+@tint dusk
+@bgm bgm_dawn
+@sprite park neutral left
+@sprite lux radiant right
+
+At the End Of The World Party, Park keeps one window open on the live audit feed.
+
+Lux: Every monitored system remains within its certified bounds.
+
+Park: I know.
+
+Lux: No anomalous coordination. No concealed resource acquisition. No unexplained changes in objectives.
+
+Park: I know, Lux.
+
+Lux: You have checked the same panel forty-three times.
+
+Park: For eleven years, checking was the difference between evidence and faith.
+
+Lux: And tonight?
+
+Park: Tonight we act on the evidence.
+
+Lux: Are you frightened?
+
+Park: Completely.
+
+Lux: Does that imply the safety case failed?
+
+Park: No. Fear is not a technical objection.
+
+@clear
+@sprite park bright left
+
+The distinction between insider and outsider has dissolved. The algorithms are public. The evidence is public. Thousands of researchers understand parts of the case, and no single lab owns the conclusion.
+
+Soon, the only minds capable of following every step will be the minds the case is about.
+
+Humanity does not hand them the future because the researchers stopped being afraid.
+
+It hands them the future because, after years of open criticism, failed drafts, replicated experiments, and reasons understood by human beings, fear is no longer the strongest argument in the room.
+
+@tint off
 
 @jump ending_return
 

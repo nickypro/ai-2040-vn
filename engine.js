@@ -256,7 +256,7 @@ if (typeof module !== "undefined" && module.exports) {
 /* ---------------- player (browser only) ---------------- */
 
 if (typeof document !== "undefined") (function () {
-  const APP_VERSION = "1.4.0"; // shown on the title screen and in Settings; bump to release
+  const APP_VERSION = "1.4.1"; // shown on the title screen and in Settings; bump to release
   const $ = (id) => document.getElementById(id);
   const SAVE_KEY = "plana_save";
   const SETTINGS_KEY = "plana_settings";
@@ -293,6 +293,7 @@ if (typeof document !== "undefined") (function () {
   let presentPathSnap = null; // path snapshot taken when review (rollback) starts
   // --- rollback / review ---
   let history = [];         // pcs of blocking stops this play session
+  let historyFromChoice = false; // History hint returns directly to its decision
   let reviewIdx = 0;
   let reviewing = false;
   let uiHidden = false;
@@ -1025,10 +1026,10 @@ if (typeof document !== "undefined") (function () {
     const numeric = n != null && isFinite(n) && n > 0;
     const isAgent = /\bdr-agent\b/.test(cls);
     const isCosmic = isAgent && /cosmic|infinite|\u221e/i.test(String(countStr || ""));
-    // Human labor stays a single reference row. Agent labor grows into a
-    // three-line field: 20–40M agents already register, while 120–190M nearly
-    // saturate all 84 marks, reproducing the source HUD's overwhelming swarm.
-    const total = isAgent ? (numeric || isCosmic ? 84 : 0) : 28;
+    // Human labor stays a single reference row. Numeric agent labor grows into
+    // a three-line field; the qualitative cosmic state becomes a much denser
+    // fifteen-line field so the final dashboard feels genuinely overwhelming.
+    const total = isAgent ? (isCosmic ? 420 : (numeric ? 84 : 0)) : 28;
     const filled = isCosmic ? total : numeric
       ? (isAgent
           ? Math.max(1, Math.min(total, Math.round(12 + 72 * Math.max(0, Math.min(1,
@@ -1039,12 +1040,12 @@ if (typeof document !== "undefined") (function () {
     for (let i = 0; i < total; i++) {
       const on = i < filled;
       dots += '<span class="dr-dot' + (on ? " on" : "") + '"' +
-        (on ? ' style="animation-delay:' + (i * (isAgent ? 18 : 30)) + 'ms"' : "") + '></span>';
+        (on ? ' style="animation-delay:' + (i * (isCosmic ? 4 : (isAgent ? 18 : 30))) + 'ms"' : "") + '></span>';
     }
     const spd = fmtSpeed(speedStr, opts.atUpTo);
     return '<div class="dr-row ' + cls + '">' +
         '<span class="dr-marker"></span>' +
-        '<div class="dr-dots' + (isAgent ? ' dr-cloud' : '') + '">' + dots + '</div>' +
+        '<div class="dr-dots' + (isAgent ? ' dr-cloud' : '') + (isCosmic ? ' dr-cosmic' : '') + '">' + dots + '</div>' +
         '<div class="dr-meta">' +
           '<span class="dr-count">' + (countStr != null ? dashEsc(countStr) : "&mdash;") + '</span>' +
           '<span class="dr-label">' + dashEsc(label) + '</span>' +
@@ -1742,7 +1743,10 @@ if (typeof document !== "undefined") (function () {
       // Public/Insider POV are post-Plan-A extras. Keep them out of the endings
       // menu entirely until the canonical path has actually reached its end.
       if (/^bonus_/.test(opt.target) && !seenLabels.has("plan_a_complete")) return;
-      const seen = showSeen && seenLabels.has(opt.target);
+      // Recovery navigation points back to an already visited decision by
+      // definition; it is a control, not a branch completion to check off.
+      const isRecovery = /^go back\b/i.test(opt.text.trim());
+      const seen = showSeen && !isRecovery && seenLabels.has(opt.target);
       const b = document.createElement("button");
       b.className = "choice-btn" + (seen ? " seen" : "");
       b.dataset.optIdx = String(idx);
@@ -2456,7 +2460,8 @@ if (typeof document !== "undefined") (function () {
       .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
       .replace(/\*([^*]+)\*/g, "<em>$1</em>");
   }
-  function openHistory() {
+  function openHistory(fromChoice) {
+    historyFromChoice = !!fromChoice;
     const list = $("history-list");
     list.innerHTML = "";
     for (const j of path) {
@@ -2491,7 +2496,13 @@ if (typeof document !== "undefined") (function () {
   }
   function closeHistory() {
     $("historymenu").style.display = "none";
-    openPause();
+    if (historyFromChoice) {
+      historyFromChoice = false;
+      mode = "play";
+      updateChapterIndicator();
+    } else {
+      openPause();
+    }
   }
 
   /* ---------- first-time hint ---------- */
@@ -2608,7 +2619,10 @@ if (typeof document !== "undefined") (function () {
     };
     document.addEventListener("keydown", (e) => {
       if (choiceKey(e)) { e.preventDefault(); return; }
-      if (e.key === " " || e.key === "Enter") {
+      if ((e.key === "h" || e.key === "H") && choiceActive && mode === "play") {
+        e.preventDefault();
+        openHistory(true);
+      } else if (e.key === " " || e.key === "Enter") {
         if (choiceActive) return;
         onAdvanceInput(e);
       } else if (e.key === "Escape") {
@@ -2663,7 +2677,8 @@ if (typeof document !== "undefined") (function () {
     if ($("btn-credits")) $("btn-credits").onclick = () => openCredits(false);
     $("btn-credits-back").onclick = closeCredits;
     $("btn-chapters").onclick = () => openChapters(false);
-    $("btn-history").onclick = () => openHistory();
+    $("btn-history").onclick = () => openHistory(false);
+    $("choice-history-hint").onclick = (e) => { e.stopPropagation(); openHistory(true); };
     $("btn-history-back").onclick = closeHistory;
     $("btn-settings").onclick = () => openSettings(false);
     $("btn-settings-back").onclick = closeSettings;

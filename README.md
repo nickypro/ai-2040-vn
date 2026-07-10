@@ -1,6 +1,6 @@
 # PLAN A — an AI 2040 visual novel
 
-Current release: **v1.4.0** · [Changelog](CHANGELOG.md)
+Current release: **v1.4.1** · [Changelog](CHANGELOG.md)
 
 An interactive visual-novel adaptation of **[ai-2040.com](https://ai-2040.com)** ("Plan A",
 by the [AI Futures Project](https://ai-futures.org): Larsen, Dean, Halstead, Lifland,
@@ -40,7 +40,7 @@ Click / tap / Space to advance. Arrow keys roll back through past beats. The men
 | Path | What |
 |---|---|
 | `index.html` + `engine.js` | The whole engine: 16:9 cqh-scaled stage, script compiled to an instruction list, autosave, seek-by-replay, branching (`@choice`/`@label`/`@jump`), rollback, chapter menu. Vanilla JS, no framework. |
-| `script.md` | The stage script. 14 chapters + 5 plans, three Plan A turning points, and postgame POV extras (~690 instructions). Plain text; `@directive` staging + `Speaker: line` dialogue. |
+| `script.md` | The stage script. 14 chapters + 5 plans, three Plan A turning points, and full postgame Public/Insider POV stories (~1,000 instructions). Plain text; `@directive` staging + `Speaker: line` dialogue. |
 | `assets/manifest.json` | Indirection for every art/audio id. Missing image → labeled placeholder card; missing audio → silent no-op. |
 | `assets/{bg,cg,sprites,ui,audio}` | Art (Dossier Red style) and music. |
 | `tools/validate.js` | Script + manifest validator (unknown directives, undeclared speakers, dead jumps, branch DFS, files-exist). Exit 1 on error. |

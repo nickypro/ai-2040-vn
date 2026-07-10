@@ -147,6 +147,22 @@
   }
   #choicemenu:not(.flowchart) .choice-btn.seen { opacity: 0.72; }  /* dim visited branches */
   #choicemenu:not(.flowchart) .choice-btn .choice-check { color: var(--amber); font-size: 2.4cqh; }
+  #choice-history-hint {
+    position: absolute; left: 50%; bottom: 1.8cqh; z-index: 3;
+    transform: translateX(-50%);
+    padding: 0.75cqh 1.7cqh;
+    font-family: var(--sans); font-size: 1.65cqh; letter-spacing: 0.04em;
+    color: #b9b3c4; background: #080a12dc;
+    border: 1px solid #d6453344; border-radius: 3cqh; cursor: pointer;
+    opacity: 0.82; transition: opacity .15s, color .15s, border-color .15s;
+  }
+  #choice-history-hint:hover,
+  #choice-history-hint:focus-visible {
+    opacity: 1; color: var(--ink); border-color: var(--amber); outline: none;
+  }
+  #choice-history-hint .hint-key {
+    color: var(--amber); font-family: var(--mono); font-weight: 700;
+  }
 
   /* ---- flowchart choice: the 2029 decision-tree (matches ai-2040.com: clean
          white, thin black boxes, black serif, gray italic labels, no color) ---- */
@@ -498,6 +514,12 @@
     border: 0.2cqh solid #16130d33; background: transparent;
   }
   .dr-cloud { grid-template-rows: repeat(3, 1.18cqh); row-gap: 0.34cqh; }
+  .dr-cloud.dr-cosmic {
+    grid-template-rows: repeat(15, 0.5cqh); row-gap: 0.16cqh;
+  }
+  .dr-cloud.dr-cosmic .dr-dot {
+    width: 0.5cqh; height: 0.5cqh; border-width: 0.08cqh;
+  }
   .dr-dot.on { opacity: 0; animation: drpop 0.32s ease forwards; }
   /* human labor: near-full row of hollow dots (present, at x1 speed) */
   .dr-human .dr-dot.on { border-color: #16130d; border-width: 0.24cqh; background: transparent; }
@@ -887,6 +909,7 @@
 
     <div id="choicemenu" style="display:none">
       <div id="choice-list" style="display:contents"></div>
+      <button id="choice-history-hint" type="button" title="Show dialogue history (H)"><span class="hint-key">H</span> &middot; History</button>
     </div>
 
     <div id="chapfade" class="fill"></div>

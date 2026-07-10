@@ -53,8 +53,8 @@ trajectory bends at the ceiling for 2035–2040, then crosses to ASI in 2045.
 
 Notes:
 - ch14 values are qualitative (post-scarcity); the `cosmic` agent magnitude
-  deliberately saturates all 84 dots, while other qualitative values remain
-  text-only and do not receive trend arrows.
+  deliberately saturates a denser 15-row, 420-dot field, while other qualitative
+  values remain text-only and do not receive trend arrows.
 - Median income absorbs the old Citizen's Dividend arc (US$47K → US$13M → galaxy-share).
 - 2029/2030 rows are interpolated (no scrubbed screenshot at those exact years);
   everything else is read off the widget.

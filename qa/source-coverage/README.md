@@ -25,7 +25,9 @@ Mappings are deliberately passage-level rather than chapter-level. A passage is 
 
 `fabricated_annotations` are separate because a source highlighter cannot honestly show material that is absent from the source. These annotations identify major VN-original characters, dialogue, connective scenes, and interactive staging.
 
-For interactive alternate timelines, the underlying risk can be source-grounded while the mechanic is not. The covert-project and deal-dissolution passages therefore receive ordinary source mappings for their strategic premises, plus separate VN-fabricated annotations for the exact crisis trigger, binary choice, rewind, and staged success/failure outcomes. The same rule applies to the post-completion Public/Insider POV extras: their milestones can map back to source passages, while their anonymous narrators, unlock behavior, and retrospective format remain VN-original.
+For interactive alternate timelines, the underlying risk can be source-grounded while the mechanic is not. The covert-project and deal-dissolution passages therefore receive ordinary source mappings for their strategic premises, plus separate VN-fabricated annotations for the exact crisis trigger, binary choice, rewind, and staged success/failure outcomes.
+
+The same rule applies to the post-completion Public and Insider POV extras. Their year-by-year policy, economic, alignment, and handoff milestones are mapped back to the relevant source passages. Maya, Tomas, their conversations with Lux, Park's recurring lab chronicle, and the specific evaluation failures and experiments are separately marked as VN-created dramatization rather than source evidence.
 
 Citizen's Dividend mappings are chronological. The 2032 passage covers the initial $45K American and $1.2K international payments; a separate 2035 mapping covers the later ~$1M and ~$10K amounts. `source-main.md` does not contain the Compute Dividend Corporation name, Alaska Permanent Fund analogy, or exact 25%→75% share, so those details are explicitly identified as outside this local baseline even though the permit-funded dividend and payment amounts are present.
 

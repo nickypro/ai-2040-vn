@@ -3,6 +3,28 @@
 All notable changes to the PLAN A visual novel are documented here. Releases use
 [Semantic Versioning](https://semver.org/).
 
+## [1.4.1] — 2026-07-10
+
+### Added
+
+- Decision screens now show a clickable `H · History` hint. Pressing `H` opens
+  the dialogue history and returns directly to the same decision when closed.
+- Public POV is now a multi-scene 2027–2040 story following two ordinary
+  citizens through job loss, the Dividend, post-work life, public truth systems,
+  alignment debates, and a changing relationship with Lux.
+- Insider POV is now a multi-scene 2027–2040 research story following Dr. Park
+  through apparent-success seeking, open evaluation, control, interpretability,
+  alignment science, and the final safety case.
+
+### Changed
+
+- The final `cosmic` workforce display now fills a dense 15-row, 420-dot field.
+
+### Fixed
+
+- Dead-end recovery actions such as “Go back to the decision” no longer display
+  a misleading completed-branch checkmark.
+
 ## [1.4.0] — 2026-07-10
 
 ### Added
@@ -74,6 +96,7 @@ All notable changes to the PLAN A visual novel are documented here. Releases use
 
 - Initial visual-novel release.
 
+[1.4.1]: https://github.com/nickypro/ai-2040-vn/compare/v1.4.0...v1.4.1
 [1.4.0]: https://github.com/nickypro/ai-2040-vn/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/nickypro/ai-2040-vn/compare/v1.2.1...v1.3.0
 [1.2.1]: https://github.com/nickypro/ai-2040-vn/compare/v1.2.0...v1.2.1

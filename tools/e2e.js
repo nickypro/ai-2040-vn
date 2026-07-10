@@ -121,6 +121,15 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     const optCount = await page.locator(".choice-btn").count();
     check(optCount === 5, "choice renders 5 options (got " + optCount + ")");
     check((await page.locator(".choice-btn.seen").count()) === 0, "no option marked seen on first arrival");
+    check(await vis("#choice-history-hint"), "decision shows the clickable History hint");
+    await page.locator("#choice-history-hint").click();
+    check(await vis("#historymenu"), "clicking the decision hint opens History");
+    await page.locator("#btn-history-back").click();
+    check(await choiceUp(), "closing hinted History returns to the same decision");
+    await page.keyboard.press("h");
+    check(await vis("#historymenu"), "H opens History from a decision");
+    await page.locator("#btn-history-back").click();
+    check(await choiceUp(), "closing keyboard-opened History returns to the decision");
     const ind = await page.locator("#chapter-indicator").textContent();
     check(ind && /\/14/.test(ind), "chapter indicator derives N/14 from the script (got '" + ind + "')");
     await shot("e2e-02-choice5.png");
@@ -204,6 +213,8 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     check(failEnd, "approving reaches the failure ending + back choice");
     check(await page.locator(".choice-btn", { hasText: "Go back to the decision" }).count() === 1,
       "the failure ending offers a back button");
+    check(await page.locator(".choice-btn.seen", { hasText: "Go back to the decision" }).count() === 0,
+      "the failure back button is not checkmarked");
     await pick("Go back to the decision");          // the back button
     const sc2 = await advanceUntil(choiceUp, "back at the decision", 60);
     check(sc2, "the back button returns to the safety-case decision");
@@ -220,6 +231,8 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     await advanceUntil(choiceUp, "reach covert-project failure", 80);
     check(await page.locator(".choice-btn", { hasText: "Go back to the covert-project decision" }).count() === 1,
       "covert failure offers a back button");
+    check(await page.locator(".choice-btn.seen", { hasText: "Go back to the covert-project decision" }).count() === 0,
+      "covert failure back button is not checkmarked");
     await pick("Go back to the covert-project decision");
     await advanceUntil(choiceUp, "return to covert-project decision", 80);
     await pick("Freeze research sharing");
@@ -233,9 +246,18 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     await advanceUntil(choiceUp, "reach deal-breakdown failure", 80);
     check(await page.locator(".choice-btn", { hasText: "Go back to the deal-breakdown decision" }).count() === 1,
       "deal failure offers a back button");
+    check(await page.locator(".choice-btn.seen", { hasText: "Go back to the deal-breakdown decision" }).count() === 0,
+      "deal failure back button is not checkmarked");
     await pick("Go back to the deal-breakdown decision");
     await advanceUntil(choiceUp, "return to deal-breakdown decision", 80);
     await pick("Keep the troops back");
+
+    const cosmic = await advanceUntil(() => vis("#dashboard .dr-cosmic"), "reach cosmic workforce dashboard", 2000);
+    check(cosmic, "final dashboard renders the cosmic workforce field");
+    check((await page.locator("#dashboard .dr-cosmic .dr-dot").count()) === 420,
+      "cosmic workforce fills 15 rows / 420 dots");
+    await sleep(2200); // let all 420 staggered dots finish animating before QA capture
+    await shot("e2e-07-cosmic-dashboard.png");
 
     const endRejoin = await advanceUntil(choiceUp, "reach endings gallery after full Plan A", 2000);
     check(endRejoin, "full Plan A path reaches the endings gallery");
@@ -244,8 +266,11 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     check(await page.locator(".choice-btn", { hasText: "Extra: Insider POV" }).count() === 1,
       "Insider POV unlocks after completing Plan A");
     await pick("Extra: Public POV");
-    const bonusBack = await advanceUntil(choiceUp, "finish Public POV bonus", 80);
+    const bonusBack = await advanceUntil(choiceUp, "finish Public POV bonus", 400);
     check(bonusBack, "Public POV bonus returns to endings gallery");
+    await pick("Extra: Insider POV");
+    const insiderBack = await advanceUntil(choiceUp, "finish Insider POV bonus", 400);
+    check(insiderBack, "Insider POV bonus returns to endings gallery");
     await pick("Rest here");
     const titled = await advanceUntil(() => vis("#title"), "reach @title via the_pause", 20);
     check(titled, "@title returns to the title screen");
