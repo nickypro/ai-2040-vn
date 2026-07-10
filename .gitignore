@@ -17,3 +17,6 @@ __pycache__/
 
 # node (none committed, but just in case)
 node_modules/
+
+# reference screenshots (not part of the build)
+assets/uploaded/

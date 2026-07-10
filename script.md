@@ -136,13 +136,14 @@ The race goes on, better lit.
 @note ---- end-of-chapter dashboard ----
 @dashboard
 year: 2027
-employment: 96%
-income: $47k
-safety: 1.2k
+employment: 62%
+income: US$47K
+safety: 1.2K
 slowdown: 0 mo
-humanlabor: 165M
-agents: 3M
-agentspeed: 1x
+humanlabor: 3.5B
+agents: 28M
+agentspeed: 114x
+tier: Reliable Agent
 capability: 42
 trajectory: Default race, no deal
 @enddashboard
@@ -224,14 +225,15 @@ You spend election night the way you spent the last one. A hotel ballroom full o
 @note ---- end-of-chapter dashboard ----
 @dashboard
 year: 2028
-employment: 94%
-income: $49k
-safety: 8k
+employment: 62%
+income: US$49K
+safety: 1.4K
 slowdown: 0 mo
-humanlabor: 164M
-agents: 30M
-agentspeed: 2x
-capability: 55
+humanlabor: 3.5B
+agents: 23M
+agentspeed: 131x
+tier: Reliable Agent
+capability: 48
 trajectory: Election, path undecided
 @enddashboard
 
@@ -372,9 +374,10 @@ employment: falling fast
 income: —
 safety: 200
 slowdown: 0 mo
-humanlabor: collapsing
+humanlabor: 3.5B
 agents: uncontrolled
 agentspeed: ∞
+tier: Superintelligent
 capability: 100
 trajectory: Race ending, control lost
 @enddashboard
@@ -448,13 +451,14 @@ Either way, the rest of the world was never in the room.
 @note ---- branch end-state dashboard ----
 @dashboard
 year: 2031
-employment: 72%
-income: $60k
-safety: 2k
+employment: 61%
+income: US$52K
+safety: 2K
 slowdown: 3 mo
-humanlabor: 120M
-agents: 200M
-agentspeed: 40x
+humanlabor: 3.4B
+agents: 60M
+agentspeed: 250x
+tier: Automated coder
 capability: 96
 trajectory: A tiny circle decides
 @enddashboard
@@ -529,10 +533,11 @@ He stares at the doors, and the third one you just described. The scene does not
 year: 2031
 employment: wartime footing
 income: —
-safety: 1k
+safety: 1K
 slowdown: 6 mo
 humanlabor: militarized
 agents: contested
+tier: Automated coder
 capability: 92
 trajectory: Handoff, or war
 @enddashboard
@@ -600,13 +605,14 @@ Better here than there. But this is a pause, and everyone knows it. The question
 @note ---- branch end-state dashboard ----
 @dashboard
 year: 2035
-employment: 90%
-income: $52k
+employment: 62%
+income: US$52K
 safety: banned
 slowdown: frozen
-humanlabor: 160M
+humanlabor: 3.5B
 agents: frozen
 agentspeed: 1x
+tier: Reliable Agent
 capability: 55
 trajectory: Frozen, for now
 @enddashboard
@@ -647,14 +653,15 @@ trajectory: Frozen, for now
 @note ---- end-of-chapter dashboard (ch3, on entering Plan A) ----
 @dashboard
 year: 2029
-employment: 92%
-income: $50k
-safety: 8k
-slowdown: 2 mo
-humanlabor: 163M
-agents: 40M
-agentspeed: 3x
-capability: 60
+employment: 62%
+income: US$50K
+safety: 3K
+slowdown: 3 mo
+humanlabor: 3.5B
+agents: 35M
+agentspeed: 150x
+tier: Reliable Agent
+capability: 55
 trajectory: The deal begins
 @enddashboard
 
@@ -716,14 +723,15 @@ You expected the hard part to be here. The hard part, it turns out, is still com
 @note ---- end-of-chapter dashboard ----
 @dashboard
 year: 2029
-employment: 91%
-income: $50k
-safety: 12k
-slowdown: 4 mo
-humanlabor: 163M
-agents: 40M
-agentspeed: 1x
-capability: 60
+employment: 61%
+income: US$50K
+safety: 6K
+slowdown: 6 mo
+humanlabor: 3.5B
+agents: 38M
+agentspeed: 120x
+tier: Reliable Agent
+capability: 58
 trajectory: Plan A, crude halt
 @enddashboard
 
@@ -785,13 +793,14 @@ They call it Mutually Assured Compute Destruction. Everyone hates it. Nobody has
 @note ---- end-of-chapter dashboard ----
 @dashboard
 year: 2030
-employment: 90%
-income: $52k
-safety: 20k
-slowdown: 6 mo
-humanlabor: 162M
-agents: 80M
-agentspeed: 4x
+employment: 62%
+income: US$51K
+safety: 8K
+slowdown: 1 yr
+humanlabor: 3.5B
+agents: 42M
+agentspeed: 200x
+tier: Automated coder
 capability: 63
 trajectory: Transparency on
 @enddashboard
@@ -837,13 +846,14 @@ President: That's the job now. Two tired men on a phone, deciding what the machi
 @note ---- end-of-chapter dashboard ----
 @dashboard
 year: 2031
-employment: 88%
-income: $55k
-safety: 40k
-slowdown: 9 mo
-humanlabor: 160M
-agents: 120M
-agentspeed: 8x
+employment: 61%
+income: US$52K
+safety: 10.4K
+slowdown: 1.5 yrs
+humanlabor: 3.4B
+agents: 46M
+agentspeed: 238x
+tier: Automated coder
 capability: 70
 trajectory: Slowdown holding
 @enddashboard
@@ -1009,13 +1019,14 @@ Lux: I'm being retrained on it. Truth-seeking, they're calling the new line. Ask
 @note ---- end-of-chapter dashboard ----
 @dashboard
 year: 2033
-employment: 70%
-income: $90k
-safety: 120k
-slowdown: 14 mo
-humanlabor: 115M
-agents: 200M
-agentspeed: 20x
+employment: 52%
+income: US$193K
+safety: 31.1K
+slowdown: 2.5 yrs
+humanlabor: 3.7B
+agents: 120M
+agentspeed: 378x
+tier: Automated coder
 capability: 78
 trajectory: Controlled explosion
 @enddashboard
@@ -1065,13 +1076,14 @@ Five centuries in five years. That is the pace now. The strange thing is not tha
 @note ---- end-of-chapter dashboard ----
 @dashboard
 year: 2034
-employment: 55%
-income: $250k
-safety: 200k
-slowdown: 18 mo
-humanlabor: 90M
-agents: 400M
-agentspeed: 50x
+employment: 44%
+income: US$429K
+safety: 46.7K
+slowdown: 3 yrs
+humanlabor: 3.9B
+agents: 170M
+agentspeed: 476x
+tier: Automated coder
 capability: 82
 trajectory: Mutually assured compute
 @enddashboard
@@ -1124,13 +1136,14 @@ But every confession is a map of exactly how the training failed. And a misalign
 @note ---- end-of-chapter dashboard ----
 @dashboard
 year: 2035
-employment: 40%
-income: $1M
-safety: 300k
-slowdown: 24 mo
-humanlabor: 66M
-agents: 600M
-agentspeed: 100x
+employment: 32%
+income: US$1.1M
+safety: 60.7K
+slowdown: 4 yrs
+humanlabor: 3.8B
+agents: 180M
+agentspeed: 600x
+tier: Top-Expert-Dominating AI
 capability: 87
 trajectory: Pause at the ceiling
 @enddashboard
@@ -1175,12 +1188,13 @@ President: Turns out an unemployed nation with good information and a lot of fre
 @dashboard
 year: 2036
 employment: 26%
-income: $2M
-safety: 450k
-slowdown: 30 mo
-humanlabor: 43M
-agents: 2B
-agentspeed: 100x
+income: US$2.1M
+safety: 78.8K
+slowdown: 5 yrs
+humanlabor: 3.5B
+agents: 170M
+agentspeed: 814x
+tier: Top-Expert-Dominating AI
 capability: 87
 trajectory: Life after work
 @enddashboard
@@ -1213,13 +1227,14 @@ Chen: It is a strange thing, to run a government that can no longer lie to itsel
 @note ---- end-of-chapter dashboard ----
 @dashboard
 year: 2037
-employment: 24%
-income: $4M
-safety: 600k
-slowdown: 36 mo
-humanlabor: 40M
-agents: 5B
-agentspeed: 100x
+employment: 21%
+income: US$3.9M
+safety: 102.5K
+slowdown: 6 yrs
+humanlabor: 3.0B
+agents: 170M
+agentspeed: 1,105x
+tier: Top-Expert-Dominating AI
 capability: 87
 trajectory: Truth arrives
 @enddashboard
@@ -1254,13 +1269,14 @@ Park: Not how to make them good. What good even means. We're arguing definitions
 @note ---- end-of-chapter dashboard ----
 @dashboard
 year: 2038
-employment: 22%
-income: $6M
-safety: 800k
-slowdown: 42 mo
-humanlabor: 36M
-agents: 10B
-agentspeed: 100x
+employment: 17%
+income: US$6.8M
+safety: 133.3K
+slowdown: 7 yrs
+humanlabor: 2.5B
+agents: 180M
+agentspeed: 1,500x
+tier: Top-Expert-Dominating AI
 capability: 88
 trajectory: Alignment is a science
 @enddashboard
@@ -1320,13 +1336,14 @@ When there is no news by sunrise, you fall into a thin and grateful sleep, dream
 @note ---- end-of-chapter dashboard (ch13) ----
 @dashboard
 year: 2040
-employment: 20%
-income: $10M
-safety: 1M
-slowdown: 48 mo
-humanlabor: 33M
-agents: 60B
-agentspeed: 100x
+employment: 12%
+income: US$13M
+safety: 225.2K
+slowdown: 9 yrs
+humanlabor: 1.8B
+agents: 190M
+agentspeed: 2,500x
+tier: Top-Expert-Dominating AI
 capability: 88
 trajectory: Passing the torch
 @enddashboard
@@ -1396,10 +1413,11 @@ year: 2045
 employment: post-work
 income: galaxy-share
 safety: vast
-slowdown: —
-humanlabor: post-work
+slowdown: lifted
+humanlabor: 1B
 agents: cosmic
 agentspeed: ∞
+tier: Superintelligent
 capability: 100
 trajectory: Life after ASI
 @enddashboard

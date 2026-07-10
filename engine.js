@@ -14,7 +14,7 @@
 const DASH_KEYS = new Set([
   // ai-2040 widget schema
   "year", "employment", "income", "safety", "slowdown",
-  "humanlabor", "agents", "agentspeed", "capability", "trajectory",
+  "humanlabor", "agents", "agentspeed", "tier", "capability", "trajectory",
   // legacy keys (still accepted so older @dashboard blocks / saves don't warn)
   "dividend", "workforce", "compute", "gdp",
 ]);
@@ -255,7 +255,7 @@ if (typeof module !== "undefined" && module.exports) {
 /* ---------------- player (browser only) ---------------- */
 
 if (typeof document !== "undefined") (function () {
-  const APP_VERSION = "1.2.0"; // shown on the title screen and in Settings; bump to release
+  const APP_VERSION = "1.2.1"; // shown on the title screen and in Settings; bump to release
   const $ = (id) => document.getElementById(id);
   const SAVE_KEY = "plana_save";
   const SETTINGS_KEY = "plana_settings";
@@ -874,7 +874,13 @@ if (typeof document !== "undefined") (function () {
   }
   function dashNums(data) {
     const o = {};
-    if (data) for (const k in data) o[k] = dashNum(data[k]);
+    if (data) for (const k in data) {
+      let v = dashNum(data[k]);
+      // Total Slowdown is written in "mo" early then "yrs"; normalize to years so
+      // the trend arrow stays monotonic across the unit change (6 mo < 1 yr).
+      if (v != null && k === "slowdown" && /\bmo\b/i.test(String(data[k]))) v = v / 12;
+      o[k] = v;
+    }
     return o;
   }
   function dashEsc(s) {
@@ -949,15 +955,19 @@ if (typeof document !== "undefined") (function () {
         '%">ceiling</div>';
   }
 
-  /* One workforce dot-row (Human Labor / Reliable Agents). Filled dots scale to
-     the log of the head-count; the ×speed multiplier rides alongside. */
-  function fmtSpeed(s) {
+  /* One workforce dot-row (Human Labor / Reliable Agents), matching ai-2040's
+     widget: human labor is a near-full row of hollow dots at ×1 speed; the agent
+     population is filled red dots (log-scaled head-count) whose "at up to ×N
+     speed" multiplier is where the real explosion shows. Filled dots animate in
+     on reveal. `opts.atUpTo` prefixes the speed with "at up to". */
+  function fmtSpeed(s, atUpTo) {
     if (s == null) return "";
     const t = String(s).trim().replace(/^×/, "").replace(/x$/i, "");
     if (!t) return "";
-    return "&times;" + dashEsc(t) + " speed";
+    return (atUpTo ? "at up to " : "") + "&times;" + dashEsc(t) + " speed";
   }
-  function dotRowHtml(label, countStr, speedStr, cls) {
+  function dotRowHtml(label, countStr, speedStr, cls, opts) {
+    opts = opts || {};
     const n = dashNum(countStr);
     const filled = (n != null && isFinite(n) && n > 0)
       ? Math.max(1, Math.min(16, Math.round(16 * (Math.log10(n) - 6) / (10 - 6))))
@@ -968,8 +978,9 @@ if (typeof document !== "undefined") (function () {
       dots += '<span class="dr-dot' + (on ? " on" : "") + '"' +
         (on ? ' style="animation-delay:' + (i * 45) + 'ms"' : "") + '></span>';
     }
-    const spd = fmtSpeed(speedStr);
+    const spd = fmtSpeed(speedStr, opts.atUpTo);
     return '<div class="dr-row ' + cls + '">' +
+        '<span class="dr-marker"></span>' +
         '<div class="dr-dots">' + dots + '</div>' +
         '<div class="dr-meta">' +
           '<span class="dr-count">' + (countStr != null ? dashEsc(countStr) : "&mdash;") + '</span>' +
@@ -977,6 +988,11 @@ if (typeof document !== "undefined") (function () {
           (spd ? '<span class="dr-speed">' + spd + '</span>' : "") +
         '</div>' +
       '</div>';
+  }
+  // "Automated coder" -> "Automated coders"; "...AI" -> "...AIs"
+  function pluralTier(t) {
+    if (!t) return "Reliable Agents";
+    return /s$/i.test(t) ? t : t + "s";
   }
 
   /* Builds the inner cream-paper card HTML. Shared by the in-play @dashboard
@@ -1002,13 +1018,14 @@ if (typeof document !== "undefined") (function () {
     const capOk = capN != null && isFinite(capN);
     const tf = yearFrac(dashNum(data.year));
     const scrubPct = ((tf != null ? tf : 0.30) * 100).toFixed(1);
+    const tier = data.tier != null ? dashEsc(data.tier) : "Reliable Agent";
     const field =
       '<div class="dash-field">' +
         '<div class="df-yeartag">' + year + '</div>' +
         dashGlobeSvg() +
         trajectoryFieldSvg(data, cur) +
         '<div class="df-scrub">' +
-          '<span class="df-scrub-lbl">Reliable Agent</span>' +
+          '<span class="df-scrub-lbl">' + tier + '</span>' +
           '<span class="df-scrub-track"><i style="width:' + scrubPct + '%"></i>' +
             '<b style="left:' + scrubPct + '%"></b></span>' +
         '</div>' +
@@ -1023,7 +1040,7 @@ if (typeof document !== "undefined") (function () {
     const rows =
       '<div class="dash-rows">' +
         dotRowHtml("Human Labor", data.humanlabor, "1x", "dr-human") +
-        dotRowHtml("Reliable Agents", data.agents, data.agentspeed, "dr-agent") +
+        dotRowHtml(pluralTier(data.tier), data.agents, data.agentspeed, "dr-agent", { atUpTo: true }) +
       '</div>';
     return '<div class="dash-card">' +
         '<div class="dash-top">' +
@@ -2098,8 +2115,8 @@ if (typeof document !== "undefined") (function () {
      before it drives the trend arrows). Before any dashboard is reached it
      falls back to the 2027 baseline. Adds the current plan + endings-seen. */
   const DASH_BASELINE = { // ch1 / 2027 baseline (see claude-notes/DASHBOARD-DATA.md)
-    year: "2027", employment: "96%", income: "$47k", safety: "1.2k", slowdown: "0 mo",
-    humanlabor: "165M", agents: "3M", agentspeed: "1x",
+    year: "2027", employment: "62%", income: "US$47K", safety: "1.2K", slowdown: "0 mo",
+    humanlabor: "3.5B", agents: "28M", agentspeed: "114x", tier: "Reliable Agent",
     capability: "42", trajectory: "Default race, no deal",
   };
   function currentPlan() {

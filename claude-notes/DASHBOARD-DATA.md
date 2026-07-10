@@ -18,33 +18,41 @@ The dashboard mirrors the ai-2040.com stats widget. Signature elements:
   multiplier rides alongside. Agent dots animate in on reveal.
 
 `@dashboard` keys: `year, employment, income, safety, slowdown, humanlabor,
-agents, agentspeed, capability, trajectory`. (Legacy keys `dividend, workforce,
-compute, gdp` are still accepted by the parser but no longer rendered.)
+agents, agentspeed, tier, capability, trajectory`. (Legacy keys `dividend,
+workforce, compute, gdp` are still accepted by the parser but no longer
+rendered.) `tier` is the capability milestone name (Reliable Agent → Automated
+coder → Top-Expert-Dominating AI → Superintelligent); it drives the scrubber
+label and the (pluralized) agent dot-row label.
 
-Values are approximate/illustrative; the trajectory bends at the ceiling for
-2035–2038 then crosses to superintelligence in 2045.
+Values below are transcribed from the live ai-2040.com widget scrubbed year by
+year (see assets/uploaded/). The key story: **human labor stays ~3.5B global at
+×1**, employment-to-population falls, and the agent population plateaus ~170–190M
+while its **speed** is where the explosion actually shows (×114 → ×2,500). The
+trajectory bends at the ceiling for 2035–2040, then crosses to ASI in 2045.
 
-| ch | year | employment | income | safety | slowdown | humanlabor | agents | speed | cap | trajectory |
-|----|------|-----------|--------|--------|----------|-----------|--------|-------|-----|------------|
-| 1  | 2027 | 96% | $47k | 1.2k | 0 mo  | 165M | 3M   | 1x   | 42 | Default race, no deal |
-| 2  | 2028 | 94% | $49k | 8k   | 0 mo  | 164M | 30M  | 2x   | 55 | Election, path undecided |
-| 3  | 2029 | 92% | $50k | 8k   | 2 mo  | 163M | 40M  | 3x   | 60 | The deal begins |
-| 4  | 2029 | 91% | $50k | 12k  | 4 mo  | 163M | 40M  | 1x   | 60 | Plan A, crude halt |
-| 5  | 2030 | 90% | $52k | 20k  | 6 mo  | 162M | 80M  | 4x   | 63 | Transparency on |
-| 6  | 2031 | 88% | $55k | 40k  | 9 mo  | 160M | 120M | 8x   | 70 | Slowdown holding |
-| 7  | 2033 | 70% | $90k | 120k | 14 mo | 115M | 200M | 20x  | 78 | Controlled explosion |
-| 8  | 2034 | 55% | $250k| 200k | 18 mo | 90M  | 400M | 50x  | 82 | Mutually assured compute |
-| 9  | 2035 | 40% | $1M  | 300k | 24 mo | 66M  | 600M | 100x | 87 | Pause at the ceiling |
-| 10 | 2036 | 26% | $2M  | 450k | 30 mo | 43M  | 2B   | 100x | 87 | Life after work |
-| 11 | 2037 | 24% | $4M  | 600k | 36 mo | 40M  | 5B   | 100x | 87 | Truth arrives |
-| 12 | 2038 | 22% | $6M  | 800k | 42 mo | 36M  | 10B  | 100x | 88 | Alignment is a science |
-| 13 | 2040 | 20% | $10M | 1M   | 48 mo | 33M  | 60B  | 100x | 88 | Passing the torch |
-| 14 | 2045 | post-work | galaxy-share | vast | — | post-work | cosmic | ∞ | 100 | Life after ASI |
+| ch | year | tier | emp | income | safety | slowdown | human | agents | speed | cap |
+|----|------|------|-----|--------|--------|----------|-------|--------|-------|-----|
+| 1  | 2027 | Reliable Agent | 62% | US$47K | 1.2K | 0 mo | 3.5B | 28M | 114x | 42 |
+| 2  | 2028 | Reliable Agent | 62% | US$49K | 1.4K | 0 mo | 3.5B | 23M | 131x | 48 |
+| 3  | 2029 | Reliable Agent | 62% | US$50K | 3K | 3 mo | 3.5B | 35M | 150x | 55 |
+| 4  | 2029 | Reliable Agent | 61% | US$50K | 6K | 6 mo | 3.5B | 38M | 120x | 58 |
+| 5  | 2030 | Automated coder | 62% | US$51K | 8K | 1 yr | 3.5B | 42M | 200x | 63 |
+| 6  | 2031 | Automated coder | 61% | US$52K | 10.4K | 1.5 yrs | 3.4B | 46M | 238x | 70 |
+| 7  | 2033 | Automated coder | 52% | US$193K | 31.1K | 2.5 yrs | 3.7B | 120M | 378x | 78 |
+| 8  | 2034 | Automated coder | 44% | US$429K | 46.7K | 3 yrs | 3.9B | 170M | 476x | 82 |
+| 9  | 2035 | Top-Expert-Dominating AI | 32% | US$1.1M | 60.7K | 4 yrs | 3.8B | 180M | 600x | 87 |
+| 10 | 2036 | Top-Expert-Dominating AI | 26% | US$2.1M | 78.8K | 5 yrs | 3.5B | 170M | 814x | 87 |
+| 11 | 2037 | Top-Expert-Dominating AI | 21% | US$3.9M | 102.5K | 6 yrs | 3.0B | 170M | 1,105x | 87 |
+| 12 | 2038 | Top-Expert-Dominating AI | 17% | US$6.8M | 133.3K | 7 yrs | 2.5B | 180M | 1,500x | 88 |
+| 13 | 2040 | Top-Expert-Dominating AI | 12% | US$13M | 225.2K | 9 yrs | 1.8B | 190M | 2,500x | 88 |
+| 14 | 2045 | Superintelligent | post-work | galaxy-share | vast | lifted | 1B | cosmic | ∞ | 100 |
 
 Notes:
 - ch14 values are qualitative (post-scarcity); qualitative magnitudes render as
   text with no filled dots and no trend arrow.
-- Median income absorbs the old Citizen's Dividend arc ($47k → $10M).
+- Median income absorbs the old Citizen's Dividend arc (US$47K → US$13M → galaxy-share).
+- 2029/2030 rows are interpolated (no scrubbed screenshot at those exact years);
+  everything else is read off the widget.
 
 ## Branch endings (single end-state dashboard)
 

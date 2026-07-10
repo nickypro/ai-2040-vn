@@ -18,9 +18,18 @@
     --ink: #e9e4d8;
     --ink-dim: #9a94a8;
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+    /* kill the translucent tap-flash mobile browsers (Brave/Chrome) paint over
+       whatever you touch — the whole clickable stage was flashing blue */
+    -webkit-tap-highlight-color: transparent;
+  }
   html, body { height: 100%; background: #06070d; overflow: hidden; }
-  body { display: flex; align-items: center; justify-content: center; }
+  body {
+    display: flex; align-items: center; justify-content: center;
+    -webkit-touch-callout: none;               /* no long-press image menu */
+    -webkit-user-select: none; user-select: none;
+  }
 
   #stage {
     position: relative;
@@ -28,7 +37,8 @@
     aspect-ratio: 16 / 9;
     background: #000;
     overflow: hidden;
-    user-select: none;
+    -webkit-user-select: none; user-select: none;
+    -webkit-touch-callout: none;
     cursor: pointer;
     container-type: size;
   }
@@ -464,17 +474,24 @@
   .dt-trend.flat { color: #9a9484; }
   /* ---- workforce dot-rows (Human Labor vs Reliable Agents) ---- */
   .dash-rows { margin-top: 2cqh; display: flex; flex-direction: column; gap: 1.4cqh; }
-  .dr-row { display: flex; align-items: center; gap: 2cqh; }
+  .dr-row { display: flex; align-items: center; gap: 1.6cqh; }
+  .dr-marker {
+    flex: 0 0 auto; width: 1.7cqh; height: 1.7cqh; border-radius: 50%;
+    border: 0.28cqh solid #16130d;
+  }
+  .dr-agent .dr-marker { background: #d64533; border-color: #d64533; }
   .dr-dots {
     display: grid; grid-template-columns: repeat(16, 1fr); gap: 0.55cqh;
-    flex: 0 0 42cqh; width: 42cqh;
+    flex: 0 0 40cqh; width: 40cqh;
   }
   .dr-dot {
     width: 1.7cqh; height: 1.7cqh; border-radius: 50%;
-    border: 0.24cqh solid #16130d5c; background: transparent;
+    border: 0.24cqh solid #16130d33; background: transparent;
   }
-  .dr-dot.on { border-color: #16130d; opacity: 0; animation: drpop 0.32s ease forwards; }
-  .dr-human .dr-dot.on { background: #16130d; }
+  .dr-dot.on { opacity: 0; animation: drpop 0.32s ease forwards; }
+  /* human labor: near-full row of hollow dots (present, at x1 speed) */
+  .dr-human .dr-dot.on { border-color: #16130d; border-width: 0.32cqh; background: transparent; }
+  /* reliable agents / coders: filled red, head-count on a log scale */
   .dr-agent .dr-dot.on { background: #d64533; border-color: #d64533; }
   @keyframes drpop {
     from { opacity: 0; transform: scale(0.3); }
