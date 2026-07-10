@@ -127,6 +127,8 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
     console.log("== branch: Plan D (race ending) ==");
     await runBranch("Plan D", "get out of the way", "e2e-03-planD-end.png");
+    check(await page.locator(".choice-btn", { hasText: "Extra: Public POV" }).count() === 0,
+      "bonus POVs remain locked before Plan A completion");
     console.log("== endings gallery -> return to 2029 ==");
     await pick("Return to 2029");
     const re1 = await advanceUntil(choiceUp, "re-reach 2029 choice");
@@ -208,9 +210,42 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     await pick("Send it back for one more check");  // the canonical branch
     const rejoined = await advanceUntil(() => dialogHas("without pause"), "rejoin Plan A after the check", 160);
     check(rejoined, "one-more-check rejoins the Plan A path");
+
+    console.log("== turning point: covert project ==");
+    const covert = await advanceUntil(choiceUp, "reach covert-project decision", 700);
+    check(covert, "covert-project decision appears");
+    check(await page.locator(".choice-btn", { hasText: "Restart a secret American project" }).count() === 1,
+      "covert decision puts failure first");
+    await pick("Restart a secret American project");
+    await advanceUntil(choiceUp, "reach covert-project failure", 80);
+    check(await page.locator(".choice-btn", { hasText: "Go back to the covert-project decision" }).count() === 1,
+      "covert failure offers a back button");
+    await pick("Go back to the covert-project decision");
+    await advanceUntil(choiceUp, "return to covert-project decision", 80);
+    await pick("Freeze research sharing");
+
+    console.log("== turning point: deal breakdown ==");
+    const deal = await advanceUntil(choiceUp, "reach deal-breakdown decision", 900);
+    check(deal, "deal-breakdown decision appears");
+    check(await page.locator(".choice-btn", { hasText: "Cross the border" }).count() === 1,
+      "deal decision puts failure first");
+    await pick("Cross the border");
+    await advanceUntil(choiceUp, "reach deal-breakdown failure", 80);
+    check(await page.locator(".choice-btn", { hasText: "Go back to the deal-breakdown decision" }).count() === 1,
+      "deal failure offers a back button");
+    await pick("Go back to the deal-breakdown decision");
+    await advanceUntil(choiceUp, "return to deal-breakdown decision", 80);
+    await pick("Keep the troops back");
+
     const endRejoin = await advanceUntil(choiceUp, "reach endings gallery after full Plan A", 2000);
     check(endRejoin, "full Plan A path reaches the endings gallery");
-    check(await dialogHas("Plan A") || true, "Plan A ending card shown");
+    check(await page.locator(".choice-btn", { hasText: "Extra: Public POV" }).count() === 1,
+      "Public POV unlocks after completing Plan A");
+    check(await page.locator(".choice-btn", { hasText: "Extra: Insider POV" }).count() === 1,
+      "Insider POV unlocks after completing Plan A");
+    await pick("Extra: Public POV");
+    const bonusBack = await advanceUntil(choiceUp, "finish Public POV bonus", 80);
+    check(bonusBack, "Public POV bonus returns to endings gallery");
     await pick("Rest here");
     const titled = await advanceUntil(() => vis("#title"), "reach @title via the_pause", 20);
     check(titled, "@title returns to the title screen");

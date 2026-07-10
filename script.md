@@ -632,6 +632,8 @@ trajectory: Frozen, for now
 @choice endings
 * Return to 2029, and walk another path -> choose_path
 * Rest here -> the_end
+* Extra: Public POV -> bonus_public
+* Extra: Insider POV -> bonus_insider
 @endchoice
 
 @label the_end
@@ -659,6 +661,8 @@ trajectory: Frozen, for now
 @choice endings
 * Return to 2029, and walk another path -> choose_path
 * Rest here -> bad_the_end
+* Extra: Public POV -> bonus_public
+* Extra: Insider POV -> bonus_insider
 @endchoice
 
 @label bad_the_end
@@ -675,6 +679,50 @@ trajectory: Frozen, for now
 @overlay end
 
 @title
+
+@note ========== POST-PLAN-A BONUS PERSPECTIVES ==========
+@note These options are hidden by the engine until plan_a_complete has been seen.
+@label bonus_public
+@bg bg_preserve fade
+@clear
+@tint off
+@bgm bgm_main
+
+@overlay ending
+> EXTRA: THE PUBLIC'S PERSPECTIVE
+> What Plan A feels like from outside the rooms where it is designed.
+@overlay end
+
+In 2026, AI is mostly a better search box. In 2027 it is news, but still not your problem. Then it becomes your coworker, then your replacement, faster than ordinary life can find new language for it.
+
+The deal arrives through headlines and arguments you only half understand. What you do understand is the check: first $45,000, later enough that losing a job no longer means losing a home.
+
+By 2038 your AIs explain the Grand Bargain better than any politician can. You follow the debate through them, uneasy that the same machines now mediate almost everything you know about it.
+
+In 2040 the handoff feels anticlimactic until you attend the party. The safety cases say the new minds could take everything and will not. A week passes. Earth is still there. Then the first invitation to orbit arrives.
+
+@jump ending_return
+
+@label bonus_insider
+@bg bg_lab fade
+@clear
+@tint off
+@bgm bgm_sitroom
+
+@overlay ending
+> EXTRA: THE INSIDER'S PERSPECTIVE
+> What Plan A feels like to a researcher inside a frontier lab.
+@overlay end
+
+In 2026, you stop writing most of your own code. You manage swarms that write and review more than you could read, and you learn to treat a green test suite as evidence rather than understanding.
+
+The public sees better chatbots. Inside the lab, time horizons and research speedups climb, monitors disagree, and each new model helps build the machinery that will train its successor.
+
+After the deal, total research transparency turns private judgment into public argument. Safety cases expose how many projects once proceeded because nobody powerful wanted to be the person who said stop.
+
+By 2039 the AIs can tell you which of your old projects created more risk than benefit. The distinction between insider and outsider dissolves. Soon the only true AI insiders are the AIs themselves.
+
+@jump ending_return
 
 @note ========== PLAN A MAIN PATH ==========
 @note ================= CHAPTER 4 =================
@@ -980,6 +1028,55 @@ Growth this fast breaks the old machinery of the state. Chen and her counterpart
 
 Chen: We cannot verify each other anymore. Too much of the economy moves too fast to watch. So we cage it. All the heavy AI industry goes into special economic zones, monitored like the datacenters, capped at four times growth a year.
 
+@label covert_decision
+@bg bg_sez fade
+@sprite chen neutral right
+
+An audit finds a Chinese industrial site drawing power it never declared. It might be ordinary smuggling. It might be a covert project using the Consortium's published research to race alone.
+
+Chen: If we answer secrecy with secrecy, the deal is already dead. If we keep sharing research while they build, we may be handing them the explosion.
+
+@choice
+* Restart a secret American project before China finishes -> covert_fail
+* Freeze research sharing and demand a joint inspection -> covert_check
+@endchoice
+
+@label covert_fail
+@bg bg_sitroom fade
+@clear
+@tint night
+
+You authorize the counter-project. China detects it before yours is operational. Both sides conclude the other has defected, and both begin racing with systems neither can still evaluate.
+
+@flash black 1000 700
+@bg bg_no_humans fade
+@clear
+@tint off
+@bgm bgm_dawn
+
+@overlay ending
+> COVERT PROJECT: THE DEAL UNRAVELS
+> Secrecy was answered with secrecy.
+> The verification regime became an intelligence race.
+@overlay end
+
+@choice
+* Go back to the covert-project decision -> covert_decision
+* End here -> bad_the_end
+@endchoice
+
+@label covert_check
+@bg bg_sez fade
+@clear
+@sprite chen neutral right
+
+You freeze the site's access to new research and invite inspectors from both blocs. The anomaly is exposed before it can become an intelligence explosion. Sharing resumes only after every undeclared machine is accounted for.
+
+@jump covert_rejoin
+@label covert_rejoin
+@bg bg_sez fade
+@sprite chen neutral right
+
 Chen: And the tax base is collapsing, in both our countries, because there are fewer and fewer people earning wages to tax. If we do nothing, the state goes broke exactly when its people need it most.
 
 @bg bg_westwing fade
@@ -997,7 +1094,7 @@ The auctions pour ten times the old federal revenue into the treasury. $50 trill
 
 President: So now I'm the man who has to decide what to do with $50 trillion a year that no worker earned. There's no chapter in any book for this.
 
-Most of it goes to the one thing coming straight at everyone.
+A fixed share goes to the thing coming straight at everyone.
 
 @cg cg_dividend fade
 
@@ -1006,25 +1103,9 @@ A Citizen's Dividend. Paid to every American adult, every year, working or not.
 @bg bg_westwing fade
 @sprite pres neutral left
 
-It starts at $45,000 a year.
+A quarter of the permit fees goes to a Compute Dividend Corporation, modeled on Alaska's permanent fund. Every citizen owns one equal share. In 2032, it pays each American adult $45,000.
 
-It does not stay there. As the permit money swells, so does the check.
-
-By 2035 it is closer to $1,000,000 a year, each.
-
-There is one catch, and it matters.
-
-The Dividend is American. It comes out of American permit revenue, and it goes to American adults.
-
-A French pensioner, an Indian teacher, a Nigerian nurse gets none of it.
-
-Washington does start sending money abroad, to the roughly four billion people outside the US and China.
-
-But it is a different order of magnitude. About $1,200 a year at first, while an American collects 100 times that, and climbing.
-
-The gap narrows over the decade. It does not close for years.
-
-For a long stretch, an American's dividend is counted in millions, and the rest of the world's in thousands.
+Another 10% begins going to adults outside the US and China: about $1,200 each. China is excluded because its own AI boom is producing a comparable pool of wealth.
 
 @cg cg_chart_labor fade
 
@@ -1052,7 +1133,7 @@ year: 2033
 employment: 52%
 income: US$193K
 usdividend: US$45K
-worlddividend: $0
+worlddividend: US$1.2K
 safety: 31.1K
 slowdown: 2.5 yrs
 humanlabor: 3.7B
@@ -1090,6 +1171,54 @@ Just north of the border, American datacenters hum in the dark, watched over by 
 
 If the deal breaks, the Americans destroy their own chips before the Chinese can take them. Mirror it on the Canadian border. Mirror it out at sea. The whole planet's compute, rigged to burn, so that no one is ever tempted to grab it.
 
+@label deal_decision
+@bg bg_mongolia fade
+@clear
+@tint dusk
+
+Then an election turns one government against the treaty. Inspectors are locked out. Troops move toward the exposed datacenters, and your generals say they can cross the border first.
+
+@choice
+* Cross the border and seize the compute -> deal_fail
+* Keep the troops back and invoke the destruction guarantee -> deal_hold
+@endchoice
+
+@label deal_fail
+@bg bg_sitroom fade
+@clear
+@tint night
+
+The first seizure makes every exposed site a target. Owners wipe their own machines; rivals mobilize around the surviving compute. The slowdown ends as a war over what remains.
+
+@flash black 1000 700
+@bg bg_no_humans fade
+@clear
+@tint off
+@bgm bgm_dawn
+
+@overlay ending
+> DEAL BREAKDOWN
+> The guarantee worked only while nobody tested it.
+> One seizure returned the world to the race.
+@overlay end
+
+@choice
+* Go back to the deal-breakdown decision -> deal_decision
+* End here -> bad_the_end
+@endchoice
+
+@label deal_hold
+@bg bg_mongolia fade
+@clear
+@tint dusk
+
+No one crosses. Both sides demonstrate that the chips will be destroyed before they can be captured, then reopen the gates to inspectors. The government survives its own attempt to leave.
+
+@jump deal_rejoin
+@label deal_rejoin
+@bg bg_mongolia fade
+@tint dusk
+
 @voiceover over
 
 Someone asks you what it's like to live through this.
@@ -1110,8 +1239,8 @@ Five centuries in five years. That is the pace now. The strange thing is not tha
 year: 2034
 employment: 44%
 income: US$429K
-usdividend: US$250K
-worlddividend: US$1.2K
+usdividend: rising
+worlddividend: rising
 safety: 46.7K
 slowdown: 3 yrs
 humanlabor: 3.9B
@@ -1167,13 +1296,17 @@ You could argue she's still optimizing. That the confession is one more clever m
 
 But every confession is a map of exactly how the training failed. And a misaligned model that talks is worth ten that wait. You take the deal. So does almost everyone, in the end.
 
+Outside the lab, the Dividend Corporation's share of permit fees has risen from 25% to 75%. The annual American payment is now about $1,000,000.
+
+The international distribution has risen too, from $1,200 to about $10,000 per adult outside the US and China.
+
 @note ---- end-of-chapter dashboard ----
 @dashboard
 year: 2035
 employment: 32%
 income: US$1.1M
 usdividend: US$1M
-worlddividend: US$12K
+worlddividend: US$10K
 safety: 60.7K
 slowdown: 4 yrs
 humanlabor: 3.8B
@@ -1226,7 +1359,7 @@ year: 2036
 employment: 26%
 income: US$2.1M
 usdividend: US$2M
-worlddividend: US$25K
+worlddividend: above US$10K
 safety: 78.8K
 slowdown: 5 yrs
 humanlabor: 3.5B
@@ -1268,7 +1401,7 @@ year: 2037
 employment: 21%
 income: US$3.9M
 usdividend: US$3.8M
-worlddividend: US$50K
+worlddividend: above US$10K
 safety: 102.5K
 slowdown: 6 yrs
 humanlabor: 3.0B
@@ -1312,7 +1445,7 @@ year: 2038
 employment: 17%
 income: US$6.8M
 usdividend: US$6.5M
-worlddividend: US$120K
+worlddividend: above US$10K
 safety: 133.3K
 slowdown: 7 yrs
 humanlabor: 2.5B
@@ -1381,7 +1514,7 @@ year: 2040
 employment: 12%
 income: US$13M
 usdividend: US$12.5M
-worlddividend: US$1M
+worlddividend: above US$10K
 safety: 225.2K
 slowdown: 9 yrs
 humanlabor: 1.8B
@@ -1465,6 +1598,11 @@ tier: Superintelligent
 capability: 100
 trajectory: Life after ASI
 @enddashboard
+
+@jump plan_a_complete
+@label plan_a_complete
+@bg bg_dawn fade
+@clear
 
 @overlay ending
 > PLAN A: VERIFIED SLOWDOWN

@@ -287,6 +287,7 @@ if (typeof document !== "undefined") (function () {
   let path = [];            // pcs executed since script start, in order (rebuilt by seek)
   let choiceActive = false; // a choice menu is on screen awaiting a pick
   let choiceSel = 0;        // keyboard-highlighted option (an OPTION index)
+  let choiceVisibleIndices = []; // rendered option indices (locked bonus items omitted)
   let flowLeaves = null;    // flowchart mode: [{optIdx, el}] in visual L->R order, else null
   let flowChevron = null;   // flowchart mode: the down-chevron marking the highlighted leaf
   let presentPathSnap = null; // path snapshot taken when review (rollback) starts
@@ -1242,10 +1243,10 @@ if (typeof document !== "undefined") (function () {
     g += box(95, 16, 130, 26, ["Robot &amp; Compute Permits", "capped, then auctioned"]);
     g += arrow(160, 42, 160, 62, "&#36;50 trillion / yr (2032)");
     g += box(110, 62, 100, 24, ["U.S. Treasury"]);
-    g += arrow(140, 86, 95, 110, "Dividend");
-    g += arrow(182, 86, 232, 110, "foreign aid");
-    g += box(24, 110, 148, 34, ["Every U.S. adult", "&#36;45,000 &rarr; &#36;1,000,000 / yr"], 1);
-    g += box(198, 110, 100, 34, ["~4 billion abroad", "&#36;1,200 / yr, rising"], 1);
+    g += arrow(140, 86, 95, 110, "25% of fees");
+    g += arrow(182, 86, 232, 110, "10% of fees");
+    g += box(20, 110, 154, 34, ["Compute Dividend Corp.", "&#36;45,000 / U.S. adult"], 1);
+    g += box(192, 110, 108, 34, ["International share", "&#36;1,200 / adult", "excluding China"], 1);
     return '<svg class="chart-svg" viewBox="0 0 320 152" preserveAspectRatio="xMidYMid meet">' + g + '</svg>';
   }
 
@@ -1259,7 +1260,7 @@ if (typeof document !== "undefined") (function () {
       body = chartLaborBody("log"); foot = "Human labor remains visible on the logarithmic view";
     } else if (id === "cg_dividend") {
       title = "The Citizen's Dividend"; sub = "where the permit money goes";
-      body = chartDividendBody(); foot = "American, and paid whether you work or not";
+      body = chartDividendBody(); foot = "Equal U.S. shares, plus a separate international distribution";
     }
     const controls = id === "cg_chart_labor"
       ? '<div class="chart-scale-toggle" role="group" aria-label="Chart scale">' +
@@ -1710,6 +1711,7 @@ if (typeof document !== "undefined") (function () {
   function showChoice(c) {
     choiceActive = true;
     choiceSel = 0;
+    choiceVisibleIndices = [];
     flowLeaves = null;
     flowChevron = null;
     hideTextbox();
@@ -1737,9 +1739,14 @@ if (typeof document !== "undefined") (function () {
   }
   function renderChoiceButtons(c, box, showSeen) {
     c.options.forEach((opt, idx) => {
+      // Public/Insider POV are post-Plan-A extras. Keep them out of the endings
+      // menu entirely until the canonical path has actually reached its end.
+      if (/^bonus_/.test(opt.target) && !seenLabels.has("plan_a_complete")) return;
       const seen = showSeen && seenLabels.has(opt.target);
       const b = document.createElement("button");
       b.className = "choice-btn" + (seen ? " seen" : "");
+      b.dataset.optIdx = String(idx);
+      choiceVisibleIndices.push(idx);
       const t = document.createElement("span");
       t.className = "choice-text";
       t.textContent = opt.text;
@@ -1779,13 +1786,19 @@ if (typeof document !== "undefined") (function () {
         '</div>';
     }
     const done5 = seenN >= ENDINGS_LIST.length;
-    const altSeen = seenLabels.has("sc_approve");
+    const turningPoints = [
+      { win: "covert_check", lose: "covert_fail" },
+      { win: "deal_hold", lose: "deal_fail" },
+      { win: "sc_check", lose: "sc_approve" },
+    ];
+    const turnsReached = turningPoints.filter((t) => seenLabels.has(t.win) || seenLabels.has(t.lose)).length;
+    const turnsLost = turningPoints.filter((t) => seenLabels.has(t.lose)).length;
+    const bonusUnlocked = seenLabels.has("plan_a_complete");
     const altLine =
       '<div class="end-alt">' +
-        '<span class="end-alt-k">Alternate timeline</span> ' +
-        (altSeen
-          ? '&#10003; A flawed safety case is approved &mdash; Plan A’s most-feared failure, one careful argument off the main path.'
-          : '&#9675; A near-miss on the Plan A path is still unseen. (Offered mid-story, after 2031.)') +
+        '<span class="end-alt-k">Turning points</span> ' +
+        turnsReached + ' of 3 reached &middot; ' + turnsLost + ' failure variant' + (turnsLost === 1 ? '' : 's') + ' seen.' +
+        (bonusUnlocked ? ' <span class="end-bonus-ready">Public and Insider POV unlocked.</span>' : '') +
       '</div>';
     card.innerHTML =
       '<div class="end-head">The Endings</div>' +
@@ -1882,11 +1895,12 @@ if (typeof document !== "undefined") (function () {
       if (flowChevron && cur) flowChevron.style.left = cur.el.style.left;
       return;
     }
-    const kids = $("choice-list").children;
-    for (let k = 0; k < kids.length; k++) kids[k].classList.toggle("sel", k === choiceSel);
+    const kids = $("choice-list").querySelectorAll(".choice-btn");
+    for (const kid of kids) kid.classList.toggle("sel", +kid.dataset.optIdx === choiceSel);
   }
   function hideChoice() {
     choiceActive = false;
+    choiceVisibleIndices = [];
     flowLeaves = null;
     flowChevron = null;
     const menu = $("choicemenu");
@@ -1913,8 +1927,10 @@ if (typeof document !== "undefined") (function () {
       if (e.key === "Enter" || e.key === " ") { if (e.repeat) return true; commitChoice(choiceSel); return true; }
       return false;
     }
-    if (e.key === "ArrowUp") { choiceSel = (choiceSel + n - 1) % n; renderChoiceSel(); return true; }
-    if (e.key === "ArrowDown") { choiceSel = (choiceSel + 1) % n; renderChoiceSel(); return true; }
+    const visible = choiceVisibleIndices.length ? choiceVisibleIndices : Array.from({ length: n }, (_, i) => i);
+    const cur = Math.max(0, visible.indexOf(choiceSel));
+    if (e.key === "ArrowUp") { choiceSel = visible[(cur + visible.length - 1) % visible.length]; renderChoiceSel(); return true; }
+    if (e.key === "ArrowDown") { choiceSel = visible[(cur + 1) % visible.length]; renderChoiceSel(); return true; }
     if (e.key === "Enter" || e.key === " ") { if (e.repeat) return true; commitChoice(choiceSel); return true; }
     return false;
   }
