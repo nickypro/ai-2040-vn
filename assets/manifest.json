@@ -1,0 +1,58 @@
+{
+  "bg": {
+    "bg_westwing": "assets/bg/bg_westwing.png",
+    "bg_hearing": "assets/bg/bg_hearing.png",
+    "bg_lab": "assets/bg/bg_lab.png",
+    "bg_embassy": "assets/bg/bg_embassy.png",
+    "bg_oval": "assets/bg/bg_oval.png",
+    "bg_sitroom": "assets/bg/bg_sitroom.png",
+    "bg_datacenter": "assets/bg/bg_datacenter.png",
+    "bg_summit": "assets/bg/bg_summit.png",
+    "bg_mongolia": "assets/bg/bg_mongolia.png",
+    "bg_sez": "assets/bg/bg_sez.png",
+    "bg_arcology": "assets/bg/bg_arcology.png",
+    "bg_preserve": "assets/bg/bg_preserve.png",
+    "bg_party": "assets/bg/bg_party.png",
+    "bg_space": "assets/bg/bg_space.png",
+    "bg_dawn": "assets/bg/bg_dawn.png"
+  },
+  "cg": {
+    "cg_election": "assets/cg/cg_election.png",
+    "cg_signing": "assets/cg/cg_signing.png",
+    "cg_ocean": "assets/cg/cg_ocean.png",
+    "cg_three_worlds": "assets/cg/cg_three_worlds.png",
+    "cg_party": "assets/cg/cg_party.png",
+    "cg_lottery": "assets/cg/cg_lottery.png",
+    "cg_chart_explosion": "assets/cg/cg_chart_explosion.png",
+    "cg_chart_labor": "assets/cg/cg_chart_labor.png"
+  },
+  "sprites": {
+    "pres.neutral": "assets/sprites/pres_neutral.png",
+    "pres.stern": "assets/sprites/pres_stern.png",
+    "pres.weary": "assets/sprites/pres_weary.png",
+    "chen.neutral": "assets/sprites/chen_neutral.png",
+    "chen.wry": "assets/sprites/chen_wry.png",
+    "chen.grave": "assets/sprites/chen_grave.png",
+    "reed.confident": "assets/sprites/reed_confident.png",
+    "reed.defensive": "assets/sprites/reed_defensive.png",
+    "park.neutral": "assets/sprites/park_neutral.png",
+    "park.worried": "assets/sprites/park_worried.png",
+    "park.bright": "assets/sprites/park_bright.png",
+    "lux.cheerful": "assets/sprites/lux_cheerful.png",
+    "lux.serious": "assets/sprites/lux_serious.png",
+    "lux.radiant": "assets/sprites/lux_radiant.png"
+  },
+  "ui": {
+    "ui_title": "assets/ui/ui_title.png",
+    "placeholder_card": "assets/ui/placeholder_card.png"
+  },
+  "audio": {
+    "bgm_main": "assets/audio/bgm_main.mp3",
+    "bgm_tension": "assets/audio/bgm_tension.mp3",
+    "bgm_sitroom": "assets/audio/bgm_sitroom.mp3",
+    "bgm_choice": "assets/audio/bgm_choice.mp3",
+    "bgm_race": "assets/audio/bgm_race.mp3",
+    "bgm_dawn": "assets/audio/bgm_dawn.mp3",
+    "bgm_title": "assets/audio/bgm_title.mp3"
+  }
+}

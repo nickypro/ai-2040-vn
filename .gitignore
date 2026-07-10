@@ -1,0 +1,19 @@
+# dev artifacts / scratch
+qa/
+raw/
+jobs/
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# macOS junk
+.DS_Store
+._*
+
+# stray reference screenshots dropped in the repo root
+/Screenshot*.png
+/*.har
+
+# node (none committed, but just in case)
+node_modules/

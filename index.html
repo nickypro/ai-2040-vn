@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PLAN A · an AI 2040 visual novel</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%230b0e1a'/%3E%3Ctext x='8' y='12' font-size='11' font-family='sans-serif' fill='%23d64533' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#0b0e1a">
+<style>
+  :root {
+    --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    --sans: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, "Cascadia Mono", Consolas, "Courier New", monospace;
+    --amber: #d64533;
+    --navy: #0b0e1a;
+    --panel: #10162add;
+    --panel-hi: #1a2138ee;
+    --ink: #e9e4d8;
+    --ink-dim: #9a94a8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; background: #06070d; overflow: hidden; }
+  body { display: flex; align-items: center; justify-content: center; }
+
+  #stage {
+    position: relative;
+    width: min(100vw, calc(100vh * 16 / 9));
+    aspect-ratio: 16 / 9;
+    background: #000;
+    overflow: hidden;
+    user-select: none;
+    cursor: pointer;
+    container-type: size;
+  }
+  /* phones in portrait: rotate the 16:9 stage to fill the long edge; cqh units
+     resolve against the pre-transform box so nothing else changes */
+  @media (orientation: portrait) and (pointer: coarse) {
+    #stage {
+      width: min(100vh, calc(100vw * 16 / 9));
+      flex-shrink: 0;
+      transform: rotate(90deg);
+    }
+  }
+
+  /* ---- layers, back to front ---- */
+  .fill { position: absolute; inset: 0; }
+  #bglayer { pointer-events: none; }
+  .layer-img {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    transition: opacity 0.6s ease;
+  }
+  /* labeled placeholder card for a missing image asset */
+  .layer-img.missing {
+    background-color: #0d1220;
+    background-image:
+      linear-gradient(135deg, #0d1220 0%, #131a30 50%, #0d1220 100%);
+    outline: 0.4cqh dashed #d6453344; outline-offset: -2.4cqh;
+  }
+  .placeholder-label {
+    position: absolute; left: 50%; top: 58%;
+    transform: translateX(-50%);
+    font-family: var(--mono); font-size: 3.2cqh; color: #8d94ad;
+  }
+
+  .spr {
+    position: absolute; bottom: 0; height: 88%; width: 38%;
+    display: flex; align-items: flex-end; justify-content: center;
+    transition: opacity 0.35s ease, filter 0.3s ease, transform 0.45s ease;
+    pointer-events: none;
+  }
+  #spr-left   { left: 2%; }
+  #spr-center { left: 31%; }
+  #spr-right  { right: 2%; }
+  .spr img { max-height: 100%; max-width: 100%; object-fit: contain; }
+
+  #tint { pointer-events: none; transition: background 1.2s ease; }
+  #flash { pointer-events: none; opacity: 0; }
+  #chapfade {
+    background: #000; opacity: 0; pointer-events: none; z-index: 45;
+    transition: opacity 1500ms ease;
+  }
+
+  /* ---- textbox (CSS-drawn navy panel; ui asset hooks optional) ---- */
+  #textbox {
+    position: absolute; left: 2.5%; right: 2.5%; bottom: 3%;
+    height: 24.5%;
+    background: linear-gradient(180deg, #0b0e1ae8 0%, #0c1122f2 100%);
+    border: 1px solid #d6453355;
+    border-radius: 1.2cqh;
+    box-shadow: 0 0.6cqh 2.4cqh #00000090, inset 0 0 4cqh #00000040;
+    pointer-events: none;
+  }
+  #namelabel {
+    position: absolute; top: -2.4cqh; left: 3.2cqh;
+    padding: 0.5cqh 2.2cqh;
+    background: var(--navy); border: 1px solid #d6453388; border-radius: 0.7cqh;
+    font-family: var(--sans); font-size: 2.4cqh; letter-spacing: 0.08em;
+    color: var(--amber);
+  }
+  #dialog {
+    position: absolute;
+    left: 3.4cqh; right: 3.4cqh; top: 2.6cqh; bottom: 2.2cqh;
+    font-family: var(--serif); font-size: 3.4cqh; line-height: 1.5;
+    color: var(--ink);
+    overflow: hidden;
+  }
+  #dialog em { font-style: italic; }
+  #dialog.small-line { color: #b9b3c4; letter-spacing: 0.01em; }
+  #adv {
+    position: absolute; right: 2.6cqh; bottom: 1.2cqh;
+    font-size: 2.6cqh; color: var(--amber);
+    animation: bob 1.1s ease-in-out infinite;
+  }
+  @keyframes bob { 0%,100% { transform: translateY(0);} 50% { transform: translateY(0.5cqh);} }
+
+  /* ---- choice menu ---- */
+  #choicemenu {
+    position: absolute; inset: 0; z-index: 40;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 2.4cqh;
+    background: radial-gradient(ellipse at center, #06070dcc 0%, #06070d55 75%, #06070d22 100%);
+    cursor: default;
+  }
+  #choicemenu:not(.flowchart) .choice-btn {
+    display: flex; align-items: center; justify-content: space-between; gap: 3cqh;
+    min-width: 56cqh; max-width: 82%;
+    padding: 1.7cqh 3.4cqh;
+    font-family: var(--serif); font-size: 2.8cqh; text-align: left;
+    background: var(--panel); color: var(--ink);
+    border: 1px solid #d6453355; border-radius: 1cqh; cursor: pointer;
+    transition: background .15s, border-color .15s, transform .1s;
+  }
+  #choicemenu:not(.flowchart) .choice-btn:hover,
+  #choicemenu:not(.flowchart) .choice-btn.sel {
+    background: var(--panel-hi); border-color: var(--amber);
+  }
+  #choicemenu:not(.flowchart) .choice-btn.seen { opacity: 0.72; }  /* dim visited branches */
+  #choicemenu:not(.flowchart) .choice-btn .choice-check { color: var(--amber); font-size: 2.4cqh; }
+
+  /* ---- flowchart choice: the 2029 decision-tree (matches ai-2040.com: clean
+         white, thin black boxes, black serif, gray italic labels, no color) ---- */
+  #choicemenu.flowchart {
+    background: radial-gradient(ellipse at center, #06070def 0%, #06070dcc 70%, #06070d99 100%);
+  }
+  .flow-card {
+    position: relative;
+    width: 168cqh; height: 90cqh;
+    background: #fbfaf6;                       /* near-white page */
+    color: #14110c;                            /* near-black ink */
+    border: 0.18cqh solid #14110c;
+    font-family: var(--serif);
+    overflow: hidden;
+  }
+  .flow-svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+  .flow-svg path {
+    stroke: #14110c; stroke-width: 1.2; fill: none;
+    stroke-linejoin: miter; stroke-linecap: butt;
+    vector-effect: non-scaling-stroke;
+  }
+  .flow-svg path.bold { stroke-width: 3.4; } /* the route to Plan A, as in the source */
+  .flow-head {
+    position: absolute; left: 8cqh; top: 2.2cqh;
+    font-family: var(--serif); font-size: 3.4cqh; font-weight: 700;
+    letter-spacing: 0.005em; color: #14110c;
+  }
+  .flow-q {
+    position: absolute; transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    background: #fbfaf6; border: 0.16cqh solid #14110c; border-radius: 0.9cqh;
+    padding: 1.1cqh 1.6cqh; text-align: left; line-height: 1.3;
+    font-size: 2.2cqh; color: #14110c;
+  }
+  .flow-q b { font-weight: 700; }             /* emphasis stays black, no color */
+  .flow-lbl {
+    position: absolute; transform: translate(-50%, -50%);
+    font-style: italic; font-size: 1.85cqh; color: #6b6559; line-height: 1.2;
+    text-align: left; max-width: 26cqh;
+    background: #fbfaf6; padding: 0 0.4cqh;
+  }
+  .flow-leaf {
+    position: absolute; transform: translate(-50%, 0);
+    width: 26cqh; box-sizing: border-box;
+    display: flex; flex-direction: column; align-items: center; gap: 0.3cqh;
+    padding: 1.1cqh 0.8cqh 1.3cqh;
+    background: #fbfaf6; color: #14110c;
+    border: 0.16cqh solid #14110c; border-radius: 0.9cqh;
+    text-align: center; cursor: pointer;
+    transition: border-width .1s, transform .1s;
+  }
+  .flow-leaf .lf-plan {
+    font-family: var(--sans); font-size: 1.5cqh; letter-spacing: 0.18em;
+    text-transform: uppercase; color: #14110c; font-weight: 600;
+  }
+  .flow-leaf .lf-letter { font-weight: 700; font-size: 4.4cqh; line-height: 1.05; font-family: var(--serif); }
+  .flow-leaf .lf-name { font-size: 1.8cqh; line-height: 1.1; color: #4a453c; }
+  .flow-leaf .lf-check { position: absolute; top: 0.5cqh; right: 0.8cqh; color: #6b6559; font-size: 1.9cqh; }
+  /* highlight = the bold-outlined, slightly larger box (as the source emphasises PLAN A) */
+  .flow-leaf:hover, .flow-leaf.sel {
+    border-width: 0.55cqh; z-index: 2;
+    transform: translate(-50%, -0.4cqh) scale(1.06);
+  }
+  .flow-leaf.sel .lf-letter { font-size: 5.2cqh; }
+  .flow-leaf.sel .lf-plan { font-size: 1.7cqh; }
+  .flow-leaf.seen { opacity: 0.55; }             /* dim visited branches */
+  /* down-chevron beneath the highlighted leaf, like the source */
+  .flow-chevron {
+    position: absolute; transform: translateX(-50%);
+    color: #14110c; font-size: 3.4cqh; line-height: 1;
+    transition: left .12s;
+  }
+
+  /* ---- endings gallery (end-game screen with played/unplayed status) ---- */
+  #choicemenu.endings {
+    background: radial-gradient(ellipse at center, #06070df2 0%, #06070de0 60%, #06070dcc 100%);
+    gap: 3cqh;
+  }
+  .endings-card {
+    width: 150cqh; max-width: 94%;
+    display: flex; flex-direction: column; align-items: center;
+    color: var(--ink); text-align: center;
+  }
+  .end-head {
+    font-family: var(--sans); font-weight: 200; letter-spacing: 0.5em;
+    text-indent: 0.5em; font-size: 5cqh; color: var(--ink);
+    text-shadow: 0 0 2.4cqh #d6453355;
+  }
+  .end-sub {
+    font-family: var(--serif); font-size: 2.2cqh; color: #b9b3c4;
+    margin-top: 1cqh; margin-bottom: 3cqh; max-width: 80%;
+  }
+  .end-grid { display: flex; gap: 1.8cqh; justify-content: center; width: 100%; }
+  .end-tile {
+    flex: 1 1 0; max-width: 27cqh; min-width: 0;
+    background: #10162a; border: 1px solid #2a3350; border-radius: 1cqh;
+    padding: 1.8cqh 1.2cqh; display: flex; flex-direction: column;
+    align-items: center; gap: 0.5cqh; opacity: 0.5;
+    transition: opacity .2s, border-color .2s;
+  }
+  .end-tile.done {
+    opacity: 1; border-color: #d64533aa; background: #141b30;
+    box-shadow: 0 0 3cqh #d6453322, inset 0 0 3cqh #d6453311;
+  }
+  .end-tile .et-letter {
+    font-family: var(--serif); font-weight: 700; font-size: 4.6cqh; line-height: 1;
+    color: #6b6f82;
+  }
+  .end-tile.done .et-letter { color: var(--amber); }
+  .end-tile .et-name {
+    font-family: var(--sans); font-size: 1.9cqh; letter-spacing: 0.02em; color: var(--ink);
+    min-height: 2.4cqh;
+  }
+  .end-tile .et-note {
+    font-family: var(--serif); font-style: italic; font-size: 1.6cqh; color: #9a94a8;
+    line-height: 1.2; min-height: 3.6cqh;
+  }
+  .end-tile .et-status {
+    font-family: var(--mono); font-size: 1.5cqh; letter-spacing: 0.08em;
+    color: #6b6f82; margin-top: 0.4cqh;
+  }
+  .end-tile.done .et-status { color: var(--amber); }
+  #choicemenu.endings .choice-btn { min-width: 44cqh; }
+
+  /* ---- compact run-overview at the top of the pause menu ---- */
+  #menu-overview {
+    width: 62cqh; max-width: 90%;
+    background: #0e142699; border: 1px solid #d6453355;
+    border-left: 0.5cqh solid #d64533; border-radius: 0.8cqh;
+    padding: 1.4cqh 2cqh; margin-bottom: 1.4cqh;
+    font-family: var(--sans); color: var(--ink); text-align: left;
+  }
+  #menu-overview .mo-top { display: flex; align-items: baseline; gap: 1.4cqh; margin-bottom: 0.8cqh; }
+  #menu-overview .mo-year { font-family: var(--serif); font-weight: 700; font-size: 3.4cqh; color: var(--ink); }
+  #menu-overview .mo-traj { font-family: var(--mono); font-size: 1.6cqh; letter-spacing: 0.06em; color: var(--amber); text-transform: uppercase; }
+  #menu-overview .mo-row { display: flex; flex-wrap: wrap; gap: 0.6cqh 2.2cqh; margin-top: 0.5cqh; }
+  #menu-overview .mo-stat { font-size: 1.85cqh; color: #cfc8d6; }
+  #menu-overview .mo-k { font-family: var(--mono); font-size: 1.4cqh; letter-spacing: 0.06em; color: #8a8494; text-transform: uppercase; margin-right: 0.3cqh; }
+
+  /* ---- credits page ---- */
+  #creditsmenu { gap: 2.4cqh; }
+  #creditsmenu .credits-card {
+    width: 104cqh; max-width: 92%; text-align: left;
+    background: linear-gradient(180deg, #11182e 0%, #0c1120 100%);
+    border: 1px solid #d6453340; border-radius: 1.2cqh;
+    box-shadow: 0 1cqh 4cqh #00000080, inset 0 0 6cqh #d645330a;
+    padding: 3cqh 3.6cqh; max-height: 68cqh; overflow-y: auto;
+  }
+  .cr-unofficial {
+    font-family: var(--serif); font-size: 2cqh; font-style: italic; color: #ecc4bb;
+    text-align: center; letter-spacing: 0.01em; line-height: 1.5;
+    border-top: 1px solid #d6453333; border-bottom: 1px solid #d6453333;
+    padding: 1.4cqh 1cqh; margin-bottom: 2.6cqh;
+  }
+  .cr-group {
+    display: grid; grid-template-columns: 22cqh 1fr; gap: 2.4cqh;
+    padding: 1.4cqh 0; align-items: baseline;
+    border-top: 1px solid #ffffff12;
+  }
+  .cr-group:first-of-type { border-top: none; }
+  .cr-role {
+    font-family: var(--sans); font-size: 1.5cqh; letter-spacing: 0.22em;
+    text-transform: uppercase; color: #9aa0b4; text-align: right; padding-top: 0.4cqh;
+  }
+  .cr-body { font-family: var(--serif); font-size: 2.2cqh; line-height: 1.5; color: var(--ink); }
+  .credits-card a { color: #ffffff; text-decoration: underline; text-underline-offset: 0.3cqh; }
+  .credits-card a:hover { color: var(--amber); }
+  .cr-thanks {
+    font-family: var(--serif); font-style: italic; font-size: 2cqh; color: var(--ink-dim);
+    margin-top: 2.4cqh; padding-top: 1.8cqh; text-align: center;
+    border-top: 1px solid #ffffff12;
+  }
+
+  /* ---- voiceover (narrator layer) ---- */
+  #volayer {
+    background: #000;
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity 0.8s ease;
+    pointer-events: none;
+  }
+  #volayer.vo-wash {
+    background: rgba(8, 10, 20, 0.55);
+    align-items: flex-end;
+  }
+  #volines {
+    position: relative;
+    max-width: 76%;
+    display: flex; flex-direction: column; gap: 2cqh;
+    padding: 3cqh 4cqh;
+  }
+  #volayer.vo-wash #volines { margin-bottom: 12cqh; }
+  .voline {
+    font-family: var(--serif);
+    font-size: 3.4cqh; line-height: 1.6; letter-spacing: 0.03em;
+    text-align: center;
+    color: #e9e4d8;
+    text-shadow: 0 0 1cqh #000;
+    /* compositing layer: opacity animation inside a rotated stage subpixel-shifts */
+    transform: translateZ(0); will-change: opacity; backface-visibility: hidden;
+  }
+  .voseg { opacity: 0; transition: opacity 1.2s ease; }
+
+  /* ---- dashboard (end-of-chapter status readout, dossier-red) ---- */
+  #dashboard {
+    position: absolute; inset: 0; z-index: 44;
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(ellipse at center, #06070de6 0%, #06070db0 68%, #06070d70 100%);
+    pointer-events: none;                          /* clicks fall through to advance */
+  }
+  .dash-card {
+    position: relative;
+    width: 158cqh; height: 84cqh;
+    background: #f2ead9;                            /* cream paper */
+    color: #16130d;                                /* black ink */
+    border: 0.35cqh solid #16130d;
+    border-radius: 0.8cqh;
+    box-shadow: 0 1.2cqh 4.5cqh #000000aa;
+    font-family: var(--serif);
+    background-image: radial-gradient(#16130d12 0.9px, transparent 1.1px); /* halftone */
+    background-size: 1.5cqh 1.5cqh;
+    overflow: hidden;
+    padding: 3.4cqh 4.4cqh 3cqh;
+    display: flex; flex-direction: column;
+  }
+  .dash-top { display: flex; align-items: flex-start; justify-content: space-between; }
+  .dash-eyebrow {
+    font-family: var(--sans); font-size: 2.1cqh; letter-spacing: 0.24em;
+    text-transform: uppercase; color: #4a4436; padding-top: 0.6cqh;
+  }
+  .dash-globe { width: 14.5cqh; height: 14.5cqh; margin: -0.8cqh -0.6cqh 0 0; }
+  .dash-hero { display: flex; align-items: baseline; gap: 2.8cqh; margin-top: -0.6cqh; flex-wrap: wrap; }
+  .dash-year {
+    font-family: var(--sans); font-weight: 700; font-size: 12.5cqh; line-height: 0.86;
+    letter-spacing: 0.005em; color: #16130d;
+  }
+  .dash-traj {
+    font-family: var(--sans); font-size: 2.4cqh; letter-spacing: 0.05em;
+    color: #8a2b20; text-transform: uppercase;
+    border: 0.26cqh solid #16130d; border-radius: 0.5cqh;
+    padding: 0.7cqh 1.5cqh; background: #fbf6ea;
+    box-shadow: 0.5cqh 0.5cqh 0 #16130d1f;
+  }
+  .dash-tiles {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.6cqh;
+    margin-top: 2.8cqh;
+  }
+  .dash-tile {
+    border: 0.26cqh solid #16130d; border-radius: 0.6cqh;
+    background: #fbf6ea; padding: 1.3cqh 1.5cqh;
+    box-shadow: 0.5cqh 0.5cqh 0 #16130d14;
+    display: flex; flex-direction: column; gap: 0.7cqh; min-width: 0;
+  }
+  .dt-label {
+    font-family: var(--sans); font-size: 1.55cqh; letter-spacing: 0.1em;
+    text-transform: uppercase; color: #6a6252;
+  }
+  .dt-value {
+    font-family: var(--serif); font-size: 3cqh; font-weight: 700; line-height: 1.06;
+    color: #16130d;
+  }
+  .dt-trend { font-size: 2cqh; font-weight: 700; }
+  .dt-trend.up, .dt-trend.down { color: #d64533; }
+  .dt-trend.flat { color: #9a9484; }
+  .dash-cap { margin-top: auto; padding-top: 2.4cqh; }
+  .dc-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 1.7cqh; }
+  .dc-label {
+    font-family: var(--sans); font-size: 1.9cqh; letter-spacing: 0.2em;
+    text-transform: uppercase; color: #4a4436;
+  }
+  .dc-val { font-family: var(--sans); font-size: 2.6cqh; font-weight: 700; color: #16130d; }
+  .dc-slash { color: #9a9484; font-weight: 400; font-size: 1.9cqh; }
+  .dc-track {
+    position: relative; height: 2.2cqh; border: 0.26cqh solid #16130d;
+    border-radius: 1.2cqh; background: #fbf6ea;
+  }
+  .dc-fill {
+    position: absolute; left: 0; top: 0; bottom: 0; border-radius: 1.1cqh 0 0 1.1cqh;
+    background: repeating-linear-gradient(90deg, #d64533 0, #d64533 1.05cqh, #e58270 1.05cqh, #e58270 1.7cqh);
+  }
+  .dc-ceiling { position: absolute; top: -0.9cqh; bottom: -0.9cqh; width: 0; border-left: 0.3cqh dashed #16130d; }
+  .dc-ceiling-lbl {
+    position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+    font-family: var(--sans); font-size: 1.3cqh; letter-spacing: 0.16em; text-transform: uppercase;
+    color: #16130d; white-space: nowrap; margin-bottom: 0.35cqh;
+  }
+  .dc-marker { position: absolute; top: 50%; transform: translate(-50%, -50%); }
+  .dc-dot {
+    display: block; width: 2.5cqh; height: 2.5cqh; border-radius: 50%;
+    background: #16130d; border: 0.42cqh solid #f2ead9; box-shadow: 0 0 0 0.28cqh #16130d;
+  }
+  .dc-stops {
+    position: relative; height: 2cqh; margin-top: 1.1cqh;
+    font-family: var(--sans); font-size: 1.5cqh; letter-spacing: 0.04em; color: #6a6252;
+  }
+  .dc-stops span { position: absolute; white-space: nowrap; top: 0; }
+  .dc-s0 { left: 0; }
+  .dc-s1 { left: 50%; transform: translateX(-50%); }
+  .dc-s2 { right: 0; }
+
+  /* ---- overlay inscription card ---- */
+  #inscription {
+    position: absolute; left: 18%; right: 18%; top: 16%; bottom: 22%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 2.4cqh;
+    background: radial-gradient(ellipse at center, #000a 0%, #0006 60%, #0000 100%);
+    font-family: var(--serif); font-size: 3cqh; line-height: 1.55;
+    color: var(--ink); text-align: center;
+    text-shadow: 0 0 1cqh #000;
+    pointer-events: none;
+  }
+
+  /* ---- chrome ---- */
+  #menubtn {
+    position: absolute; top: 2.2%; right: 1.6%;
+    width: 5.4cqh; height: 5.4cqh; border-radius: 0.9cqh;
+    background: #0b0e1ab8; color: #b9b3c4; border: 1px solid #d645333a;
+    font-size: 3cqh; line-height: 1; cursor: pointer;
+    opacity: 0.4; transition: opacity .2s;
+    z-index: 60;
+  }
+  #menubtn:hover { opacity: 1; }
+
+  #musicbtn {
+    position: absolute; top: 6.2cqh; left: 1.6%;
+    width: 5.4cqh; height: 5.4cqh; border-radius: 0.9cqh;
+    background: #0b0e1ab8; color: #cfc8b6; border: 1px solid #d645333a;
+    font-size: 3cqh; line-height: 1; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0.55; transition: opacity .2s, color .2s;
+    z-index: 60;
+  }
+  #musicbtn:hover { opacity: 1; }
+  #musicbtn.off { color: #6f6a7d; }
+  #musicbtn.off::after {
+    content: ""; position: absolute; left: 16%; right: 16%; top: 47%;
+    height: 0.34cqh; background: #d6795f; border-radius: 1cqh;
+    transform: rotate(-45deg);
+  }
+
+  #chapter-indicator {
+    position: absolute; top: 1.6cqh; left: 1.6cqh; z-index: 61;
+    font-family: var(--mono); font-size: 1.7cqh; color: var(--ink);
+    background: #0b0e1acc; border: 1px solid #d6453344; border-radius: 0.5cqh;
+    padding: 0.5cqh 1.2cqh; cursor: pointer;
+    opacity: 0.82; transition: opacity .2s;
+  }
+  #chapter-indicator:hover { opacity: 1; border-color: #d6453399; }
+  /* in-fiction year, in the bottom-right of the textbox (left of the advance mark) */
+  #date-indicator {
+    position: absolute; right: 5.4cqh; bottom: 1.1cqh;
+    font-family: var(--mono); font-size: 1.85cqh; font-weight: 700; letter-spacing: 0.08em;
+    color: #d9836f; opacity: 0.8;
+  }
+
+  .menu {
+    position: absolute; inset: 0; z-index: 50;
+    background: #05060bd8;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 2.6cqh; cursor: default;
+  }
+  .menu button {
+    font-family: var(--sans); font-size: 2.9cqh; letter-spacing: 0.06em;
+    padding: 1.4cqh 4cqh; min-width: 34cqh;
+    background: var(--panel); color: var(--ink);
+    border: 1px solid #d6453355; border-radius: 0.8cqh; cursor: pointer;
+    transition: background .15s, border-color .15s;
+  }
+  .menu button:hover { background: var(--panel-hi); border-color: var(--amber); }
+  .menu-note {
+    font-family: var(--serif); font-size: 1.9cqh; color: var(--ink-dim);
+    max-width: 52cqh; text-align: center; line-height: 1.4; margin-top: 0.8cqh;
+  }
+  .menu h2 {
+    font-family: var(--sans); letter-spacing: 0.34em; font-weight: 300;
+    color: var(--ink); font-size: 4cqh; margin-bottom: 1.5cqh;
+  }
+
+  /* ---- title screen ---- */
+  #title { justify-content: flex-end; padding-bottom: 6cqh; background: none; }
+  #title-art {
+    position: absolute; inset: 0; z-index: -1;
+    background: radial-gradient(ellipse at 50% 115%, #2a3763 0%, #141a33 45%, #0b0e1a 75%, #06070d 100%);
+    background-size: cover; background-position: center;
+  }
+  #title::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(#0004 0%, #0000 40%, #06070dd8 100%);
+  }
+  #title-head {
+    position: absolute; top: 11cqh; left: 0; right: 0;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+  }
+  #title h1 {
+    font-family: var(--sans); font-weight: 200; letter-spacing: 0.62em;
+    text-indent: 0.62em; /* recentre: letter-spacing pads the right edge */
+    font-size: 8cqh; color: var(--ink); text-align: center;
+    text-shadow: 0 0 3cqh #d6453340, 0 0.3cqh 1cqh #000;
+  }
+  #title h1 .accent { color: var(--amber); }
+  #title .byline {
+    font-family: var(--sans); font-weight: 300; font-size: 2.2cqh; color: #b9b3c4;
+    margin-top: 1.2cqh; letter-spacing: 0.32em; text-indent: 0.32em;
+    text-shadow: 0 0 0.8cqh #000;
+  }
+  #version-tag {
+    position: absolute; bottom: 2cqh; right: 2.6cqh;
+    font-family: var(--mono); font-size: 1.7cqh; letter-spacing: 0.08em;
+    color: #8a8494; opacity: 0.75;
+  }
+  #settings-version {
+    font-family: var(--mono); font-size: 1.7cqh; letter-spacing: 0.06em;
+    color: #7f7a8c; margin-top: 1.4cqh; text-align: center;
+  }
+  #title .notice {
+    max-width: 66%; text-align: center;
+    font-family: var(--serif); font-size: 1.9cqh; color: #cfc9d6;
+    margin-bottom: 2.4cqh; padding: 1.2cqh 2.4cqh; border-radius: 1cqh;
+    background: #06070daa; backdrop-filter: blur(2px);
+    text-shadow: 0 0 0.6cqh #000, 0 0 1.4cqh #000;
+    line-height: 1.6;
+  }
+  #title-notice a { color: #ffffff; text-decoration: underline; text-underline-offset: 0.3cqh; }
+  #title-notice a:hover { color: var(--amber); }
+
+  #chapter-list {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.6cqh; max-width: 86%;
+  }
+  #chapter-list .chapter-btn { min-width: 24cqh; font-size: 2.4cqh; text-align: left; }
+  #chapter-list .locked { opacity: 0.35; cursor: default; border-color: #ffffff22; }
+  #chapter-list .locked:hover { background: var(--panel); }
+
+  #endcard .fin {
+    font-family: var(--sans); font-weight: 200; font-size: 4.6cqh;
+    letter-spacing: 0.5em; text-indent: 0.5em;
+    color: var(--ink); margin-bottom: 3cqh;
+  }
+
+  /* ---- settings ---- */
+  #settingsmenu .opt-row {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 62cqh; max-width: 90%; gap: 2cqh;
+    transition: opacity .2s;
+  }
+  #settingsmenu .opt-row.disabled { opacity: 0.35; pointer-events: none; }
+  #settingsmenu .opt-label { font-family: var(--serif); font-size: 2.4cqh; color: #c6c0d0; }
+  #settingsmenu .opt-group { display: flex; gap: 0.8cqh; }
+  #settingsmenu .opt-btn {
+    font-family: var(--sans); font-size: 2cqh; min-width: 0;
+    padding: 0.9cqh 1.9cqh;
+    background: var(--panel); color: #c6c0d0;
+    border: 1px solid #d6453344; border-radius: 0.6cqh; cursor: pointer;
+    transition: background .15s, border-color .15s, color .15s;
+  }
+  #settingsmenu .opt-btn:hover { border-color: var(--amber); }
+  #settingsmenu .opt-btn.selected {
+    background: #d645332e; border-color: var(--amber); color: var(--ink);
+  }
+  #settingsmenu .danger-row { margin-top: 0.5cqh; }
+  #settingsmenu .danger-btn {
+    font-family: var(--sans); font-size: 2cqh;
+    padding: 0.9cqh 1.9cqh; min-width: 0;
+    background: #3a1414dd; color: #e7a3a3;
+    border: 1px solid #b3474766; border-radius: 0.6cqh; cursor: pointer;
+    transition: background .15s, border-color .15s, color .15s;
+  }
+  #settingsmenu .danger-btn:hover { background: #7a1f1f; border-color: #e06a6a; color: #fff; }
+  #settingsmenu .danger-btn.armed { background: #a81f1f; border-color: #ff8a8a; color: #fff; }
+  #settingsmenu { justify-content: flex-start; padding: 4cqh 0; overflow-y: auto; }
+  #settingsmenu .opt-slider {
+    -webkit-appearance: none; appearance: none; width: 26cqh; max-width: 40%; height: 0.7cqh;
+    background: #d645333a; border-radius: 1cqh; outline: none; cursor: pointer;
+  }
+  #settingsmenu .opt-slider::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none; width: 2.4cqh; height: 2.4cqh; border-radius: 50%;
+    background: var(--amber); border: none; cursor: pointer;
+  }
+  #settingsmenu .opt-slider::-moz-range-thumb {
+    width: 2.4cqh; height: 2.4cqh; border-radius: 50%; background: var(--amber); border: none; cursor: pointer;
+  }
+  #settingsmenu .opt-controls {
+    width: 62cqh; max-width: 90%; border: 1px solid #d6453333; border-radius: 0.8cqh;
+    padding: 1.4cqh 1.8cqh; background: #0b0e1aaa;
+  }
+  #settingsmenu .opt-controls-title {
+    font-family: var(--serif); font-size: 2cqh; color: #c6c0d0; letter-spacing: 0.06em;
+    text-align: center; margin-bottom: 0.9cqh;
+  }
+  #settingsmenu .opt-controls-grid {
+    display: grid; grid-template-columns: max-content 1fr; column-gap: 1.6cqh; row-gap: 0.5cqh;
+    font-family: var(--serif); font-size: 1.7cqh; color: #a49ead; align-items: baseline;
+  }
+  #settingsmenu .opt-controls-grid .k { color: var(--amber); white-space: nowrap; text-align: right; }
+
+  /* ---- "Where Things Stand" run overview (reuses the dashboard card) ---- */
+  #overviewmenu { justify-content: center; gap: 1.2cqh; }
+  #overviewmenu h2 { font-size: 3.4cqh; margin-bottom: 0.4cqh; }
+  #overview-card {
+    height: 69cqh; display: flex; align-items: center; justify-content: center;
+  }
+  #overview-card .dash-card {
+    transform: scale(0.8); transform-origin: center;
+    box-shadow: 0 1cqh 4cqh #000a;
+  }
+  .dash-meta { display: flex; gap: 1.6cqh; margin-top: 1.8cqh; }
+  .dash-meta .dm-item {
+    flex: 1; min-width: 0;
+    border: 0.26cqh solid #16130d; border-radius: 0.6cqh;
+    background: #efe4cd; padding: 1cqh 1.5cqh;
+    display: flex; flex-direction: column; gap: 0.5cqh;
+    box-shadow: 0.5cqh 0.5cqh 0 #16130d14;
+  }
+  .dm-k {
+    font-family: var(--sans); font-size: 1.5cqh; letter-spacing: 0.12em;
+    text-transform: uppercase; color: #8a2b20;
+  }
+  .dm-v { font-family: var(--serif); font-size: 2.5cqh; font-weight: 700; color: #16130d; line-height: 1.05; }
+  .dm-slash { color: #9a9484; font-weight: 400; font-size: 1.9cqh; }
+
+  /* ---- controls help panel ---- */
+  #controlsmenu { justify-content: flex-start; gap: 1.8cqh; padding: 3cqh 0; overflow-y: auto; }
+  .ctrl-card {
+    width: 150cqh; max-width: 94%;
+    background: #0b0e1acc; border: 1px solid #d6453340; border-radius: 1cqh;
+    padding: 2.4cqh 3cqh;
+  }
+  .ctrl-cols {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2cqh 4.5cqh;
+  }
+  .ctrl-gtitle {
+    font-family: var(--sans); font-size: 1.9cqh; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 0.9cqh; padding-bottom: 0.4cqh;
+    border-bottom: 1px solid #d6453333;
+  }
+  .ctrl-grid {
+    display: grid; grid-template-columns: max-content 1fr;
+    column-gap: 1.6cqh; row-gap: 0.7cqh;
+    font-family: var(--serif); font-size: 1.75cqh; line-height: 1.35; color: #c6c0d0; align-items: baseline;
+  }
+  .ctrl-grid .k {
+    color: var(--amber); white-space: nowrap; text-align: right;
+    font-family: var(--sans); font-size: 1.7cqh;
+  }
+  .ctrl-grid b { color: var(--ink); }
+  .ctrl-note {
+    margin-top: 2cqh; padding-top: 1.4cqh; border-top: 1px solid #d6453322;
+    font-family: var(--serif); font-size: 1.75cqh; line-height: 1.55; color: #a49ead; text-align: center;
+  }
+  .ctrl-note b { color: #c6c0d0; }
+
+  /* ---- history / backlog ---- */
+  #history-list {
+    width: 74cqh; max-width: 92%; height: 62cqh; overflow-y: auto;
+    display: flex; flex-direction: column; gap: 1.4cqh;
+    padding: 1cqh 1.6cqh; text-align: left;
+  }
+  #history-list .hist-row { font-family: var(--serif); font-size: 2.2cqh; line-height: 1.4; color: var(--ink); }
+  #history-list .hist-name { color: var(--amber); font-weight: 700; margin-right: 0.8cqh; }
+  #history-list .hist-text.hist-narr { color: #a49ead; font-style: italic; }
+  #history-list .hist-empty { color: var(--ink-dim); text-align: center; font-family: var(--serif); font-size: 2cqh; }
+
+  /* ---- first-run hint ---- */
+  #advance-hint {
+    position: absolute; left: 50%; bottom: 4cqh; transform: translateX(-50%);
+    z-index: 45; pointer-events: none;
+    font-family: var(--serif); font-size: 2.2cqh; color: var(--ink);
+    background: #06070da6; border: 1px solid #d6453344; border-radius: 5cqh;
+    padding: 1cqh 2.4cqh; white-space: nowrap;
+    opacity: 0; transition: opacity .5s ease;
+  }
+  #advance-hint.show { opacity: 1; animation: hint-pulse 1.8s ease-in-out infinite; }
+  @keyframes hint-pulse { 0%,100% { opacity: 0.55; } 50% { opacity: 1; } }
+
+  #boot-error {
+    position: absolute; inset: auto 8% 8% 8%; z-index: 60;
+    font-family: var(--mono); font-size: 2.4cqh; color: #e39a9a;
+    background: #200b0bcc; border: 1px solid #a55; border-radius: 1cqh;
+    padding: 2cqh; display: none;
+  }
+</style>
+</head>
+<body>
+  <div id="stage">
+    <div id="bglayer" class="fill"></div>
+    <div id="spr-left"   class="spr" style="display:none"></div>
+    <div id="spr-center" class="spr" style="display:none"></div>
+    <div id="spr-right"  class="spr" style="display:none"></div>
+    <div id="tint" class="fill"></div>
+    <div id="flash" class="fill"></div>
+
+    <div id="textbox" style="display:none">
+      <div id="namelabel"></div>
+      <div id="dialog"></div>
+      <div id="date-indicator" style="display:none"></div>
+      <div id="adv">▾</div>
+    </div>
+
+    <div id="inscription" style="display:none"></div>
+
+    <div id="volayer" class="fill" style="display:none">
+      <div id="volines"></div>
+    </div>
+
+    <div id="dashboard" style="display:none"></div>
+
+    <div id="choicemenu" style="display:none">
+      <div id="choice-list" style="display:contents"></div>
+    </div>
+
+    <div id="chapfade" class="fill"></div>
+
+    <div id="chapter-indicator" style="display:none"></div>
+    <button id="menubtn" style="display:none" title="Menu (Esc)">≡</button>
+    <button id="musicbtn" title="Music on — click to mute">♪</button>
+    <div id="advance-hint">Click, tap, or press <b>Space</b> to continue</div>
+
+    <!-- menus -->
+    <div id="title" class="menu" style="display:none">
+      <div id="title-art"></div>
+      <div id="title-head">
+        <h1>PLAN <span class="accent">A</span></h1>
+        <div class="byline">AN AI 2040 VISUAL NOVEL</div>
+      </div>
+      <div class="notice" id="title-notice">An <b>unofficial fan adaptation</b> of <a href="https://ai-2040.com" target="_blank" rel="noopener">Plan A (ai-2040.com)</a> by the <a href="https://ai-futures.org" target="_blank" rel="noopener">AI Futures Project</a>.<br>A recommendation for how humanity could reach superintelligence safely.<br>Not affiliated with or endorsed by the original authors.</div>
+      <button id="btn-begin">Begin</button>
+      <button id="btn-continue" style="display:none">Continue</button>
+      <button id="btn-chapters-title" style="display:none">Chapters</button>
+      <button id="btn-settings-title">Settings</button>
+      <button id="btn-credits-title">Credits</button>
+      <div id="version-tag"></div>
+    </div>
+
+    <div id="pausemenu" class="menu" style="display:none">
+      <div id="menu-overview"></div>
+      <button id="btn-resume">Resume</button>
+      <button id="btn-overview">Where Things Stand</button>
+      <button id="btn-controls">Controls</button>
+      <button id="btn-history">History</button>
+      <button id="btn-chapters">Chapters</button>
+      <button id="btn-settings">Settings</button>
+      <button id="btn-credits">Credits</button>
+      <button id="btn-totitle">Title Screen</button>
+      <div id="pause-save-note" class="menu-note">Your progress is saved automatically &mdash; &ldquo;Continue&rdquo; on the title screen picks up right where you left off.</div>
+    </div>
+
+    <div id="overviewmenu" class="menu" style="display:none">
+      <h2>WHERE THINGS STAND</h2>
+      <div id="overview-card"></div>
+      <button id="btn-overview-back">Back</button>
+    </div>
+
+    <div id="controlsmenu" class="menu" style="display:none">
+      <h2>CONTROLS</h2>
+      <div class="ctrl-card">
+        <div class="ctrl-cols">
+          <div class="ctrl-group">
+            <div class="ctrl-gtitle">Reading</div>
+            <div class="ctrl-grid">
+              <span class="k">Click / Tap</span><span>Advance the story</span>
+              <span class="k">Space / Enter</span><span>Advance the story</span>
+              <span class="k">&mdash;</span><span>Mid-line (<b>|</b>) and sentence pauses advance the same way</span>
+              <span class="k">Ctrl (hold)</span><span>Skip text you&rsquo;ve already read; stops at new text and at choices</span>
+            </div>
+          </div>
+          <div class="ctrl-group">
+            <div class="ctrl-gtitle">Going Back</div>
+            <div class="ctrl-grid">
+              <span class="k">&larr; / &uarr;</span><span>Roll back through earlier beats to re-read</span>
+              <span class="k">&rarr; / &darr;</span><span>Roll forward again</span>
+              <span class="k">Click / End</span><span>Return to the present (a click also picks, if you rolled back to a choice)</span>
+            </div>
+          </div>
+          <div class="ctrl-group">
+            <div class="ctrl-gtitle">Making a Choice</div>
+            <div class="ctrl-grid">
+              <span class="k">&uarr; &darr; &larr; &rarr;</span><span>Move the highlight between options</span>
+              <span class="k">Enter / Space</span><span>Pick the highlighted option</span>
+              <span class="k">Click</span><span>Pick an option directly</span>
+            </div>
+          </div>
+          <div class="ctrl-group">
+            <div class="ctrl-gtitle">Screen &amp; Menus</div>
+            <div class="ctrl-grid">
+              <span class="k">Shift (hold)</span><span>Hide the interface to see the art (for screenshots)</span>
+              <span class="k">CapsLock</span><span>Sticky hide &mdash; toggles the interface off until you tap it again</span>
+              <span class="k">Esc</span><span>Open the menu &middot; back out of a panel</span>
+              <span class="k">&#9776; button</span><span>Open the menu (top-right)</span>
+              <span class="k">&#9835; button</span><span>Toggle music (top-left)</span>
+              <span class="k">Chapter tag</span><span>Click the on-screen chapter label to jump chapters</span>
+            </div>
+          </div>
+        </div>
+        <div class="ctrl-note">
+          <b>Settings</b> (from the menu): <b>Text Speed</b> slow / normal / fast / instant &middot;
+          <b>Autoplay</b> on / off with a short / medium / long <b>delay</b> &middot;
+          <b>Show Chapter</b> full / number / off &middot;
+          <b>Music Volume</b> &middot; and <b>Delete all progress</b>.
+        </div>
+      </div>
+      <button id="btn-controls-back">Back</button>
+    </div>
+
+    <div id="creditsmenu" class="menu" style="display:none">
+      <h2>CREDITS</h2>
+      <div class="credits-card">
+        <div class="cr-unofficial">This is an <b>unofficial fan work</b>.
+          Not affiliated with or endorsed by the original authors.</div>
+
+        <div class="cr-group">
+          <div class="cr-role">Source scenario</div>
+          <div class="cr-body"><b>Plan A / AI 2040</b>, by the
+            <a href="https://ai-futures.org" target="_blank" rel="noopener">AI Futures Project</a> —
+            <a href="https://ai-2040.com" target="_blank" rel="noopener">ai-2040.com</a>.<br>
+            <a href="https://www.aifutures.org/about" target="_blank" rel="noopener">Thomas Larsen, Romeo Dean, Brendan Halstead, Eli Lifland, Ryan Greenblatt &amp; Daniel Kokotajlo</a>.
+            All the policy ideas, the numbers, and the five-plan structure are theirs.</div>
+        </div>
+
+        <div class="cr-group">
+          <div class="cr-role">Adaptation &amp; direction</div>
+          <div class="cr-body"><a href="https://sus.cat/" target="_blank" rel="noopener">meowtase</a>
+            (<a href="https://x.com/cutesuscat" target="_blank" rel="noopener">@cutesuscat</a>)</div>
+        </div>
+
+        <div class="cr-group">
+          <div class="cr-role">Writing, engine &amp; production</div>
+          <div class="cr-body">Built with <b>Claude</b> (Anthropic). Engine adapted from the
+            kinetic-novel framework of
+            <a href="https://github.com/esyudkowsky/everything-that-hurt-you" target="_blank" rel="noopener"><i>Everything That Hurt You</i></a>
+            by Eliezer Yudkowsky.</div>
+        </div>
+
+        <div class="cr-group">
+          <div class="cr-role">Art</div>
+          <div class="cr-body">Google <b>Gemini</b> image models (&ldquo;Nano Banana&rdquo;), via
+            <a href="https://openrouter.ai" target="_blank" rel="noopener">OpenRouter</a>. &ldquo;Dossier Red&rdquo; style.</div>
+        </div>
+
+        <div class="cr-group">
+          <div class="cr-role">Music</div>
+          <div class="cr-body">Google <b>Lyria</b>, via
+            <a href="https://openrouter.ai" target="_blank" rel="noopener">OpenRouter</a>.</div>
+        </div>
+
+        <div class="cr-thanks">Made with care, and a catgirl, in 2026.</div>
+      </div>
+      <button id="btn-credits-back">Back</button>
+    </div>
+
+    <div id="settingsmenu" class="menu" style="display:none">
+      <h2>SETTINGS</h2>
+      <div class="opt-row">
+        <div class="opt-label">Text Speed</div>
+        <div class="opt-group" id="speed-group">
+          <button class="opt-btn" data-speed="60">Slow</button>
+          <button class="opt-btn" data-speed="33">Normal</button>
+          <button class="opt-btn" data-speed="14">Fast</button>
+          <button class="opt-btn" data-speed="0">Instant</button>
+        </div>
+      </div>
+      <div class="opt-row">
+        <div class="opt-label">Autoplay</div>
+        <div class="opt-group" id="autoplay-group">
+          <button class="opt-btn" data-autoplay="0">Off</button>
+          <button class="opt-btn" data-autoplay="1">On</button>
+        </div>
+      </div>
+      <div class="opt-row" id="autoplay-delay-row">
+        <div class="opt-label">Autoplay Delay</div>
+        <div class="opt-group" id="delay-group">
+          <button class="opt-btn" data-delay="400">Short</button>
+          <button class="opt-btn" data-delay="900">Medium</button>
+          <button class="opt-btn" data-delay="1800">Long</button>
+        </div>
+      </div>
+      <div class="opt-row">
+        <div class="opt-label">Show Chapter</div>
+        <div class="opt-group" id="showchapter-group">
+          <button class="opt-btn" data-showchapter="full">Full</button>
+          <button class="opt-btn" data-showchapter="number">Number</button>
+          <button class="opt-btn" data-showchapter="off">Off</button>
+        </div>
+      </div>
+      <div class="opt-row">
+        <div class="opt-label">Music Volume</div>
+        <input id="volume-slider" class="opt-slider" type="range" min="0" max="100" step="1" aria-label="Music volume">
+      </div>
+      <div class="opt-controls">
+        <div class="opt-controls-title">Controls</div>
+        <div class="opt-controls-grid">
+          <span class="k">Click / Space / Enter</span><span>Advance (or pick a choice)</span>
+          <span class="k">&uarr; / &darr;</span><span>Move the highlight on a choice</span>
+          <span class="k">&larr; / &uarr;</span><span>Go back to re-read (&rarr; / &darr; or a click returns)</span>
+          <span class="k">Ctrl (hold)</span><span>Skip text you&rsquo;ve already read; stops at new text and choices</span>
+          <span class="k">Shift (hold)</span><span>Hide the interface to see the art</span>
+        </div>
+      </div>
+      <div class="opt-row danger-row">
+        <div class="opt-label">Progress</div>
+        <div class="opt-group">
+          <button id="btn-delete-progress" class="danger-btn">Delete all progress</button>
+        </div>
+      </div>
+      <button id="btn-settings-back">Back</button>
+      <div id="settings-version"></div>
+    </div>
+
+    <div id="historymenu" class="menu" style="display:none">
+      <h2>HISTORY</h2>
+      <div id="history-list"></div>
+      <button id="btn-history-back">Back</button>
+    </div>
+
+    <div id="chapters" class="menu" style="display:none">
+      <h2>CHAPTERS</h2>
+      <div id="chapter-list"></div>
+      <button id="btn-chapters-back">Back</button>
+    </div>
+
+    <div id="endcard" class="menu" style="display:none">
+      <div class="fin">— fin —</div>
+      <button id="btn-end-chapters">Chapters</button>
+      <button id="btn-end-title">Return to Title</button>
+    </div>
+
+    <div id="boot-error"></div>
+  </div>
+  <script src="engine.js"></script>
+</body>
+</html>

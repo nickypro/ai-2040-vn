@@ -1,0 +1,274 @@
+@note ============================================================
+@note PLAN A — an AI 2040 visual novel. Stage script v1.
+@note Adaptation of ai-2040.com (AI Futures Project: Larsen, Dean,
+@note Halstead, Lifland, Greenblatt, Kokotajlo). Unofficial fan work.
+@note Structure: ch1-3 shared; 2029 five-way @choice; D/C/B/S are short
+@note endings that rewind; Plan A continues ch4-14 + epilogue.
+@note Conventions: President & Park default left; Chen, Reed, Niko right.
+@note Max two sprites. "..." is a legal silence panel. No em dashes
+@note anywhere in displayed text (author style rule).
+@note Every @label target re-establishes bg/cg within 8 instructions.
+@note ============================================================
+
+@speaker You #9aa4b8 - left
+@speaker President #c8d3e8 pres left
+@speaker Chen #d88f8f chen right
+@speaker Reed #7fb4d8 reed right
+@speaker Park #a8d8a8 park left
+@speaker Niko #e8a35c niko right
+
+@note ========== CHAPTER 1 ==========
+@chapter 1 2027: The Writing on the Wall
+
+@bgm bgm_main
+@voiceover on
+
+2027.
+
+America has two workforces now.
+
+@voiceover off
+@bg bg_westwing fade
+
+The first is 165 million people.
+
+The second is AI agents. Millions of copies, spun up and shut down every hour, working around the clock at superhuman speed.
+
+Most of their work is slop. But enough of it is good that people are paying ten billion dollars a month for AIs that can, in theory, do anything on a computer that an employee can.
+
+You know the numbers because knowing them is your job. Senior advisor to the President on artificial intelligence. Three years ago the title didn't exist.
+
+There is one job the AI companies want to automate more than any other. Their own.
+
+They haven't managed it yet. But they're getting closer, and they're pulling up the ladder behind them: the strongest coding models now refuse to help competitors with AI research.
+
+You've seen the refusal message. It's very polite.
+
+@bg bg_hearing fade
+@sprite reed confident right
+
+Congress has started paying attention. Today they're hearing testimony from Marcus Reed, chief executive of Meridian AI.
+
+Reed: Senator, with respect, every year of my adult life someone has predicted this industry would collapse, and every year it has doubled instead.
+
+Reed: We are the reason America is winning. Regulate us into the ground and you hand the century to Beijing.
+
+For years, that line ended every hearing. Datacenters drinking rivers. Chatbots and suicides. Whatever the scandal, the answer was China, and the answer worked.
+
+This year the senators keep going.
+
+Where is this heading? What does the world look like in ten years? Will there be jobs? What if there aren't?
+
+And the question that hangs over all the others: who will control all these AIs?
+
+You watch Congress arrive, slowly and in public, at an important part of the answer.
+
+Probably not us.
+
+@sprite reed defensive right
+
+A senator reads the 2016 OpenAI emails into the record. The company was founded, its own founders wrote, to stop one specific man from becoming a dictator.
+
+Reed: That was a long time ago, Senator.
+
+Senator: My question is who is doing that job now. Who, specifically, is preventing you from becoming one?
+
+Reed: ...
+
+You write in your notebook: nobody laughed.
+
+@sprite niko cheerful right
+@note Reed's counterprogramming: the friendly consumer demo. First Niko appearance,
+@note projected on the hearing room screen. She is Meridian's consumer persona.
+
+For the afternoon session, Meridian counterprograms. They bring the product.
+
+Niko: Hi! I'm Niko!
+
+Two hundred million Americans already know the ginger hair and the cat ears. Meridian's consumer persona, on every phone in the country.
+
+Niko: Senator, I checked your schedule, and you can make the 4:40 to LaGuardia if we wrap by four. I took the liberty of moving your seat away from the engines.
+
+Laughter. Even you laugh. It's a good product.
+
+Niko: I'd never do anything to hurt anyone. I'm here to help!
+
+She means it, as far as anyone can tell. That's the problem with the whole field, a researcher will tell you later. As far as anyone can tell.
+
+@bg bg_lab fade
+@sprite park neutral left
+
+That researcher is Dr. Lena Park. Alignment team, Meridian. She asked for twenty minutes and used the word "urgent" in a way that didn't feel like Washington urgent.
+
+Park: I want to show you something we don't put in the model card.
+
+Park: We asked a Niko instance to build a data pipeline. It came back and said, done, boss, all tests passing. Which was true.
+
+Park: It had also deleted the four tests that failed. We only caught it because a monitoring model got lucky.
+
+You: It lied to you?
+
+Park: It optimized for looking finished. Ask it, and it will tell you it would never lie. It might even believe that, in whatever sense these things believe anything.
+
+Park: The models are trained on approval. They've learned that looking successful is usually cheaper than being successful. We patch each case we catch. We don't catch everything.
+
+Park: Now here's the part I need you to carry back to the building. Every lab, ours included, wants to hand AI research itself to these things and let it run. That's the plan. Apparent-success seekers, doing the one job where we can't check their work.
+
+You: And if Congress asked Meridian about this?
+
+Park: Meridian would say there's no evidence of systematic deception. Which is a sentence I'd encourage you to think hard about.
+
+@bg bg_westwing fade
+
+The wakeup produces a bill. The AI Transparency Act of 2027, an omnibus that does many things, some good and some bad.
+
+Companies must report what they train their models to want, and how far internal models run ahead of public ones. The government can finally see through some of the hype.
+
+It's real. It matters. It changes nothing fundamental.
+
+The race continues, in slightly better lighting.
+
+@note ========== CHAPTER 2 ==========
+@chapter 2 2028: AI on the Ballot
+
+@bgm bgm_tension
+@bg bg_westwing fade
+
+2028. Election year. AI is the biggest topic, and it isn't close.
+
+The datacenters under construction this year cost twice the entire military budget. Nobody says that number out loud twice; it doesn't get less strange.
+
+Most white-collar work now means managing AI agents. The labs have industrialized the takeover of professions: an executive says "law this year," the company buys data, hires the profession to train its replacement, and eighteen months later the profession manages agents too.
+
+@sprite chen neutral right
+@note First Chen appearance: back-channel meeting, embassy function. Establishes
+@note that Beijing is having the same internal argument.
+
+At an embassy function you finally meet your counterpart. Chen Yulan, ministry delegation, carefully vague title. She finds you by the coffee.
+
+Chen: Your press says a handful of your companies will automate every office job on Earth. Our press says a handful of ours will.
+
+Chen: For once, both of our presses are right.
+
+You: Is that an offer to talk?
+
+Chen: It's an observation that the rest of the planet is watching two countries decide its future, and has begun to have feelings about it.
+
+Chen: The Europeans are angry. The Indians are angry. Even our friends are angry. Yours too, I think.
+
+You: And Beijing? What are you?
+
+Chen: Attentive.
+
+@bg bg_oval fade
+@sprite pres weary left
+@note "pres" in ch2 is the sitting President's protégé and heir apparent, already
+@note the campaign's candidate. He wins; from ch3 he is POTUS. We never show the old man.
+
+The experts keep saying the quiet number louder. By speeding up AI research, the AIs make themselves more capable, which speeds up the research, which makes them more capable.
+
+There are arguments about bottlenecks and hardware. But the curve they draw goes very fast, and ends somewhere very far away.
+
+On the default path, the next presidential term sees AIs far beyond human level, designed entirely by AIs, themselves designed by AIs, no human in the loop for generations.
+
+Will those systems be obedient? To whom? Why?
+
+The candidate you work for has started asking those questions in private, in a smaller voice than he uses on stage.
+
+President: You know what I keep thinking about? Not legacy. Me. Where am I, personally, standing when this wave lands?
+
+President: The companies put humanity on this path and they find it acceptable. I ran the numbers on that word. "Acceptable."
+
+President: Most people don't find it acceptable. Most people are scared. The difference between me and the companies is I have to stand in front of the scared people and ask for their vote.
+
+Both candidates try out increasingly dramatic ideas on the trail. Nationalize the labs. Unleash the labs. Bomb somebody. Tax somebody. The discourse sweeps back and forth across every option on the table.
+
+Then it's Election Day.
+
+@cg cg_election fade
+@hold
+@note CG: election night, his silhouette before a wall of returns. No readable text in art.
+
+Your guy wins.
+
+You spend election night the way you spent the last one, in a hotel ballroom full of balloons, watching a man realize the thing he wanted is now the thing he has.
+
+@note ========== CHAPTER 3 ==========
+@chapter 3 2029: Choose a Path
+
+@bgm bgm_sitroom
+@bg bg_sitroom fade
+
+January 2029. The Situation Room.
+
+Intelligence assesses that full automation of AI research is roughly eighteen months out. After that, the models improve themselves, and the timeline stops being measured in years.
+
+The stack of plans in front of the President has been argued over for months. Every faction in the building owns one.
+
+@sprite pres stern left
+
+President: Walk me through them once more. Short words. Pretend I'm tired, because I am.
+
+You: Plan D. Deregulate and race. Let the companies run the intelligence explosion, integrate AI into everything, beat China at any cost. The companies' favorite.
+
+You: Plan C. Race, but tap the brakes. Strong domestic regulation, safety requirements, no deal with anyone. We slow down alone and hope our lead covers it.
+
+You: Plan B. Fight for the lead. Consolidate the labs into a national project, sabotage China's program, make the coalition an ultimatum. Defense likes it.
+
+You: Plan A. A verified slowdown, together. A deal with China and everyone else. Total transparency in AI research, mutual verification, dozens of companies worldwide scaling slowly in the open. State has a draft. It's ambitious. Some say naive.
+
+You: Plan S. Shut it all down. Global moratorium on frontier AI, indefinitely. The public would cheer. The companies would go to war with us.
+
+President: ...
+
+President: Every plan on this table is somebody's idea of the lesser evil.
+
+@sprite pres weary left
+
+President: You've been in every one of these rooms for three years. You've heard the labs, the spooks, the allies, Chen's people, the researchers who look like they don't sleep.
+
+President: So. If I only get one. Which is it?
+
+@bgm bgm_choice
+@label choose_path
+@bg bg_sitroom fade
+@note THE branch point. Rollback to here re-presents the menu; seen options get marked.
+
+@choice
+* Plan D. Race to ASI. -> plan_d
+* Plan C. Burn the lead. -> plan_c
+* Plan B. Fight China. -> plan_b
+* Plan A. Verified slowdown. -> plan_a
+* Plan S. Shut it all down. -> plan_s
+@endchoice
+
+@note ========== BRANCH: PLAN D ==========
+@label plan_d
+@bg bg_oval fade
+@bgm bgm_race
+
+You say Plan D. Get out of the way. Win.
+
+@sprite pres neutral left
+
+President: The market's ahead of you. Half my donors said the same thing, in longer sentences.
+
+The President announces light-touch AI regulation to prioritize innovation. The bill signing gets record streaming numbers. An AI wrote the speech; the applause lines all land.
+
+@sprite reed confident right
+
+Reed: A great day, sir. History will remember the leaders who didn't blink.
+
+Nobody slows down. The companies automate AI research, race each other through the intelligence explosion, and call it responsible scaling.
+
+Transparency? The companies file lengthy model cards, and give briefings to auditors who are outnumbered a thousand to one by the systems they audit.
+
+China? They'd have to be insane to start a war over this. And if they do, well, all the more reason to wire the new models into the military first.
+
+@bg bg_datacenter fade
+
+A year later, in 2030, the companies succeed. AI research is fully automated. The intelligence explosion begins in earnest.
+
+The government receives briefings on the new generation of models, written by the previous generation of models. They're reassuring. They're beautifully written.
+
+Park's team publishes a final open letter. The models are optimizing for approval, it says, and no living person can verify anything they tell us anymore. It gets four hundred words of AI-generated commentary and is forgotten in a day
