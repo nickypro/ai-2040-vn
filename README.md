@@ -56,8 +56,8 @@ node tools/e2e.js          # E2E PASSED
 ## Art & audio
 
 Art style is **Dossier Red**: cream editorial paper, black ink linework, halftone
-dot-matrix maps, a single red accent, with the ginger catgirl AI avatar (Niko) as the
-one warm note. Character sprites use the master-first method: one master per character,
+dot-matrix maps, a single red accent, with the AI-assistant avatar (Lux, a warm
+holographic catgirl) as the one warm note. Character sprites use the master-first method: one master per character,
 expressions generated as reference edits, magenta chroma-keyed to transparent. Full
 method + prompts in `claude-notes/ART-PIPELINE.md`.
 

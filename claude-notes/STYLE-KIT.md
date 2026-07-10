@@ -55,7 +55,7 @@ Prefix each filename with nothing special; just these names inside your folder:
    (not resembling any real person), woman in her fifties, black hair in a neat low
    bun, dark tailored charcoal suit, composed and sharp. Standing, facing viewer, faint
    wry look. EXACTLY ONE FIGURE.
-4. `niko.png` (3:4 sprite, magenta) — the ginger catgirl AI avatar: young woman, long
+4. `lux.png` (3:4 sprite, magenta) — the ginger catgirl AI avatar: young woman, long
    wavy ginger hair, ginger cat ears on her head, ONE ginger cat tail, amber eyes,
    human face with NO muzzle, slightly oversized charcoal off-shoulder t-shirt and dark
    denim shorts, warm friendly smile (mouth closed). EXACTLY ONE FIGURE. She is the
@@ -71,7 +71,7 @@ Prefix each filename with nothing special; just these names inside your folder:
 
 1. Read this file. Generate all 5 (concurrently is fine).
 2. **View each result with the Read tool.** Judge: does it match the assigned style?
-   Is character identity right (Niko's ears+tail+ginger+amber eyes; Chen Chinese;
+   Is character identity right (Lux's ears+tail+ginger+amber eyes; Chen Chinese;
    President not a real-person lookalike)? Clean magenta on sprites? Any text leaked
    (regenerate with stronger NO-text negative)? Exactly one figure?
 3. Do at MOST one regen pass on the weakest 1-2 images. Don't perfectionist-loop.

@@ -13,7 +13,7 @@ assets with graceful missing-asset degradation, Node-exported parser for the val
 
 1. **Speakers declared in script, not engine.** New header directive:
    `@speakers Name colorHex spritePrefix defaultSlot, ...` or one `@speaker` line each:
-   `@speaker Niko #e8a35c niko right`. Unknown speaker in dialogue = validator error.
+   `@speaker Lux #e8a35c lux right`. Unknown speaker in dialogue = validator error.
 2. **No hardcoded chapter count.** Derive from script.
 3. **Branching.** New directives:
    - `@label <name>` — jump target. No-op state-wise.
