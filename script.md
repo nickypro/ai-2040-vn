@@ -911,22 +911,48 @@ Chen: We cannot verify each other anymore. Too much of the economy moves too fas
 Chen: And the tax base is collapsing, in both our countries, because there are fewer and fewer people earning wages to tax. If we do nothing, the state goes broke exactly when its people need it most.
 
 @bg bg_westwing fade
+@clear
 
-The fix is a market. Permits to build robots or compute are capped and auctioned. In 2032 a robot permit runs two hundred thousand dollars, a chip permit ten thousand, and the auctions pour something like ten times the old federal revenue into the treasury. Fifty trillion dollars, that year alone.
+The fix is a market.
+
+Permits to build robots or compute are capped, then auctioned to the highest bidder.
+
+In 2032, a single robot permit sells for $200,000. A chip permit, $10,000.
+
+The auctions pour ten times the old federal revenue into the treasury. $50 trillion, that year alone.
 
 @sprite pres neutral left
 
-President: So now I'm the man who has to decide what to do with fifty trillion dollars a year that no worker earned. There's no chapter in any book for this.
+President: So now I'm the man who has to decide what to do with $50 trillion a year that no worker earned. There's no chapter in any book for this.
 
-Most of it goes to the thing coming straight at everyone. A Citizen's Dividend, paid to every American adult. It starts at forty-five thousand dollars a year.
+Most of it goes to the one thing coming straight at everyone.
 
-It does not stay there. As the permit money swells, so does the check. By 2035 it is closer to a million dollars a year, per person.
+@cg cg_dividend fade
 
-There is one catch, and it matters. The Dividend is American. It comes out of American permit revenue, and it goes to American adults. A French pensioner, an Indian teacher, a Nigerian nurse gets none of it.
+A Citizen's Dividend. Paid to every American adult, every year, working or not.
 
-Washington does start sending money abroad, to the roughly four billion people outside the US and China. But it is a different order of magnitude. About twelve hundred dollars a year at first, while an American collects a hundred times that, and climbing.
+@bg bg_westwing fade
+@sprite pres neutral left
 
-The gap narrows over the decade. It does not close for years. For a long stretch an American's dividend is counted in the millions and the rest of the world's in the thousands.
+It starts at $45,000 a year.
+
+It does not stay there. As the permit money swells, so does the check.
+
+By 2035 it is closer to $1,000,000 a year, each.
+
+There is one catch, and it matters.
+
+The Dividend is American. It comes out of American permit revenue, and it goes to American adults.
+
+A French pensioner, an Indian teacher, a Nigerian nurse gets none of it.
+
+Washington does start sending money abroad, to the roughly four billion people outside the US and China.
+
+But it is a different order of magnitude. About $1,200 a year at first, while an American collects a hundred times that, and climbing.
+
+The gap narrows over the decade. It does not close for years.
+
+For a long stretch, an American's dividend is counted in millions, and the rest of the world's in thousands.
 
 @cg cg_chart_labor fade
 
