@@ -255,7 +255,7 @@ if (typeof module !== "undefined" && module.exports) {
 /* ---------------- player (browser only) ---------------- */
 
 if (typeof document !== "undefined") (function () {
-  const APP_VERSION = "1.2.1"; // shown on the title screen and in Settings; bump to release
+  const APP_VERSION = "1.3.0"; // shown on the title screen and in Settings; bump to release
   const $ = (id) => document.getElementById(id);
   const SAVE_KEY = "plana_save";
   const SETTINGS_KEY = "plana_settings";
@@ -369,7 +369,7 @@ if (typeof document !== "undefined") (function () {
     const c = SCRIPT.ins[j];
     if (!c) return;
     if (c.op === "bg") preload(assetPath("bg", c.id));
-    else if (c.op === "cg") preload(assetPath("cg", c.id));
+    else if (c.op === "cg" && !CHART_IDS.has(c.id)) preload(assetPath("cg", c.id));
     else if (c.op === "sprite") preload(spritePath(c.char, c.expr));
   }
   // scan ahead ~24 instructions FOLLOWING the flow: through @jump, and a few
@@ -397,10 +397,17 @@ if (typeof document !== "undefined") (function () {
     }
   }
 
-  /* full-screen image element; falls back to a labeled placeholder card */
+  /* full-screen image element; falls back to a labeled placeholder card.
+     CG ids registered as built-in data charts render engine-drawn SVG instead
+     of loading an (unreliable) image-model diagram. */
   function makeLayerImg(kind, id) {
     const wrap = document.createElement("div");
     wrap.className = "layer-img";
+    if (kind === "cg" && CHART_IDS.has(id)) {
+      wrap.classList.add("chart-layer");
+      wrap.innerHTML = chartCardHTML(id);
+      return wrap;
+    }
     const path2 = assetPath(kind, id);
     if (path2) {
       wrap.style.backgroundImage = "url('" + path2 + "')";
@@ -1053,6 +1060,125 @@ if (typeof document !== "undefined") (function () {
         rows +
       '</div>';
   }
+  /* ---------- built-in data charts (engine-drawn SVG, dossier-red) ----------
+     These replace image-model CGs for anything that carries real numbers: an
+     image generator garbles data/labels, so we draw them by hand. `@cg <id>`
+     with one of these ids renders the SVG card instead of loading an image. */
+  const CHART_IDS = new Set(["cg_chart_explosion", "cg_chart_labor", "cg_dividend"]);
+  const CHART_INK = "#16130d", CHART_RED = "#d64533", CHART_CREAM = "#fbf6ea";
+
+  // World Compute — log-scaled bar chart, 20M H100e (2026) -> 60B (2034)
+  function chartComputeBody() {
+    const bars = [
+      { y: "2026", v: 2e7, lbl: "20M" },
+      { y: "2028", v: 2e8, lbl: "200M" },
+      { y: "2030", v: 2e9, lbl: "2B" },
+      { y: "2032", v: 2e10, lbl: "20B" },
+      { y: "2034", v: 6e10, lbl: "60B" },
+    ];
+    const x0 = 34, x1 = 292, base = 132, top = 26;
+    const loMin = 7, loMax = 11; // 10M .. 100B on log10
+    const bw = 30, span = (x1 - x0) / bars.length;
+    let g = "";
+    // baseline
+    g += '<line x1="' + x0 + '" y1="' + base + '" x2="' + x1 + '" y2="' + base + '" stroke="' + CHART_INK + '" stroke-width="1"/>';
+    bars.forEach((b, i) => {
+      const h = (Math.log10(b.v) - loMin) / (loMax - loMin);
+      const bh = Math.max(4, h * (base - top));
+      const bx = x0 + i * span + (span - bw) / 2;
+      const by = base - bh;
+      g += '<rect x="' + bx.toFixed(1) + '" y="' + by.toFixed(1) + '" width="' + bw + '" height="' + bh.toFixed(1) +
+        '" fill="' + CHART_RED + '" stroke="' + CHART_INK + '" stroke-width="0.8"/>';
+      g += '<text class="ch-barval" x="' + (bx + bw / 2).toFixed(1) + '" y="' + (by - 3).toFixed(1) + '">' + b.lbl + '</text>';
+      g += '<text class="ch-axis" x="' + (bx + bw / 2).toFixed(1) + '" y="' + (base + 12) + '">' + b.y + '</text>';
+    });
+    return '<svg class="chart-svg" viewBox="0 0 320 150" preserveAspectRatio="xMidYMid meet">' + g + '</svg>';
+  }
+
+  // Human, AI & Robot population (human-equivalent labor), 2025-2040
+  function chartLaborBody() {
+    const x0 = 40, x1 = 300, yb = 128, yt = 24, vmax = 400;
+    const X = (yr) => x0 + ((yr - 2025) / 15) * (x1 - x0);
+    const Y = (v) => yb - (v / vmax) * (yb - yt);
+    const line = (pts) => pts.map((p, i) => (i ? "L" : "M") + X(p[0]).toFixed(1) + "," + Y(p[1]).toFixed(1)).join(" ");
+    const humans = [[2025, 4], [2032, 4], [2040, 3]];
+    const ai = [[2025, 0.5], [2030, 5], [2033, 40], [2035, 120], [2037, 250], [2040, 400]];
+    const robots = [[2032, 1], [2034, 20], [2036, 60], [2038, 110], [2040, 165]];
+    let g = "";
+    // axes
+    g += '<line x1="' + x0 + '" y1="' + yt + '" x2="' + x0 + '" y2="' + yb + '" stroke="' + CHART_INK + '" stroke-width="1"/>';
+    g += '<line x1="' + x0 + '" y1="' + yb + '" x2="' + x1 + '" y2="' + yb + '" stroke="' + CHART_INK + '" stroke-width="1"/>';
+    [0, 100, 200, 300, 400].forEach((v) => {
+      g += '<text class="ch-axis ch-yr" x="' + (x0 - 5) + '" y="' + (Y(v) + 2).toFixed(1) + '">' + (v ? v + "B" : "0") + '</text>';
+    });
+    [2025, 2030, 2035, 2040].forEach((yr) => {
+      g += '<text class="ch-axis" x="' + X(yr).toFixed(1) + '" y="' + (yb + 12) + '">' + yr + '</text>';
+    });
+    g += '<path d="' + line(humans) + '" fill="none" stroke="' + CHART_INK + '" stroke-width="1.6"/>';
+    g += '<path d="' + line(robots) + '" fill="none" stroke="' + CHART_RED + '" stroke-width="1.8" stroke-dasharray="4 3"/>';
+    g += '<path d="' + line(ai) + '" fill="none" stroke="' + CHART_RED + '" stroke-width="2.4"/>';
+    // legend
+    const lg = [["Humans", CHART_INK, false], ["AI", CHART_RED, false], ["Robots", CHART_RED, true]];
+    lg.forEach((L, i) => {
+      const ly = yt + 4 + i * 13, lx = x1 - 66;
+      g += '<line x1="' + lx + '" y1="' + ly + '" x2="' + (lx + 16) + '" y2="' + ly + '" stroke="' + L[1] +
+        '" stroke-width="2.2"' + (L[2] ? ' stroke-dasharray="4 3"' : "") + '/>';
+      g += '<text class="ch-legend" x="' + (lx + 21) + '" y="' + (ly + 3) + '">' + L[0] + '</text>';
+    });
+    g += '<text class="ch-axis ch-ylabel" x="14" y="' + ((yt + yb) / 2) + '" transform="rotate(-90 14 ' + ((yt + yb) / 2) + ')">human-equivalents</text>';
+    return '<svg class="chart-svg" viewBox="0 0 320 150" preserveAspectRatio="xMidYMid meet">' + g + '</svg>';
+  }
+
+  // Citizen's Dividend — permit revenue flowing to citizens (US vs abroad)
+  function chartDividendBody() {
+    const box = (x, y, w, h, lines, accentIdx) => {
+      let t = '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="4" fill="' + CHART_CREAM +
+        '" stroke="' + CHART_INK + '" stroke-width="1.4"/>';
+      const cx = x + w / 2, n = lines.length, lh = 12, y0 = y + h / 2 - ((n - 1) * lh) / 2 + 3;
+      lines.forEach((ln, i) => {
+        const cls = i === accentIdx ? "ch-boxbig" : "ch-box";
+        t += '<text class="' + cls + '" x="' + cx + '" y="' + (y0 + i * lh) + '">' + ln + '</text>';
+      });
+      return t;
+    };
+    const arrow = (x1, y1, x2, y2, label) => {
+      let t = '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + CHART_INK +
+        '" stroke-width="1.4" marker-end="url(#chArrow)"/>';
+      if (label) t += '<text class="ch-flow" x="' + ((x1 + x2) / 2) + '" y="' + ((y1 + y2) / 2 - 3) + '">' + label + '</text>';
+      return t;
+    };
+    let g = '<defs><marker id="chArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">' +
+      '<path d="M0,0 L10,5 L0,10 z" fill="' + CHART_INK + '"/></marker></defs>';
+    g += box(95, 16, 130, 26, ["Robot &amp; Compute Permits", "capped, then auctioned"]);
+    g += arrow(160, 42, 160, 62, "&#36;50 trillion / yr (2032)");
+    g += box(110, 62, 100, 24, ["U.S. Treasury"]);
+    g += arrow(140, 86, 95, 110, "Dividend");
+    g += arrow(182, 86, 232, 110, "foreign aid");
+    g += box(24, 110, 148, 34, ["Every U.S. adult", "&#36;45,000 &rarr; &#36;1,000,000 / yr"], 1);
+    g += box(198, 110, 100, 34, ["~4 billion abroad", "&#36;1,200 / yr, rising"], 1);
+    return '<svg class="chart-svg" viewBox="0 0 320 152" preserveAspectRatio="xMidYMid meet">' + g + '</svg>';
+  }
+
+  function chartCardHTML(id) {
+    let title = "", sub = "", body = "", foot = "";
+    if (id === "cg_chart_explosion") {
+      title = "World Compute"; sub = "AI compute worldwide, start of year (H100-equivalents)";
+      body = chartComputeBody(); foot = "20 million in 2026 &rarr; 60 billion";
+    } else if (id === "cg_chart_labor") {
+      title = "Human, AI &amp; Robot Population"; sub = "in human-equivalent labor";
+      body = chartLaborBody(); foot = "Human labor becomes a rounding error";
+    } else if (id === "cg_dividend") {
+      title = "The Citizen's Dividend"; sub = "where the permit money goes";
+      body = chartDividendBody(); foot = "American, and paid whether you work or not";
+    }
+    return '<div class="chart-card">' +
+        '<div class="chart-head"><div class="chart-title">' + title + '</div>' +
+          (sub ? '<div class="chart-sub">' + sub + '</div>' : '') + '</div>' +
+        '<div class="chart-body">' + body + '</div>' +
+        (foot ? '<div class="chart-foot">' + foot + '</div>' : '') +
+      '</div>';
+  }
+
   function showDashboard(c, prevNums) {
     const box = $("dashboard");
     box.innerHTML = dashCardHTML(c.data || {}, prevNums, "Status Dossier &middot; Plan A", "");

@@ -22,10 +22,7 @@
     "cg_ocean": "assets/cg/cg_ocean.png",
     "cg_three_worlds": "assets/cg/cg_three_worlds.png",
     "cg_party": "assets/cg/cg_party.png",
-    "cg_lottery": "assets/cg/cg_lottery.png",
-    "cg_chart_explosion": "assets/cg/cg_chart_explosion.png",
-    "cg_chart_labor": "assets/cg/cg_chart_labor.png",
-    "cg_dividend": "assets/cg/cg_dividend.png"
+    "cg_lottery": "assets/cg/cg_lottery.png"
   },
   "sprites": {
     "pres.neutral": "assets/sprites/pres_neutral.png",

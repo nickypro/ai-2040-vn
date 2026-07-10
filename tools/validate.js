@@ -87,10 +87,13 @@ for (const name of targeted) {
 
 /* 6. assets: images must resolve AND exist; audio is optional (warn) */
 const exists = (p) => { try { return fs.existsSync(path.join(root, p)); } catch (e) { return false; } };
+// CG ids the engine draws as built-in SVG charts (no image asset; see engine.js CHART_IDS)
+const CHART_IDS = new Set(["cg_chart_explosion", "cg_chart_labor", "cg_dividend"]);
 const usedIds = new Set();
 function checkImg(kind, id, c) {
   const key = kind + ":" + id;
   usedIds.add(key);
+  if (kind === "cg" && CHART_IDS.has(id)) return; // engine-drawn chart, not a manifest asset
   const p = manifest[kind] && manifest[kind][id];
   if (!p) { errors.push(loc(c) + ": " + kind + " id '" + id + "' not in manifest"); return; }
   if (!exists(p)) errors.push(loc(c) + ": " + kind + " '" + id + "' -> missing file " + p);
