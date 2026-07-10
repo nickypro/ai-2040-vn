@@ -12,7 +12,7 @@
 
 // recognized @dashboard keys; anything else is ignored (validator WARN, not error)
 const DASH_KEYS = new Set([
-  "year", "employment", "dividend", "workforce", "compute", "gdp", "capability", "trajectory",
+  "year", "employment", "dividend", "safety", "workforce", "compute", "gdp", "capability", "trajectory",
 ]);
 
 function parseScript(text) {
@@ -251,7 +251,7 @@ if (typeof module !== "undefined" && module.exports) {
 /* ---------------- player (browser only) ---------------- */
 
 if (typeof document !== "undefined") (function () {
-  const APP_VERSION = "1.0.1"; // shown on the title screen and in Settings; bump to release
+  const APP_VERSION = "1.1.0"; // shown on the title screen and in Settings; bump to release
   const $ = (id) => document.getElementById(id);
   const SAVE_KEY = "plana_save";
   const SETTINGS_KEY = "plana_settings";
@@ -852,6 +852,7 @@ if (typeof document !== "undefined") (function () {
   const DASH_TILES = [
     { key: "employment", label: "Employment" },
     { key: "dividend",   label: "Citizen Dividend" },
+    { key: "safety",     label: "Safety Researchers" },
     { key: "workforce",  label: "AI Workforce" },
     { key: "compute",    label: "Compute" },
     { key: "gdp",        label: "GDP Growth" },
@@ -1458,6 +1459,14 @@ if (typeof document !== "undefined") (function () {
         '</div>';
     }
     const done5 = seenN >= ENDINGS_LIST.length;
+    const altSeen = seenLabels.has("interlude_safetycase");
+    const altLine =
+      '<div class="end-alt">' +
+        '<span class="end-alt-k">Alternate timeline</span> ' +
+        (altSeen
+          ? '&#10003; A flawed safety case is approved &mdash; Plan A’s most-feared failure, one careful argument off the main path.'
+          : '&#9675; A near-miss on the Plan A path is still unseen. (Offered mid-story, after 2031.)') +
+      '</div>';
     card.innerHTML =
       '<div class="end-head">The Endings</div>' +
       '<div class="end-sub">' +
@@ -1465,7 +1474,7 @@ if (typeof document !== "undefined") (function () {
                : "Paths seen: " + seenN + " of " + ENDINGS_LIST.length +
                  ". Each plan plays all the way out; return and try another.") +
       '</div>' +
-      '<div class="end-grid">' + tiles + '</div>';
+      '<div class="end-grid">' + tiles + '</div>' + altLine;
     box.appendChild(card);
   }
 

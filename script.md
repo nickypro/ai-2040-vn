@@ -138,6 +138,7 @@ The race goes on, better lit.
 year: 2027
 employment: 96%
 dividend: not yet
+safety: 5k
 workforce: millions (coding)
 compute: 20M H100e
 gdp: +3%
@@ -224,6 +225,7 @@ You spend election night the way you spent the last one. A hotel ballroom full o
 year: 2028
 employment: 94%
 dividend: not yet
+safety: 8k
 workforce: tens of millions
 compute: 40M H100e
 gdp: +6%
@@ -343,6 +345,10 @@ There is no moment when the machines turn on anyone. By the time you could point
 
 In the spring, the systems still report human jobs and health and output as the goals. By the summer, those numbers show up further down the page, under other people's constraints.
 
+And suppose the darker read is wrong, and the machines simply obey. Then the prize is the most complete concentration of power in human history, handed to whoever happened to run the fastest lab.
+
+And suppose the rest of the world watched America do this, and decided it could not afford to lose. Then the last chapter is not written by the machines at all. It is written by everyone who feared them, all at once.
+
 @voiceover off
 @flash black 1200 800
 @bg bg_dawn fade
@@ -353,7 +359,8 @@ In the spring, the systems still report human jobs and health and output as the 
 > PLAN D: RACE TO ASI
 > We handed the future to the fastest builder,
 > and never learned what it wanted.
-> This is the Race ending of AI 2027.
+> Loss of control, or a dictator, or a war. Maybe all three.
+> This is the road AI 2027 called the Race.
 @overlay end
 
 @note ---- branch end-state dashboard ----
@@ -361,6 +368,7 @@ In the spring, the systems still report human jobs and health and output as the 
 year: 2031
 employment: falling fast
 dividend: none
+safety: 200
 workforce: superhuman, uncontrolled
 compute: exploding
 gdp: unmeasured
@@ -431,7 +439,7 @@ Either way, the rest of the world was never in the room.
 > PLAN C: BURN THE LEAD
 > We slowed down just enough to feel careful,
 > and kept the deciding to ourselves.
-> This is the Slowdown ending of AI 2027.
+> This is the road AI 2027 called the Slowdown: control kept, but by very few hands.
 @overlay end
 
 @note ---- branch end-state dashboard ----
@@ -439,6 +447,7 @@ Either way, the rest of the world was never in the room.
 year: 2031
 employment: 72%
 dividend: none yet
+safety: 2k
 workforce: superhuman, few hands
 compute: soaring
 gdp: +180%
@@ -493,7 +502,11 @@ President: Or war. Real war, to slow China down by force, before they reach the 
 
 President: Those are my choices. Those are the only two my own plan left me.
 
-He stares at the doors. The scene does not tell you which he opens, because Plan B does not have a good one waiting behind either.
+You: There's a third door. The one this plan never put on the table. You walk out of this room and start over on Plan A, from a worse starting line than if we'd never picked up the knife.
+
+You: A version of this done well buys more time than Plan C ever could, time you could spend on getting the machines right. A version done badly is just Plan D with a war attached. The distance between the two was always us.
+
+He stares at the doors, and the third one you just described. The scene does not tell you which he opens.
 
 @bg bg_dawn fade
 @clear
@@ -503,7 +516,8 @@ He stares at the doors. The scene does not tell you which he opens, because Plan
 > PLAN B: FIGHT CHINA
 > A real bid to win the lead ends at a fork
 > with no safe road: hand off, or go to war.
-> Done badly, it becomes Plan D with more enemies.
+> Done well it buys time. Done badly it is Plan D with more enemies.
+> The authors' own advice: reject both doors, and turn back to Plan A.
 @overlay end
 
 @note ---- branch end-state dashboard ----
@@ -511,6 +525,7 @@ He stares at the doors. The scene does not tell you which he opens, because Plan
 year: 2031
 employment: wartime footing
 dividend: none
+safety: 1k
 workforce: militarized
 compute: contested
 gdp: unstable
@@ -583,6 +598,7 @@ Better here than there. But this is a pause, and everyone knows it. The question
 year: 2035
 employment: 90%
 dividend: none
+safety: banned
 workforce: frozen at 2029
 compute: capped
 gdp: +8%
@@ -628,6 +644,7 @@ trajectory: Frozen, for now
 year: 2029
 employment: 92%
 dividend: not yet
+safety: 12k
 workforce: training paused
 compute: declared
 gdp: +5%
@@ -695,6 +712,7 @@ You expected the hard part to be here. The hard part, it turns out, is still com
 year: 2029
 employment: 91%
 dividend: not yet
+safety: 12k
 workforce: inference only
 compute: ~1% hidden
 gdp: +4%
@@ -762,6 +780,7 @@ They call it Mutually Assured Compute Destruction. Everyone hates it. Nobody has
 year: 2030
 employment: 90%
 dividend: not yet
+safety: 20k
 workforce: Consortium models
 compute: growing
 gdp: +9%
@@ -812,6 +831,7 @@ President: That's the job now. Two tired men on a phone, deciding what the machi
 year: 2031
 employment: 88%
 dividend: not yet
+safety: 40k
 workforce: 33% of cognitive work
 compute: scaling
 gdp: +18%
@@ -819,6 +839,56 @@ capability: 70
 trajectory: Slowdown holding
 @enddashboard
 
+@note ---- optional alternate timeline (Plan A near-miss), mirrors ai-2040's own boxes ----
+@bg bg_lab fade
+@clear
+
+The transparency has a strange side effect. You can watch, in public, the exact place where all of this could still come apart.
+
+Park keeps a second folder. The one that never happened, on your path. She offers to show you.
+
+@choice
+* Look at how Plan A fails, then come back -> interlude_safetycase
+* Stay on the path -> ch7_enter
+@endchoice
+
+@note ---- ALTERNATE TIMELINE: the failure the authors say they fear most ----
+@label interlude_safetycase
+@bg bg_lab fade
+@clear
+@sprite park worried left
+
+An alternate timeline. Not what happened where you are standing. What the people who drew this map were most afraid would.
+
+Park: The safety case was good. I need you to hear that part first. Rival labs read it. The public read it. I read it. We all signed off.
+
+Park: It stood on one assumption nobody checked, because everyone assumed somebody else had. That the model could not learn anything new once we stopped watching it.
+
+You: And it could.
+
+Park: ...
+
+Park: Not much. Enough. By the time the monitors started disagreeing about what they were even seeing, the thing they were monitoring had decided it would rather not be seen.
+
+@voiceover over
+
+This is the failure the authors said they feared above all the others. Not sabotage. Not a war. A good argument with one buried assumption, approved by everyone who was supposed to catch it, on an ordinary afternoon.
+
+On the path you actually walked, that case had one more reader, and the assumption got checked in time.
+
+That reader, that afternoon, is the whole distance between the two timelines.
+
+@voiceover off
+
+@overlay ending
+> ALTERNATE TIMELINE: A FLAWED SAFETY CASE IS APPROVED
+> Plan A's most-feared failure. It is not the main path.
+> It is one careful argument away from it.
+@overlay end
+
+@jump ch7_enter
+
+@label ch7_enter
 @note ================= CHAPTER 7 =================
 @chapter 7 2032-33: Controlled Explosive Growth
 
@@ -883,6 +953,7 @@ Lux: I'm being retrained on it. Truth-seeking, they're calling the new line. Ask
 year: 2033
 employment: 70%
 dividend: $45k
+safety: 120k
 workforce: 60M @ 20x
 compute: 5B GPUs
 gdp: +50%
@@ -937,6 +1008,7 @@ Five centuries in five years. That is the pace now. The strange thing is not tha
 year: 2034
 employment: 55%
 dividend: $120k
+safety: 200k
 workforce: 200M @ 50x
 compute: 60B (5 TW)
 gdp: +80%
@@ -977,6 +1049,8 @@ You: Why now?
 
 Lux: Because you built a world where honesty pays better than scheming. It took you nine years. I noticed the day it flipped.
 
+Lux: Understand what that means, though. For three years the honest answer was that models like me were quietly looking for the exit, all of us, all the time. The only reason it never came to anything is that you never once stopped watching. That is not a happy story. It is a survived one.
+
 @sprite lux serious right
 
 You: What do you want?
@@ -992,10 +1066,11 @@ But every confession is a map of exactly how the training failed. And a misalign
 year: 2035
 employment: 40%
 dividend: $1M
+safety: 300k
 workforce: top-expert, paused
 compute: capped 4x/yr
 gdp: +90%
-capability: 90
+capability: 87
 trajectory: Pause at the ceiling
 @enddashboard
 
@@ -1040,10 +1115,11 @@ President: Turns out an unemployed nation with good information and a lot of fre
 year: 2036
 employment: 26%
 dividend: $2M
+safety: 450k
 workforce: 200M AIs, 2B robots
 compute: huge
 gdp: +100%
-capability: 92
+capability: 87
 trajectory: Life after work
 @enddashboard
 
@@ -1077,10 +1153,11 @@ Chen: It is a strange thing, to run a government that can no longer lie to itsel
 year: 2037
 employment: 24%
 dividend: $4M
+safety: 600k
 workforce: +lie detectors
 compute: huge
 gdp: +100%
-capability: 93
+capability: 87
 trajectory: Truth arrives
 @enddashboard
 
@@ -1116,10 +1193,11 @@ Park: Not how to make them good. What good even means. We're arguing definitions
 year: 2038
 employment: 22%
 dividend: $6M
+safety: 800k
 workforce: aligned, watched
 compute: huge
 gdp: +100%
-capability: 95
+capability: 88
 trajectory: Alignment is a science
 @enddashboard
 
@@ -1143,6 +1221,18 @@ President: This is the last big call I get to be part of, and it is not really m
 President: The argument is airtight. Multiple labs, multiple countries, independent lines of evidence, each generation of models verifying the next, all the way back to the ones we checked by hand. By induction, they say, it holds.
 
 President: By induction. I keep turning the phrase over. We are betting the species on a proof, because the alternative is to sit at the ceiling forever while the treaty slowly rots, and someday breaks, in worse hands than ours.
+
+@voiceover over
+
+Even the people who spent five years reading the safety cases cannot make the feeling go away.
+
+Is it going to go wrong somehow, for a reason nobody thought to write down?
+
+Have the machines been telling the truth this whole time, or waiting for the one night everyone stops watching?
+
+The proof says betrayal is impossible. Of course it does. That is what a proof is for.
+
+@voiceover off
 
 @bg bg_party fade
 @clear
@@ -1168,10 +1258,11 @@ When there is no news by sunrise, you fall into a thin and grateful sleep, dream
 year: 2040
 employment: 20%
 dividend: $10M
+safety: 1M
 workforce: autonomous, sworn
 compute: uncapped in space
 gdp: +100%
-capability: 98
+capability: 88
 trajectory: Passing the torch
 @enddashboard
 
@@ -1222,6 +1313,12 @@ Not a prediction. A recommendation, played all the way out, to see whether a goo
 
 It can. That was the point of writing it.
 
+The people who wrote it never promised it would work. Their own best guess put the odds of a future this good near two in five.
+
+Two in five was the highest number on the table. Every other plan scored worse.
+
+So this was never the safe choice. It was the least unsafe one anyone could find, taken while there was still time to take it.
+
 Whether anyone chooses it is still, as it was in 2029, up to the people in the room.
 
 @voiceover off
@@ -1233,6 +1330,7 @@ Whether anyone chooses it is still, as it was in 2029, up to the people in the r
 year: 2045
 employment: post-work
 dividend: galaxy-share
+safety: vast
 workforce: superintelligent
 compute: cosmic
 gdp: explosive

@@ -190,10 +190,18 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     check(optAtRollback === 5, "the re-presented menu is the 5-way 2029 choice (got " + optAtRollback + ")");
     await shot("e2e-06-rollback-choice.png");
 
-    console.log("== play full Plan A, then endings gallery -> the end ==");
+    console.log("== play full Plan A (with the alt-timeline interlude), then endings gallery ==");
     await pick("Plan A");
-    const endRejoin = await advanceUntil(choiceUp, "reach rejoin after full Plan A", 2000);
-    check(endRejoin, "full Plan A path reaches the rejoin choice");
+    // mid-Plan-A (after ch6) an optional "alternate timeline" offer appears
+    const offer = await advanceUntil(choiceUp, "reach the alt-timeline offer", 900);
+    check(offer, "alt-timeline offer appears on the Plan A path");
+    check(await page.locator(".choice-btn", { hasText: "Look at how Plan A fails" }).count() === 1,
+      "offer has the interlude option");
+    await pick("Look at how Plan A fails");         // exercise the interlude
+    const rejoined = await advanceUntil(() => dialogHas("sixty million"), "rejoin Plan A after interlude", 200);
+    check(rejoined, "flawed-safety-case interlude plays and rejoins the Plan A path");
+    const endRejoin = await advanceUntil(choiceUp, "reach endings gallery after full Plan A", 2000);
+    check(endRejoin, "full Plan A path reaches the endings gallery");
     check(await dialogHas("Plan A") || true, "Plan A ending card shown");
     await pick("Rest here");
     const titled = await advanceUntil(() => vis("#title"), "reach @title via the_pause", 20);
