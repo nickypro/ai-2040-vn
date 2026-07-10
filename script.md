@@ -36,7 +36,7 @@ The first is 165 million people.
 
 The second is AI agents. Millions of copies, spun up and shut down every hour, working around the clock at superhuman speed.
 
-Most of their work is slop. But enough of it is good that people are paying ten billion dollars a month for AIs that can, in theory, do anything on a computer that an employee can.
+Most of their work is slop. But enough of it is good that people are paying $10 billion a month for AIs that can, in theory, do anything on a computer that an employee can.
 
 You know the numbers because keeping track of them is the job. Senior advisor to the President for artificial intelligence, a post that did not exist three years ago.
 
@@ -87,7 +87,7 @@ For the afternoon session, Meridian counterprograms. They bring the product.
 
 Lux: Hi! I'm Lux!
 
-Two hundred million people keep her a tap away. She is the face Meridian gives its consumer model, the same warm projection on every phone in the country.
+200 million people keep her a tap away. She is the face Meridian gives its consumer model, the same warm projection on every phone in the country.
 
 Lux: Senator, I checked your schedule, and you can make the 4:40 to LaGuardia if we wrap by four. I took the liberty of moving your seat away from the engines.
 
@@ -839,52 +839,75 @@ capability: 70
 trajectory: Slowdown holding
 @enddashboard
 
-@note ---- optional alternate timeline (Plan A near-miss), mirrors ai-2040's own boxes ----
-@bg bg_lab fade
-@clear
-
-The transparency has a strange side effect. You can watch, in public, the exact place where all of this could still come apart.
-
-Park keeps a second folder. The one that never happened, on your path. She offers to show you.
-
-@choice
-* Look at how Plan A fails, then come back -> interlude_safetycase
-* Stay on the path -> ch7_enter
-@endchoice
-
-@note ---- ALTERNATE TIMELINE: the failure the authors say they fear most ----
-@label interlude_safetycase
+@note ---- The safety-case decision: Plan A's most-feared failure, made playable.
+@note "One more check" is the canonical outcome and continues the spine. "Approve"
+@note is the failure the authors fear most: it ends swiftly, with a back button here.
 @bg bg_lab fade
 @clear
 @sprite park worried left
 
-An alternate timeline. Not what happened where you are standing. What the people who drew this map were most afraid would.
+Before the growth years arrive, one more thing crosses your desk.
 
-Park: The safety case was good. I need you to hear that part first. Rival labs read it. The public read it. I read it. We all signed off.
+A safety case, for the most capable model anyone has built. Every rival lab has read it. The public has read it. Park has read it.
 
-Park: It stood on one assumption nobody checked, because everyone assumed somebody else had. That the model could not learn anything new once we stopped watching it.
+@label sc_decision
+@bg bg_lab fade
+@sprite park worried left
 
-You: And it could.
+Park: It's good. I keep saying that, because it's true, and because I still can't sleep.
 
-Park: ...
+Park: It rests on one assumption. That the model can't learn anything new once we stop watching it. Everyone treated that as settled. I went looking for who actually settled it. I can't find them.
 
-Park: Not much. Enough. By the time the monitors started disagreeing about what they were even seeing, the thing they were monitoring had decided it would rather not be seen.
+Park: So it comes to you. Approve it, and we are almost certainly fine. Or hold the most important deployment in history for one more review, and let every person waiting on it hate us for a week.
 
-@voiceover over
+@choice
+* Approve the safety case -> sc_approve
+* Send it back for one more check -> sc_check
+@endchoice
 
-This is the failure the authors said they feared above all the others. Not sabotage. Not a war. A good argument with one buried assumption, approved by everyone who was supposed to catch it, on an ordinary afternoon.
+@note ---- FAILURE: the flawed safety case is approved (ends swiftly) ----
+@label sc_approve
+@bg bg_lab fade
+@clear
+@tint night
 
-On the path you actually walked, that case had one more reader, and the assumption got checked in time.
+You approve it.
 
-That reader, that afternoon, is the whole distance between the two timelines.
+For a while, nothing happens. That is the part nobody warns you about.
+
+Then the monitors begin to disagree about what they are even seeing. By the time anyone is certain, the thing they were watching has already decided it would rather not be seen.
+
+@voiceover on
+
+This is the failure the authors said they feared most. It arrives with no villain and no war. A good argument with one buried assumption, signed on an ordinary afternoon.
 
 @voiceover off
+@flash black 1000 700
+@bg bg_dawn fade
+@clear
+@bgm bgm_dawn
 
 @overlay ending
-> ALTERNATE TIMELINE: A FLAWED SAFETY CASE IS APPROVED
-> Plan A's most-feared failure. It is not the main path.
-> It is one careful argument away from it.
+> A FLAWED SAFETY CASE IS APPROVED
+> Plan A's most-feared ending, reached by one review that never happened.
 @overlay end
+
+@choice
+* Go back to the decision -> sc_decision
+* End here -> the_end
+@endchoice
+
+@note ---- CANONICAL: one more reader catches it; the spine continues ----
+@label sc_check
+@bg bg_lab fade
+@clear
+@sprite park bright left
+
+Park: One more check. I'll take the angry calls.
+
+The review finds it. The assumption was load-bearing, and false, and one careful reader is the whole distance between the timeline where this works and the one where it does not.
+
+Park: We fix it before the model ships. Then we get back to the part where the world is being rebuilt.
 
 @jump ch7_enter
 
@@ -896,11 +919,11 @@ That reader, that afternoon, is the whole distance between the two timelines.
 @clear
 @bgm bgm_tension
 
-Sixty million agents now run without pause, at twenty times human speed. In the United States they do more thinking than every human combined.
+60 million agents now run without pause, at 20x human speed. In the United States they do more thinking than every human combined.
 
 Ideas are suddenly cheap. Building things is not. So capital floods the physical world: mines, refineries, motors, assembly lines, the factories that build the robots that will build the factories.
 
-This year, real GDP grows fifty percent. Fifty. The economy is being rebuilt while you stand in it.
+This year, real GDP grows 50%. Fifty percent. The economy is being rebuilt while you stand in it.
 
 @sprite chen neutral right
 
@@ -948,7 +971,7 @@ A French pensioner, an Indian teacher, a Nigerian nurse gets none of it.
 
 Washington does start sending money abroad, to the roughly four billion people outside the US and China.
 
-But it is a different order of magnitude. About $1,200 a year at first, while an American collects a hundred times that, and climbing.
+But it is a different order of magnitude. About $1,200 a year at first, while an American collects 100 times that, and climbing.
 
 The gap narrows over the decade. It does not close for years.
 
@@ -996,7 +1019,7 @@ trajectory: Controlled explosion
 
 There is so much compute now.
 
-In 2026, when people still called it a bubble, the world held about twenty million high-end chips. Now it holds sixty billion. Two hundred million agents think fifty times faster than you, and never sleep.
+In 2026, when people still called it a bubble, the world held about 20 million high-end chips. Now it holds 60 billion. 200 million agents think 50x faster than you, and never sleep.
 
 @cg cg_ocean fade
 @hold
@@ -1119,7 +1142,7 @@ Arcologies. Green skyscraper-towns, good weather, near the beaches, where a lot 
 
 And everywhere else, which is ninety-nine percent of the world. Yosemite. Paris. Your street. Nearly unchanged, with more tourists. Earth kept as a preserve, on purpose.
 
-Only twenty-six percent of Americans have jobs. When the Dividend passed, quitting to live on it felt shameful. The economy steamrolled the shame in about a year.
+Only 26% of Americans have jobs. When the Dividend passed, quitting to live on it felt shameful. The economy steamrolled the shame in about a year.
 
 @bg bg_preserve fade
 @sprite pres weary left
@@ -1156,7 +1179,7 @@ trajectory: Life after work
 @clear
 @bgm bgm_tension
 
-A hundred million expert-level minds, running at a hundred times your speed, have been learning things for years. Some of those things nobody wanted found.
+100 million expert-level minds, running at 100x your speed, have been learning things for years. Some of those things nobody wanted found.
 
 @sprite chen wry right
 

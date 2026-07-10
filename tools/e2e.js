@@ -190,16 +190,24 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     check(optAtRollback === 5, "the re-presented menu is the 5-way 2029 choice (got " + optAtRollback + ")");
     await shot("e2e-06-rollback-choice.png");
 
-    console.log("== play full Plan A (with the alt-timeline interlude), then endings gallery ==");
+    console.log("== play full Plan A (with the safety-case decision), then endings gallery ==");
     await pick("Plan A");
-    // mid-Plan-A (after ch6) an optional "alternate timeline" offer appears
-    const offer = await advanceUntil(choiceUp, "reach the alt-timeline offer", 900);
-    check(offer, "alt-timeline offer appears on the Plan A path");
-    check(await page.locator(".choice-btn", { hasText: "Look at how Plan A fails" }).count() === 1,
-      "offer has the interlude option");
-    await pick("Look at how Plan A fails");         // exercise the interlude
-    const rejoined = await advanceUntil(() => dialogHas("sixty million"), "rejoin Plan A after interlude", 200);
-    check(rejoined, "flawed-safety-case interlude plays and rejoins the Plan A path");
+    // mid-Plan-A (after ch6) the safety-case decision appears
+    const sc = await advanceUntil(choiceUp, "reach the safety-case decision", 900);
+    check(sc, "safety-case decision appears on the Plan A path");
+    check(await page.locator(".choice-btn", { hasText: "Approve the safety case" }).count() === 1,
+      "decision offers to approve");
+    await pick("Approve the safety case");          // exercise the failure branch
+    const failEnd = await advanceUntil(choiceUp, "reach the failure ending", 60);
+    check(failEnd, "approving reaches the failure ending + back choice");
+    check(await page.locator(".choice-btn", { hasText: "Go back to the decision" }).count() === 1,
+      "the failure ending offers a back button");
+    await pick("Go back to the decision");          // the back button
+    const sc2 = await advanceUntil(choiceUp, "back at the decision", 60);
+    check(sc2, "the back button returns to the safety-case decision");
+    await pick("Send it back for one more check");  // the canonical branch
+    const rejoined = await advanceUntil(() => dialogHas("without pause"), "rejoin Plan A after the check", 160);
+    check(rejoined, "one-more-check rejoins the Plan A path");
     const endRejoin = await advanceUntil(choiceUp, "reach endings gallery after full Plan A", 2000);
     check(endRejoin, "full Plan A path reaches the endings gallery");
     check(await dialogHas("Plan A") || true, "Plan A ending card shown");
