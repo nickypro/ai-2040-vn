@@ -265,16 +265,63 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
       "Public POV unlocks after completing Plan A");
     check(await page.locator(".choice-btn", { hasText: "Extra: Insider POV" }).count() === 1,
       "Insider POV unlocks after completing Plan A");
-    await pick("Extra: Public POV");
+    await page.keyboard.press("Escape");
+    check((await page.locator("#btn-chapters").textContent()) === "Chapters / Bonus",
+      "pause menu becomes Chapters / Bonus after Plan A completion");
+    await page.click("#btn-chapters");
+    check((await page.locator("#chapters-heading").textContent()) === "CHAPTERS / BONUS",
+      "chapter screen heading includes Bonus after unlock");
+    check((await page.locator(".bonus-btn.unvisited").count()) === 2,
+      "both bonus perspectives begin marked unvisited");
+    check((await page.locator(".bonus-btn", { hasText: "Public POV" }).textContent()).includes("UNVISITED"),
+      "Public POV has a clear unvisited status");
+    await page.locator(".bonus-btn", { hasText: "Public POV" }).click();
+    const publicStarted = await advanceUntil(() => dialogHas("Maya supervises"), "enter direct-launched Public POV", 30);
+    check(publicStarted, "direct chapter launch enters the Public POV story");
+    check((await page.locator("#date-indicator").textContent()) === "2027",
+      "direct-launched Public POV shows its explicit 2027 year");
+    const bonusSave = JSON.parse(await page.evaluate(() => localStorage.getItem("plana_save")));
+    check(bonusSave.origin === "bonus_public", "bonus autosave records its direct-entry origin");
+    await page.reload({ waitUntil: "networkidle" });
+    await sleep(500);
+    await page.click("#btn-continue");
+    await sleep(500);
+    check(await dialogHas("Maya supervises"), "Continue resumes inside the direct-launched Public POV");
+    check((await page.locator("#date-indicator").textContent()) === "2027",
+      "Continue reconstructs the bonus scene's year");
+    const publicCast = await advanceUntil(() => dialogHas("Give it six months"), "stage Maya and Tomas", 20);
+    check(publicCast, "Public POV stages Maya and Tomas on the commuter scene");
+    check(!(await vis("#inscription")), "bonus title card clears before the Public scene");
+    await sleep(500); // let the character-entry fade reach its stable framing
+    await shot("e2e-09-public-bonus.png");
     const bonusBack = await advanceUntil(choiceUp, "finish Public POV bonus", 400);
-    check(bonusBack, "Public POV bonus returns to endings gallery");
-    await pick("Extra: Insider POV");
+    check(bonusBack, "chapter screen launches Public POV directly and it returns to endings gallery");
+    await page.keyboard.press("Escape");
+    await page.click("#btn-chapters");
+    check((await page.locator(".bonus-btn", { hasText: "Public POV" }).textContent()).includes("VISITED"),
+      "Public POV is marked visited persistently");
+    check((await page.locator(".bonus-btn", { hasText: "Insider POV" }).textContent()).includes("UNVISITED"),
+      "Insider POV remains marked unvisited");
+    await page.locator(".bonus-btn", { hasText: "Insider POV" }).click();
+    const openAudit = await advanceUntil(() => dialogHas("annotate twelve years"), "reach Insider open audit", 60);
+    check(openAudit, "Insider POV reaches the dedicated open-audit scene");
+    check((await page.locator("#date-indicator").textContent()) === "2029",
+      "open-audit scene shows the correct 2029 year");
+    await shot("e2e-10-insider-audit.png");
     const insiderBack = await advanceUntil(choiceUp, "finish Insider POV bonus", 400);
-    check(insiderBack, "Insider POV bonus returns to endings gallery");
-    await pick("Rest here");
+    check(insiderBack, "chapter screen launches Insider POV directly and it returns to endings gallery");
+    await pick("Return to 2029");
+    const mainRejoin = await advanceUntil(choiceUp, "return from direct bonus to the main decision", 40);
+    check(mainRejoin, "direct bonus can rejoin the main 2029 decision");
+    const mainSave = JSON.parse(await page.evaluate(() => localStorage.getItem("plana_save")));
+    check(!mainSave.origin, "returning to 2029 resets the save to the main-story origin");
+    await runBranch("Plan D", "get out of the way", null);
+    await pick("Return to title screen");
     const titled = await advanceUntil(() => vis("#title"), "reach @title via the_pause", 20);
     check(titled, "@title returns to the title screen");
     check(await vis("#btn-continue"), "Continue offered (resume rewound to last choice)");
+    check((await page.locator("#btn-chapters-title").textContent()) === "Chapters / Bonus",
+      "title menu retains the Chapters / Bonus label");
     await shot("e2e-07-title-after.png");
 
     console.log("== chapters menu ==");
@@ -289,6 +336,8 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
       await sleep(300);
       const chCount = await page.locator(chBtnSel).count();
       check(chCount >= 3, "chapter menu lists reachable chapters (got " + chCount + ")");
+      check((await page.locator(".bonus-btn.visited").count()) === 2,
+        "chapter screen remembers both visited bonus perspectives");
       await shot("e2e-08-chapters.png");
     }
 

@@ -6,8 +6,8 @@ go-ahead. Money amounts are OpenRouter list prices.
 ## Audio (BGM) — optional; the game plays fine silent
 
 The engine treats every missing track as a silent no-op, so shipping without music is
-fine. If you want music, the pipeline is ready (`tools/gen_music.py` + `tools/make_loops.py`,
-OpenRouter Lyria, ~$0.04–0.08/track). Seven tracks are wired in the script/manifest:
+fine. The pipeline is ready (`tools/gen_music.py` + `tools/make_loops.py`, OpenRouter
+Lyria, ~$0.04–0.08/track). Nine tracks are wired in the script/manifest:
 
 | id | where | mood brief |
 |---|---|---|
@@ -18,6 +18,8 @@ OpenRouter Lyria, ~$0.04–0.08/track). Seven tracks are wired in the script/man
 | `bgm_choice` | the 2029 choice | held breath, suspended |
 | `bgm_race` | Plan D / Plan B | driving, cold, accelerating |
 | `bgm_dawn` | endings / epilogue | resolution, dawn, bittersweet relief |
+| `bgm_public` | Public POV | humane, everyday warmth with uncertainty underneath |
+| `bgm_inquiry` | Insider POV / alignment research | patient investigation, analytical and quietly uneasy |
 
 Recipe (from the reference project's lessons, went 6-for-6):
 1. `source /workspace/tools/env/.keys`
@@ -47,4 +49,4 @@ emotionality). Voice acting is out of scope for this project anyway.
 
 - Art (Dossier Red full set, ~40 images via OpenRouter Nano Banana Pro): on the order
   of a few US dollars total.
-- Audio: $0 (not generated yet).
+- Audio: nine Lyria tracks generated through the configured OpenRouter account.

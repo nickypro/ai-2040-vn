@@ -83,6 +83,13 @@
   #spr-center { left: 31%; }
   #spr-right  { right: 2%; }
   .spr img { max-height: 100%; max-width: 100%; object-fit: contain; }
+  /* Maya/Tomas were authored as true full-body sheets. Frame them like the
+     established VN portraits: larger faces, lower anchor, feet below camera. */
+  .spr[data-char="maya"] img,
+  .spr[data-char="tomas"] img {
+    height: 126%; max-height: none; max-width: none;
+    transform: translateY(16%);
+  }
 
   #tint { pointer-events: none; transition: background 1.2s ease; }
   #flash { pointer-events: none; opacity: 0; }
@@ -733,6 +740,18 @@
   #chapter-list .chapter-btn { min-width: 24cqh; font-size: 2.4cqh; text-align: left; }
   #chapter-list .locked { opacity: 0.35; cursor: default; border-color: #ffffff22; }
   #chapter-list .locked:hover { background: var(--panel); }
+  #chapter-list .bonus-heading {
+    grid-column: 1 / -1; margin-top: 0.8cqh; padding-top: 1.8cqh;
+    border-top: 1px solid #d6453344; font-family: var(--mono);
+    font-size: 1.65cqh; letter-spacing: 0.18em; color: var(--amber);
+  }
+  #chapter-list .bonus-btn { display: flex; align-items: center; justify-content: space-between; gap: 2cqh; }
+  #chapter-list .bonus-state {
+    font-family: var(--mono); font-size: 1.45cqh; letter-spacing: 0.08em;
+    color: #aaa4b4; white-space: nowrap;
+  }
+  #chapter-list .bonus-btn.visited .bonus-state { color: #8fcca9; }
+  #chapter-list .bonus-btn.unvisited .bonus-state { color: var(--amber); }
 
   #endcard .fin {
     font-family: var(--sans); font-weight: 200; font-size: 4.6cqh;
@@ -1116,7 +1135,7 @@
     </div>
 
     <div id="chapters" class="menu" style="display:none">
-      <h2>CHAPTERS</h2>
+      <h2 id="chapters-heading">CHAPTERS</h2>
       <div id="chapter-list"></div>
       <button id="btn-chapters-back">Back</button>
     </div>

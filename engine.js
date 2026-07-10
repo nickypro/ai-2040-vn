@@ -216,6 +216,14 @@ function parseScript(text) {
           ins.push(ch);
           break;
         }
+        case "year": {
+          if (rest !== "off" && !/^\d{4}$/.test(rest)) {
+            warnings.push("line " + ln + ": bad @year (want '@year <YYYY>' or '@year off'): " + rest);
+            break;
+          }
+          ins.push({ op: "year", value: rest === "off" ? null : rest, line: ln });
+          break;
+        }
         default:
           ins.push({ op: "unknown", name, rest, line: ln });
       }
@@ -256,7 +264,7 @@ if (typeof module !== "undefined" && module.exports) {
 /* ---------------- player (browser only) ---------------- */
 
 if (typeof document !== "undefined") (function () {
-  const APP_VERSION = "1.4.1"; // shown on the title screen and in Settings; bump to release
+  const APP_VERSION = "1.5.0"; // shown on the title screen and in Settings; bump to release
   const $ = (id) => document.getElementById(id);
   const SAVE_KEY = "plana_save";
   const SETTINGS_KEY = "plana_settings";
@@ -284,6 +292,7 @@ if (typeof document !== "undefined") (function () {
   let choiceRecords = {};   // { "<choicePc>": optIdx } — the CURRENT path's answers
   let seenLabels = new Set(); // labels ever visited (drives the ✓ marker on options)
   let seenPcs = new Uint8Array(1); // furthest-read bitmap (replaces maxPc)
+  let runOrigin = 0;        // direct-entry label PC (bonus stories); main story starts at 0
   let path = [];            // pcs executed since script start, in order (rebuilt by seek)
   let choiceActive = false; // a choice menu is on screen awaiting a pick
   let choiceSel = 0;        // keyboard-highlighted option (an OPTION index)
@@ -332,6 +341,7 @@ if (typeof document !== "undefined") (function () {
       bgm: null,
       inscription: null,
       chapter: 0,
+      year: null, // explicit @year override for multi-year scenes outside chapters
       prevDash: null, // last dashboard's parsed numbers, for trend arrows
     };
   }
@@ -1426,6 +1436,7 @@ if (typeof document !== "undefined") (function () {
       pc,
       choices: choiceRecords,
       seenLabels: Array.from(seenLabels),
+      origin: runOrigin ? (SCRIPT.ins[runOrigin] && SCRIPT.ins[runOrigin].name) || null : null,
       seen: bitsToB64(seenPcs),
       fin: finished ? 1 : 0,
       ts: Date.now(),
@@ -1463,6 +1474,7 @@ if (typeof document !== "undefined") (function () {
     if (!sv) return;
     choiceRecords = sv.choices || {};
     seenLabels = new Set(sv.seenLabels || []);
+    runOrigin = sv.origin && SCRIPT.labels[sv.origin] !== undefined ? SCRIPT.labels[sv.origin] : 0;
     seenPcs = b64ToBits(sv.seen, SCRIPT.ins.length);
     finished = !!sv.fin;
   }
@@ -1474,8 +1486,8 @@ if (typeof document !== "undefined") (function () {
      choice ("choice"); @title ("title"); script end ("end"). Consuming each
      choice record at most once per walk guarantees termination, and means a
      replay can never run past a re-presented choice. */
-  function walkPath(records, stopPc, visit) {
-    let j = 0;
+  function walkPath(records, stopPc, visit, origin) {
+    let j = origin || 0;
     const consumed = new Set();
     let guard = 0;
     const cap = (SCRIPT.ins.length + 8) * 4;
@@ -1630,6 +1642,10 @@ if (typeof document !== "undefined") (function () {
         return false;
       case "chapter":
         st.chapter = c.n;
+        st.year = null; // chapter titles resume ownership of the date badge
+        return false;
+      case "year":
+        st.year = c.value;
         return false;
       default:
         return false;
@@ -1774,6 +1790,18 @@ if (typeof document !== "undefined") (function () {
     { letter: "D", label: "plan_d", name: "Race to ASI",        note: "Handed to the fastest builder." },
     { letter: "S", label: "plan_s", name: "Shut It All Down",   note: "A pause, not a destination." },
   ];
+  const BONUS_LIST = [
+    { label: "bonus_public", name: "Public POV" },
+    { label: "bonus_insider", name: "Insider POV" },
+  ];
+  function bonusUnlocked() { return seenLabels.has("plan_a_complete"); }
+  function updateChapterMenuLabels() {
+    const label = bonusUnlocked() ? "Chapters / Bonus" : "Chapters";
+    $("btn-chapters-title").textContent = label;
+    $("btn-chapters").textContent = label;
+    $("btn-end-chapters").textContent = label;
+    $("chapters-heading").textContent = label.toUpperCase();
+  }
   function buildEndingsGallery(box) {
     const seenN = ENDINGS_LIST.filter((e) => seenLabels.has(e.label)).length;
     const card = document.createElement("div");
@@ -1965,6 +1993,9 @@ if (typeof document !== "undefined") (function () {
     presentPathSnap = null;
     choiceRecords[String(pc)] = idx;
     seenLabels.add(c.options[idx].target);
+    // Returning from an extra rejoins the numbered story. Future saves must
+    // reconstruct from the main origin rather than replaying from the bonus.
+    if (c.options[idx].target === "choose_path") runOrigin = 0;
     save();
     const t = SCRIPT.labels[c.options[idx].target];
     clearTimers();
@@ -2031,8 +2062,8 @@ if (typeof document !== "undefined") (function () {
   function updateDateIndicator() {
     const el = $("date-indicator");
     if (!el) return;
-    let year = "";
-    if (mode === "play" && SCRIPT && SCRIPT.chapters) {
+    let year = mode === "play" ? (st.year || "") : "";
+    if (!year && mode === "play" && SCRIPT && SCRIPT.chapters) {
       const cur = SCRIPT.chapters.find((c) => c.n === st.chapter);
       if (cur) {
         const m = cur.title.match(/(\d{4})/);
@@ -2205,9 +2236,10 @@ if (typeof document !== "undefined") (function () {
         case "bgm": st.bgm = c.id === "stop" ? null : c.id; break;
         case "overlay": st.inscription = c.lines; break;
         case "dashboard": st.prevDash = dashNums(c.data); break; // silent: track for trends only
-        case "chapter": st.chapter = c.n; break;
+        case "chapter": st.chapter = c.n; st.year = null; break;
+        case "year": st.year = c.value; break;
       }
-    });
+    }, runOrigin);
 
     // render the reconstructed state instantly
     if (st.bg) setLayerInstant("bg", st.bg);
@@ -2259,16 +2291,18 @@ if (typeof document !== "undefined") (function () {
     $("btn-continue").style.display = sv && sv.pc > 0 && !sv.fin ? "" : "none";
     const anySeen = sv && sv.seen && /[^A]/.test(sv.seen); // any nonzero base64 byte
     $("btn-chapters-title").style.display = anySeen || finished ? "" : "none";
+    updateChapterMenuLabels();
     playBgm("bgm_title"); // idempotent; silent no-op when the track is absent
     updateChapterIndicator();
   }
-  function beginPlay(target) {
+  function beginPlay(target, origin) {
     $("title").style.display = "none";
     $("endcard").style.display = "none";
     $("pausemenu").style.display = "none";
     $("chapters").style.display = "none";
     $("menubtn").style.display = "";
     mode = "play";
+    runOrigin = origin || 0;
     uiHidden = false; shiftPeek = false; capsSticky = false;
     seek(target);
     // rollback derives from the executed PATH (not linear pc order): seed the
@@ -2280,6 +2314,39 @@ if (typeof document !== "undefined") (function () {
     if (history.length > 1000) history = history.slice(-1000);
     reviewIdx = history.length - 1; reviewing = false; presentPathSnap = null;
     if (target === 0) maybeShowAdvanceHint();
+  }
+  // Bonus stories are intentionally outside the numbered, path-derived chapter
+  // sequence. Their labels fully establish their opening scene, so launch them
+  // directly without changing the player's recorded main-story choices.
+  function beginBonus(label) {
+    const target = SCRIPT.labels[label];
+    if (!bonusUnlocked() || target === undefined) return;
+    $("title").style.display = "none";
+    $("endcard").style.display = "none";
+    $("pausemenu").style.display = "none";
+    $("chapters").style.display = "none";
+    $("menubtn").style.display = "";
+    mode = "play";
+    uiHidden = false; shiftPeek = false; capsSticky = false;
+    clearTimers();
+    cancelChapterFade();
+    hideChoice();
+    Object.assign(st, freshState());
+    $("bglayer").innerHTML = "";
+    execClear("all", true);
+    clearInscription();
+    hideDashboard();
+    setVoiceover("off", true);
+    hideTextbox();
+    path = [];
+    history = [];
+    reviewIdx = 0;
+    reviewing = false;
+    presentPathSnap = null;
+    runOrigin = target;
+    pc = target;
+    step();
+    if (waiting) pushHistory();
   }
   function endCard() {
     clearTimers();
@@ -2323,6 +2390,29 @@ if (typeof document !== "undefined") (function () {
         };
       list.appendChild(btn);
     }
+    const unlocked = bonusUnlocked();
+    const bonusHeading = document.createElement("div");
+    bonusHeading.className = "bonus-heading";
+    bonusHeading.textContent = unlocked ? "BONUS PERSPECTIVES" : "BONUS · COMPLETE PLAN A TO UNLOCK";
+    list.appendChild(bonusHeading);
+    for (const bonus of BONUS_LIST) {
+      const visited = seenLabels.has(bonus.label);
+      const btn = document.createElement("button");
+      btn.className = "chapter-btn bonus-btn " +
+        (!unlocked ? "locked" : (visited ? "visited" : "unvisited"));
+      const name = document.createElement("span");
+      name.textContent = bonus.name;
+      const status = document.createElement("span");
+      status.className = "bonus-state";
+      status.textContent = !unlocked ? "LOCKED" : (visited ? "✓ VISITED" : "○ UNVISITED");
+      btn.append(name, status);
+      if (unlocked) btn.onclick = (e) => {
+        e.stopPropagation();
+        beginBonus(bonus.label);
+      };
+      list.appendChild(btn);
+    }
+    updateChapterMenuLabels();
     $("chapters").dataset.from = fromTitle ? "title" : "pause";
     if (fromTitle) { $("title").style.display = "none"; $("menubtn").style.display = "none"; }
     $("endcard").style.display = "none";
@@ -2339,6 +2429,7 @@ if (typeof document !== "undefined") (function () {
 
   function openPause() {
     mode = "menu";
+    updateChapterMenuLabels();
     renderMenuOverview();
     $("pausemenu").style.display = "";
     $("pause-save-note").style.display = finished ? "none" : "";
@@ -2573,6 +2664,7 @@ if (typeof document !== "undefined") (function () {
     finished = false; pc = 0;
     choiceRecords = {};
     seenLabels = new Set();
+    runOrigin = 0;
     seenPcs = new Uint8Array(Math.max(1, Math.ceil(SCRIPT.ins.length / 8)));
     path = []; history = []; reviewIdx = 0; reviewing = false;
     musicEnabled = settings.musicOn;
@@ -2664,7 +2756,7 @@ if (typeof document !== "undefined") (function () {
     $("btn-continue").onclick = () => {
       const sv = loadSave();
       applySave(sv);
-      beginPlay((sv && sv.pc) || 0);
+      beginPlay((sv && sv.pc) || 0, runOrigin);
     };
     $("btn-chapters-title").onclick = () => openChapters(true);
     $("btn-settings-title").onclick = () => openSettings(true);

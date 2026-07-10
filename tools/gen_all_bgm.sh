@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Generate all 7 BGM tracks concurrently via Lyria clip model.
+# Generate all BGM tracks concurrently via Lyria clip model.
 # Logs per-track transcript to jobs/bgm_<id>.log for the vocal-leak check.
 set -u
 cd /workspace/media/ai-2040-vn
@@ -29,6 +29,10 @@ gen bgm_choice "Instrumental background music for a visual novel about a single 
 gen bgm_race "Instrumental background music for a visual novel about a high stakes technological race against the clock. A cold driving pulse with insistent staccato synth and low pounding bass, mechanical and accelerating, urgent. Driving, cold and relentless, not warm, not melodic and not heroic. Even dynamics throughout, suitable for seamless background looping. Strictly instrumental, NO vocals, no singing, no big finale or ending swell." &
 
 gen bgm_dawn "Instrumental background music for a visual novel about the quiet morning after a long crisis has finally passed. Warm piano melody with gentle strings and a soft glowing pad, slow and breathing, like dawn light. Resolved, bittersweet and gently relieved, calm not triumphant, hopeful but touched with loss. Even dynamics throughout, suitable for seamless background looping. Strictly instrumental, NO vocals, no singing, no big finale or ending swell." &
+
+gen bgm_public "Instrumental background music for the public perspective in a thoughtful visual novel about ordinary people adapting to an AI-shaped future. Intimate felt piano, mellow electric piano, soft brushed percussion, warm analog synth and a small human pulse. Humane, curious and bittersweet; everyday life continuing through dislocation and abundance, gently hopeful without sentimentality or triumph. Restrained texture, clear space for dialogue, even dynamics, suitable for seamless background looping. Strictly instrumental, NO vocals, no singing, no spoken words, no big finale or ending swell." &
+
+gen bgm_inquiry "Instrumental background music for an AI safety researcher perspective in a serious science-fiction visual novel. Precise muted marimba and soft prepared-piano pulses over a cool granular synth bed, faint restrained strings, patterns that slowly interlock like an experiment becoming understandable. Analytical, vigilant and quietly fascinated; clinical but not sinister, cerebral yet humane, with subtle unresolved tension. Minimal texture, clear space for dialogue, even dynamics, suitable for seamless background looping. Strictly instrumental, NO vocals, no singing, no spoken words, no big finale or ending swell." &
 
 wait
 echo "ALL DONE $(date +%T)"

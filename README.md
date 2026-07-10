@@ -1,6 +1,6 @@
 # PLAN A — an AI 2040 visual novel
 
-Current release: **v1.4.1** · [Changelog](CHANGELOG.md)
+Current release: **v1.5.0** · [Changelog](CHANGELOG.md)
 
 An interactive visual-novel adaptation of **[ai-2040.com](https://ai-2040.com)** ("Plan A",
 by the [AI Futures Project](https://ai-futures.org): Larsen, Dean, Halstead, Lifland,
@@ -20,7 +20,7 @@ music by Google Lyria. See the in-game **Credits** page for full attribution.
 You play the President's senior advisor on AI, from the 2027 wakeup through the 2029
 branch point where the country picks one of five plans. Four of them (D, C, B, S) play
 out as short endings and return you to the choice. **Plan A** continues all the way to
-2040 and the epilogue.
+2040 and the epilogue, then unlocks tracked Public POV and Insider POV bonus stories.
 
 ## Play it
 

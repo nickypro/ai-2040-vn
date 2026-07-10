@@ -15,7 +15,10 @@
     "bg_party": "assets/bg/bg_party.png",
     "bg_space": "assets/bg/bg_space.png",
     "bg_no_humans": "assets/bg/bg_no_humans.png",
-    "bg_dawn": "assets/bg/bg_dawn.png"
+    "bg_dawn": "assets/bg/bg_dawn.png",
+    "bg_commuter": "assets/bg/bg_commuter.png",
+    "bg_public_seminar": "assets/bg/bg_public_seminar.png",
+    "bg_open_audit": "assets/bg/bg_open_audit.png"
   },
   "cg": {
     "cg_election": "assets/cg/cg_election.png",
@@ -39,7 +42,9 @@
     "park.bright": "assets/sprites/park_bright.png",
     "lux.cheerful": "assets/sprites/lux_cheerful.png",
     "lux.serious": "assets/sprites/lux_serious.png",
-    "lux.radiant": "assets/sprites/lux_radiant.png"
+    "lux.radiant": "assets/sprites/lux_radiant.png",
+    "maya.neutral": "assets/sprites/maya_neutral.png",
+    "tomas.neutral": "assets/sprites/tomas_neutral.png"
   },
   "ui": {
     "ui_title": "assets/ui/ui_title.png",
@@ -52,6 +57,8 @@
     "bgm_choice": "assets/audio/bgm_choice.mp3",
     "bgm_race": "assets/audio/bgm_race.mp3",
     "bgm_dawn": "assets/audio/bgm_dawn.mp3",
-    "bgm_title": "assets/audio/bgm_title.mp3"
+    "bgm_title": "assets/audio/bgm_title.mp3",
+    "bgm_public": "assets/audio/bgm_public.mp3",
+    "bgm_inquiry": "assets/audio/bgm_inquiry.mp3"
   }
 }

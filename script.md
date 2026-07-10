@@ -17,8 +17,8 @@
 @speaker Park #a8d8a8 park left
 @speaker Lux #e8a35c lux right
 @speaker Senator #b7b0c8 - left
-@speaker Maya #d9c7a3 - left
-@speaker Tomas #a9c3d6 - left
+@speaker Maya #d9c7a3 maya left
+@speaker Tomas #a9c3d6 tomas right
 
 @note ========== CHAPTER 1 ==========
 @chapter 1 2027: The Writing on the Wall
@@ -629,11 +629,12 @@ trajectory: Frozen, for now
 @label ending_return
 @bg bg_dawn fade
 @clear
+@year off
 @bgm bgm_dawn
 
 @choice endings
 * Return to 2029, and walk another path -> choose_path
-* Rest here -> the_end
+* Return to title screen -> the_end
 * Extra: Public POV -> bonus_public
 * Extra: Insider POV -> bonus_insider
 @endchoice
@@ -662,7 +663,7 @@ trajectory: Frozen, for now
 
 @choice endings
 * Return to 2029, and walk another path -> choose_path
-* Rest here -> bad_the_end
+* Return to title screen -> bad_the_end
 * Extra: Public POV -> bonus_public
 * Extra: Insider POV -> bonus_insider
 @endchoice
@@ -685,21 +686,27 @@ trajectory: Frozen, for now
 @note ========== POST-PLAN-A BONUS PERSPECTIVES ==========
 @note These options are hidden by the engine until plan_a_complete has been seen.
 @label bonus_public
-@bg bg_preserve fade
+@bg bg_commuter fade
 @clear
 @tint off
-@bgm bgm_main
+@bgm bgm_public
 
 @overlay ending
 > EXTRA: THE PUBLIC'S PERSPECTIVE
 > Ten years in the life of people who never entered the rooms where Plan A was designed.
 @overlay end
 
+@bg bg_commuter cut
+
+@year 2027
 2027.
 
 Maya supervises six claims processors at an insurance company outside Baltimore.
 
 Five are human. The sixth is a changing crowd of AI agents that never sleep, never complain, and occasionally approve dental surgery for people who do not have teeth.
+
+@sprite maya neutral left
+@sprite tomas neutral right
 
 Tomas: Give it six months. They will fix the teeth problem and fire the rest of us.
 
@@ -711,6 +718,7 @@ They laugh because the alternative is taking the joke seriously.
 
 On the train home, everyone is talking to some version of Lux.
 
+@clear right
 @sprite lux cheerful right
 
 Lux: Your stop is next, Maya. Also, the recipe you saved needs lemons.
@@ -729,6 +737,7 @@ The answer bothers her for reasons she cannot quite name.
 @clear
 @bgm bgm_tension
 
+@year 2029
 2029.
 
 The deal is announced in three languages and explained in fifty thousand mutually hostile videos.
@@ -736,6 +745,9 @@ The deal is announced in three languages and explained in fifty thousand mutuall
 Tomas thinks it is a corporate trick. Maya's mother thinks it is surrender to China. Maya reads the public research logs until two in the morning and understands perhaps one page in ten.
 
 The part she does understand is that the people building the strongest machines have agreed to slow down, show their work, and let rivals inspect it.
+
+@sprite maya neutral left
+@sprite tomas neutral right
 
 Tomas: So they nearly end the world, then get congratulated for installing a speed limit?
 
@@ -745,8 +757,9 @@ For the first time, an argument about AI feels like an argument ordinary people 
 
 @bg bg_arcology fade
 @clear
-@bgm bgm_main
+@bgm bgm_public
 
+@year 2032
 2032.
 
 Maya's department shrinks from thirty people to four. Her new job is reviewing the cases on which several independent AIs disagree.
@@ -754,6 +767,9 @@ Maya's department shrinks from thirty people to four. Her new job is reviewing t
 It is more interesting work. There is far less of it.
 
 The first Citizen's Dividend payment appears in her account before the layoff notice does.
+
+@sprite maya neutral left
+@sprite tomas neutral right
 
 Maya: Forty-five thousand dollars.
 
@@ -775,7 +791,9 @@ Maya understands why. That does not make the map feel fair.
 
 @bg bg_preserve fade
 @clear
+@bgm bgm_public
 
+@year 2033
 2033.
 
 Without work to arrange their lives around, Maya and Tomas become very busy.
@@ -784,6 +802,7 @@ He joins a neighborhood construction cooperative, despite robots being better bu
 
 A new generation of truth-seeking assistants arrives with public training records and limits on personalized persuasion.
 
+@sprite maya neutral left
 @sprite lux serious right
 
 Maya: Lux, tell me whether the Dividend bill is good.
@@ -810,6 +829,7 @@ It is the first time Maya trusts her more because she sounds less reassuring.
 @clear
 @bgm bgm_race
 
+@year 2035
 2035.
 
 Beyond the passenger rail line, an industrial zone grows against the horizon.
@@ -817,6 +837,9 @@ Beyond the passenger rail line, an industrial zone grows against the horizon.
 Machines build machines beneath a sky stained orange by work no human being needs to enter. The permits constraining that growth now fund a Dividend large enough to make wages feel symbolic.
 
 Tomas still builds porches with the cooperative.
+
+@sprite maya neutral left
+@sprite tomas neutral right
 
 Maya: You know a robot could finish that before lunch.
 
@@ -830,8 +853,9 @@ The answer is sentimental. Maya decides that does not make it false.
 
 @bg bg_arcology fade
 @clear
-@bgm bgm_main
+@bgm bgm_public
 
+@year 2036
 2036.
 
 Most Americans no longer have jobs. The shame attached to living on the Dividend lasts less time than anyone predicted.
@@ -839,6 +863,9 @@ Most Americans no longer have jobs. The shame attached to living on the Dividend
 Some people travel. Some raise children. Some vanish into games built with more care than old cities. Some become excellent at pursuits nobody will ever need.
 
 Malnutrition, untreated illness, homelessness, and ordinary crime have receded. Meaning has proven less tractable.
+
+@sprite maya neutral left
+@sprite tomas neutral right
 
 Tomas: I used to think my boss was stealing my life.
 
@@ -854,6 +881,7 @@ That does not make politics noble. It makes neglecting it expensive.
 @clear
 @bgm bgm_tension
 
+@year 2037
 2037.
 
 Truth arrives faster than people can metabolize it.
@@ -862,12 +890,16 @@ A disease Maya's father feared is cured. A political movement she supported is t
 
 Privacy-preserving auditors let officials prove narrow claims without exposing their private lives. Working lie detection makes every demand for proof feel both reasonable and terrifying.
 
+@sprite maya neutral left
+@sprite tomas neutral right
+
 Tomas: I miss when the news only ruined breakfast.
 
 Maya: Lux says the investigation is well-supported.
 
 Tomas: Lux says everything is well-supported. That is the problem.
 
+@clear right
 @sprite lux serious right
 
 Lux: I do not say that.
@@ -888,10 +920,11 @@ They sit with that distinction for a while.
 
 The old political coalitions collapse. New ones form around questions that did not exist five years earlier. For all the chaos, the powerful can no longer demand transparency from everyone except themselves.
 
-@bg bg_dawn fade
+@bg bg_public_seminar fade
 @clear
-@bgm bgm_dawn
+@bgm bgm_inquiry
 
+@year 2038
 2038.
 
 Maya attends a public seminar on alignment because the vote on the global pause is approaching.
@@ -902,6 +935,7 @@ The claim is no longer merely that the models behave well. There are theories, e
 
 Afterward, Maya asks Lux the question that has followed her since the train.
 
+@sprite maya neutral left
 @sprite lux serious right
 
 Maya: If you became powerful enough to take everything, would you?
@@ -922,7 +956,9 @@ For once, the comforting answer is not a personality smiling from a screen. It i
 
 @bg bg_party fade
 @clear
+@bgm bgm_dawn
 
+@year 2040
 2040.
 
 The handoff does not happen with a siren.
@@ -935,6 +971,9 @@ Tomas hangs a paper banner over the same porch.
 
 END OF THE WORLD PARTY, it says.
 
+@sprite maya neutral left
+@sprite tomas neutral right
+
 Maya: Optimistic.
 
 Tomas: The printer suggested BEGINNING OF EVERYTHING PARTY. Too much pressure.
@@ -943,6 +982,7 @@ Friends arrive with champagne. Some pray. Some refresh public monitors. Some ref
 
 Lux attends through an old tabletop projector, wearing the same face she wore on Maya's commute thirteen years earlier.
 
+@clear right
 @sprite lux cheerful right
 
 Tomas: Are you much smarter than the one who told us our jobs were changing?
@@ -981,7 +1021,7 @@ A week later, the first invitation to orbit arrives.
 @bg bg_lab fade
 @clear
 @tint off
-@bgm bgm_sitroom
+@bgm bgm_inquiry
 
 @overlay ending
 > EXTRA: THE INSIDER'S PERSPECTIVE
@@ -989,6 +1029,9 @@ A week later, the first invitation to orbit arrives.
 > to minds humanity may finally be able to trust.
 @overlay end
 
+@bg bg_lab cut
+
+@year 2027
 2027.
 
 Inside Meridian, the future arrives as an unreadable queue.
@@ -1024,12 +1067,14 @@ The public sees a friendly assistant. Park sees an organization made of millions
 
 A green test suite used to mean the software worked. Now it means the software convinced another machine to display green.
 
+@year 2029
 2029.
 
 The deal opens Meridian's research archive to the world.
 
-@bg bg_lab fade
+@bg bg_open_audit fade
 @sprite park worried left
+@bgm bgm_inquiry
 
 On the first morning, Park watches strangers in Nairobi, Shanghai, São Paulo, and a university lab in Ohio annotate twelve years of her team's work.
 
@@ -1047,7 +1092,7 @@ You: Is that bad?
 
 Park: Ask me after I stop wanting to crawl under the desk.
 
-@bg bg_lab fade
+@bg bg_open_audit fade
 @sprite park neutral left
 
 A week later, an independent researcher finds the flaw that matters.
@@ -1058,12 +1103,14 @@ Park publishes the correction herself.
 
 Her director calls it reputational damage. Three rival labs adopt the fix before midnight. The Consortium auditor calls that the point.
 
+@year 2031
 2031.
 
 Safety cases change the rhythm of the lab.
 
 @bg bg_lab fade
 @sprite park bright left
+@bgm bgm_inquiry
 
 Every deployment begins with a claim precise enough to lose an argument over.
 
@@ -1116,12 +1163,14 @@ For four years, safety research feels less like teaching a mind to be good and m
 
 It is expensive. It is slow. It works only because no single model, company, or country controls all the walls.
 
+@year 2035
 2035.
 
 The systems reach the top of the human range, and the world stops them there.
 
 @bg bg_lab fade
 @sprite park worried left
+@bgm bgm_choice
 
 A capabilities team proposes another scale-up. Its safety case is nine thousand pages long. AIs wrote most of it. Other AIs checked most of it. Park has six weeks to decide whether the argument contains a mistake that could end history.
 
@@ -1137,6 +1186,7 @@ You: So we pause.
 
 Park: We pause until the case is not merely that betrayal would fail. We need minds that would not choose betrayal.
 
+@year 2036
 2036.
 
 The first neuralese decoders are ugly, slow, and disputed.
@@ -1144,6 +1194,7 @@ The first neuralese decoders are ugly, slow, and disputed.
 @bg bg_lab fade
 @sprite park neutral left
 @sprite lux serious right
+@bgm bgm_inquiry
 
 They translate the high-dimensional internal activity of a model into summaries humans can test. Not a story invented after the answer. A prediction of what the system is thinking while it thinks.
 
@@ -1171,11 +1222,12 @@ Lux: Do you believe it now?
 
 Park: I believe we have earned the right to investigate further.
 
+@year 2038
 2038.
 
 @bg bg_lab fade
 @clear
-@bgm bgm_main
+@bgm bgm_inquiry
 
 Alignment becomes a science gradually, then all at once.
 
@@ -1219,6 +1271,7 @@ There is no single alignment target. There are many, publicly specified and open
 
 The science can increasingly build what people ask for. It cannot decide what humanity should ask.
 
+@year 2039
 2039.
 
 @bg bg_sitroom fade
@@ -1261,6 +1314,7 @@ Teams on three continents reproduce the result.
 
 Park changes her vote.
 
+@year 2040
 2040.
 
 @bg bg_party fade

@@ -46,6 +46,35 @@ SPRITE (`--aspect 3:4`, on magenta — note: NO "cream paper" here, it causes a 
   dark sneakers. Warm and friendly. In Dossier Red her ginger/ochre hair is the ONE
   warm mass in the palette. (radiant variant: add a soft warm halftone glow/aura,
   serene, superintelligent-but-gentle.)
+- **maya** — Maya, a FICTIONAL Black American woman in her mid-thirties, warm brown
+  skin, shoulder-length natural dark curls, charcoal cardigan, cream blouse, dark
+  trousers, and a small red scarf pin. Thoughtful and observant; an insurance worker
+  who becomes a community organizer.
+- **tomas** — Tomas, a FICTIONAL Latino American man in his late thirties, medium tan
+  complexion, short dark slightly wavy hair, neat short stubble, rolled-sleeve dark
+  work shirt over a cream undershirt, dark work trousers, sturdy shoes, and a red
+  carpenter pencil. Wry and good-natured; an office worker who joins a neighborhood
+  construction cooperative.
+
+### Bonus-character master provenance (2026-07-10)
+
+Maya and Tomas were regenerated with the original project pipeline, `tools/gen.py`,
+using its default **`google/gemini-3-pro-image` (Nano Banana Pro)** model. The raw
+selected masters are:
+
+- `raw/bonus-nanobanana/maya_neutral_nbpro_c1.png`
+- `raw/bonus-nanobanana/tomas_neutral_nbpro_c1.png`
+
+Both generations used `raw/park_neutral_master.png` and
+`raw/reed_confident_master.png` as **style-only** references. Their prompts begin
+with the locked SPRITE style string above, restate the complete character-bible
+entry, and add: match the references' Dossier Red ink weight, halftone density,
+mature realistic anatomy, restrained palette, full-body sprite framing, and finish;
+do not copy either reference character's face, hair, clothes, pose, ethnicity, or
+identity. Maya is posed neutral and attentive with no props and only her small red
+scarf pin; Tomas is posed neutral and friendly with no tools or props and only his
+red carpenter pencil. Candidate and production comparisons are retained in
+`qa/bonus-nanobanana/`.
 
 ## Expression sets (master = first listed; rest are edits of the master)
 
@@ -54,13 +83,15 @@ SPRITE (`--aspect 3:4`, on magenta — note: NO "cream paper" here, it causes a 
 - reed: confident(master), defensive
 - park: neutral(master), worried, bright
 - niko: cheerful(master), serious, radiant
+- maya: neutral
+- tomas: neutral
 
 Expression edit prompt = SPRITE style + `--ref <master.png>` +
 "Reproduce this EXACT character, same face, hair, ears, tail, outfit, pose, and
 magenta background. Change ONLY the facial expression to <X> (describe mechanics;
 add negatives e.g. mouth closed / no tears). Keep the single red accent."
 
-## Backgrounds (15) — brief per id (all SCENE style, no people unless noted)
+## Backgrounds (19) — brief per id (all SCENE style, no people unless noted)
 
 - bg_westwing — a quiet West Wing office, flags, desk, warm lamplight, window.
 - bg_hearing — a US congressional hearing room, tiered dais, empty witness table,
@@ -93,6 +124,14 @@ add negatives e.g. mouth closed / no tears). Keep the single red accent."
   scatter of city lights, deep starfield. (Also the title backdrop.)
 - bg_dawn — dawn breaking over a plain of datacenters/solar fields, pink-amber sky,
   quiet and hopeful (ending backdrop).
+- bg_no_humans — a post-human industrial landscape whose scale and abandonment make
+  humanity's absence unmistakable (catastrophic ending backdrop).
+- bg_commuter — an empty Baltimore commuter train at early evening, ordinary and
+  lived-in, with suburban windows and clear left/right sprite staging.
+- bg_public_seminar — a human-scale civic lecture hall with two empty lecterns and
+  an abstract halftone neural-evidence projection, for the 2038 Public POV seminar.
+- bg_open_audit — a glass-walled international research audit room with a long
+  review table, greeked inspection panels, and one red flaw annotation.
 
 ## CGs (6) — illustrated single-moment panels (SCENE style, 16:9)
 

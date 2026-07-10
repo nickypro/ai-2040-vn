@@ -3,6 +3,36 @@
 All notable changes to the PLAN A visual novel are documented here. Releases use
 [Semantic Versioning](https://semver.org/).
 
+## [1.5.0] — 2026-07-10
+
+### Added
+
+- Maya and Tomas now have Dossier Red character sprites throughout Public POV.
+- Two dedicated, looped bonus scores: a humane public-life motif and an analytical
+  research motif, supplemented by scene-specific cues from the main soundtrack.
+- Completing Plan A upgrades the chapter browser to `Chapters / Bonus`, with direct
+  Public and Insider POV access and persistent visited/unvisited status.
+- Explicit script years for multi-year sequences, reconstructed by save, resume,
+  chapter seek, and rollback.
+- Three new Nano Banana Pro bonus environments: Maya's commuter train, the public
+  alignment seminar, and Meridian's open international audit room.
+
+### Changed
+
+- Both bonus stories now carry continuous, scene-appropriate music instead of only
+  occasional broad main-story cues.
+- Ending-gallery navigation now says `Return to title screen` instead of the vague
+  `Rest here`.
+- Maya and Tomas use closer VN portrait framing, with larger faces and their feet
+  naturally below the camera line.
+
+### Fixed
+
+- The bottom-right year badge now follows the actual year of every Insider and
+  Public POV scene instead of inheriting a stale numbered-chapter year.
+- Bonus title cards now clear before their first playable scenes instead of lingering
+  over the characters and background.
+
 ## [1.4.1] — 2026-07-10
 
 ### Added
@@ -96,6 +126,7 @@ All notable changes to the PLAN A visual novel are documented here. Releases use
 
 - Initial visual-novel release.
 
+[1.5.0]: https://github.com/nickypro/ai-2040-vn/compare/v1.4.1...v1.5.0
 [1.4.1]: https://github.com/nickypro/ai-2040-vn/compare/v1.4.0...v1.4.1
 [1.4.0]: https://github.com/nickypro/ai-2040-vn/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/nickypro/ai-2040-vn/compare/v1.2.1...v1.3.0
