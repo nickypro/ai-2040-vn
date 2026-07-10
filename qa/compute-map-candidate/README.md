@@ -27,6 +27,8 @@ The official source map for chunk `3134-95280ea477077464.js` also shows that the
 - normalizes stack size logarithmically against one shared Plan A scale;
 - renders red/cream stack geometry, including satellite tiles for very large sites.
 
-The candidate keeps the first three behaviors and translates the visual treatment into the VN's cream paper, black ink, dossier red, and halftone language. It intentionally uses a flat equirectangular projection so every center remains visible and geography is immediately readable. The detailed 2040 view uses callouts because the canonical timeline has consolidated from dozens of conventional sites to five offshore centers by then.
+The candidate keeps the first three behaviors and translates the visual treatment into the VN's cream paper, black ink, dossier red, and halftone language. It intentionally uses a flat equirectangular projection so every center remains visible and geography is immediately readable. The base map uses the atlas's merged `land` geometry, so only coastlines and island edges appear—there are no internal country borders competing with the compute marks. Coastlines are deliberately light and consistent.
+
+Both stack height and square footprint use the same shared logarithmic compute normalization across years. This keeps the 2027 conventional sites pin-like while making the 2034 megasites and especially the 2040 ocean centers substantially larger. The detailed 2040 view uses callouts because the canonical timeline has consolidated from dozens of conventional sites to five offshore centers by then.
 
 Source checked on 2026-07-10 at <https://ai-2040.com/>.

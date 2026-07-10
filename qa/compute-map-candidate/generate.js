@@ -40,7 +40,10 @@ function ringsFor(topology) {
     indexes.forEach((index, i) => points.push(...readArc(index).slice(i ? 1 : 0)));
     return points;
   };
-  for (const geometry of topology.objects.countries.geometries) {
+  // Use the atlas's merged `land` object, not `countries`. This gives us
+  // coastlines and island edges without drawing political borders through
+  // the quiet halftone field.
+  for (const geometry of topology.objects.land.geometries) {
     if (geometry.type === "Polygon") geometry.arcs.forEach(r => rings.push(stitch(r)));
     if (geometry.type === "MultiPolygon") geometry.arcs.forEach(p => p.forEach(r => rings.push(stitch(r))));
   }
@@ -96,12 +99,19 @@ function stack(site, box, sharedBounds, compact = false) {
   const [name, lat, lng, compute] = site;
   const [x, y] = project(lat, lng, box);
   const norm = (Math.log10(compute) - sharedBounds.min) / (sharedBounds.max - sharedBounds.min);
-  const levels = Math.max(1, Math.round(1 + Math.max(0, norm) * (compact ? 4 : 7)));
-  const size = compact ? 3.8 : 5.8;
+  const levelNorm = Math.max(0, Math.min(1, norm));
+  const levels = Math.max(1, Math.round(1 + levelNorm * (compact ? 5 : 8)));
+  // Footprint and height both grow from the same shared log-compute value.
+  // Early conventional sites stay pin-like; later mega/ocean centers become
+  // visually massive instead of reading as the same tiny mark with more
+  // barely-visible layers.
+  const size = compact ? 3.8 + levelNorm * 7.2 : 7 + levelNorm * 9;
+  const stepX = compact ? 1.1 + levelNorm * 1.35 : 1.7 + levelNorm * 1.5;
+  const stepY = compact ? 1.35 + levelNorm * 1.55 : 2.1 + levelNorm * 1.9;
   let blocks = "";
   for (let level = 0; level < levels; level++) {
-    const ox = level * (compact ? 1.25 : 1.7), oy = -level * (compact ? 1.6 : 2.2);
-    blocks += `<rect x="${(x + ox - size / 2).toFixed(1)}" y="${(y + oy - size / 2).toFixed(1)}" width="${size}" height="${size}" fill="${level === levels - 1 ? RED : PAPER}" stroke="${RED}" stroke-width="${compact ? .7 : 1}"/>`;
+    const ox = level * stepX, oy = -level * stepY;
+    blocks += `<rect x="${(x + ox - size / 2).toFixed(1)}" y="${(y + oy - size / 2).toFixed(1)}" width="${size.toFixed(1)}" height="${size.toFixed(1)}" fill="${level === levels - 1 ? RED : PAPER}" stroke="${RED}" stroke-width="${compact ? .85 : 1.1}"/>`;
   }
   return `<g data-site="${name.replaceAll("&", "&amp;").replaceAll('"', '&quot;')}">${blocks}</g>`;
 }
@@ -116,7 +126,7 @@ function mapPanel(rings, date, box, options = {}) {
     <rect x="${box.x}" y="${box.y}" width="${box.w}" height="${box.h}" rx="${options.radius || 0}" fill="${PAPER}" stroke="${INK}" stroke-width="1.2"/>
     ${graticule(box)}
     <path d="${d}" fill="url(#dots)" fill-rule="evenodd" stroke="none"/>
-    <path d="${outline}" fill="none" stroke="${INK}" stroke-width=".75" stroke-linejoin="round"/>
+    <path d="${outline}" fill="none" stroke="#817b6d" stroke-opacity=".72" stroke-width=".65" stroke-linejoin="round"/>
     <g>${sites.slice().sort((a,b) => a[3]-b[3]).map(site => stack(site, box, bounds, options.compact)).join("")}</g>
   </g>`;
 }
@@ -146,7 +156,7 @@ function singleSvg(rings) {
   <text x="54" y="50" class="eyebrow">GLOBAL COMPUTE CENTERS / PLAN A</text><text x="54" y="91" class="title">The machine archipelago</text>
   <text x="934" y="50" class="eyebrow">2040.01.01</text><text x="934" y="77" class="sub">${sites.length} primary sites  ·  ${fmtCompute(total)} total</text>
   ${mapPanel(rings, "2040-01-01", box)}${labels}
-  <g transform="translate(54 603)"><rect width="12" height="12" fill="${PAPER}" stroke="${RED}"/><rect x="3" y="-4" width="12" height="12" fill="${RED}" stroke="${RED}"/><text x="27" y="8" class="sub">stack height encodes compute on a shared logarithmic scale</text></g>
+  <g transform="translate(54 603)"><rect width="12" height="12" fill="${PAPER}" stroke="${RED}"/><rect x="4" y="-5" width="15" height="15" fill="${RED}" stroke="${RED}"/><text x="32" y="8" class="sub">stack height + footprint encode compute on a shared logarithmic scale</text></g>
   <text x="934" y="535" class="note">Flat projection makes the geographic shift legible:</text><text x="934" y="555" class="note">by 2040, compute has moved offshore.</text>
   <path d="M54 678H1226" stroke="${INK}"/><text x="54" y="700" class="sub">CANDIDATE ONLY  ·  NOT WIRED INTO THE VN</text><text x="1226" y="700" class="sub" text-anchor="end">SOURCE: AI-2040.COM</text>
   </svg>`;
@@ -166,7 +176,7 @@ function timelineSvg(rings) {
   <rect width="100%" height="100%" fill="${CREAM}"/><text x="40" y="47" class="eyebrow">COMPUTE GEOGRAPHY / PLAN A</text><text x="40" y="89" class="title">From data centers to machine continents</text><text x="1400" y="54" class="small" text-anchor="end">FLAT EQUIRECTANGULAR PROJECTION</text>
   ${dates.map((date, i) => mapPanel(rings, date, boxes[i], { compact: true, radius: 2 })).join("")}
   ${captions.map((c, i) => `<text x="${boxes[i].x}" y="497" class="year">${c[0]}</text><text x="${boxes[i].x}" y="526" class="stat">${c[1]}</text><text x="${boxes[i].x}" y="552" class="note">${c[2]}</text>`).join("")}
-  <path d="M40 611H1400" stroke="${INK}"/><g transform="translate(40 639)"><rect width="10" height="10" fill="${PAPER}" stroke="${RED}"/><rect x="3" y="-4" width="10" height="10" fill="${RED}" stroke="${RED}"/><text x="26" y="7" class="small">Every square stack is a source location; height uses one shared log scale across all three years.</text></g>
+  <path d="M40 611H1400" stroke="${INK}"/><g transform="translate(40 639)"><rect width="10" height="10" fill="${PAPER}" stroke="${RED}"/><rect x="4" y="-5" width="13" height="13" fill="${RED}" stroke="${RED}"/><text x="31" y="7" class="small">Every square stack is a source location; height + footprint share one log-compute scale across all three years.</text></g>
   <text x="40" y="692" class="small">CANDIDATE ONLY  ·  NOT WIRED INTO THE VN</text><text x="1400" y="692" class="small" text-anchor="end">SOURCE: AI-2040.COM BUNDLED PLAN A DATA</text>
   </svg>`;
 }
