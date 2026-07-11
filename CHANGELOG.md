@@ -3,6 +3,13 @@
 All notable changes to the PLAN A visual novel are documented here. Releases use
 [Semantic Versioning](https://semver.org/).
 
+## [1.5.2] — 2026-07-11
+
+### Fixed
+
+- The “Two of many possible deals” caption now spans the shared fork to Plans A
+  and S, clarifying that A and S are the two example deals.
+
 ## [1.5.1] — 2026-07-11
 
 ### Changed
@@ -136,6 +143,7 @@ All notable changes to the PLAN A visual novel are documented here. Releases use
 
 - Initial visual-novel release.
 
+[1.5.2]: https://github.com/nickypro/ai-2040-vn/compare/v1.5.1...v1.5.2
 [1.5.1]: https://github.com/nickypro/ai-2040-vn/compare/v1.5.0...v1.5.1
 [1.5.0]: https://github.com/nickypro/ai-2040-vn/compare/v1.4.1...v1.5.0
 [1.4.1]: https://github.com/nickypro/ai-2040-vn/compare/v1.4.0...v1.4.1

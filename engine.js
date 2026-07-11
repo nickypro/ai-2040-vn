@@ -264,7 +264,7 @@ if (typeof module !== "undefined" && module.exports) {
 /* ---------------- player (browser only) ---------------- */
 
 if (typeof document !== "undefined") (function () {
-  const APP_VERSION = "1.5.1"; // shown on the title screen and in Settings; bump to release
+  const APP_VERSION = "1.5.2"; // shown on the title screen and in Settings; bump to release
   const $ = (id) => document.getElementById(id);
   const SAVE_KEY = "plana_save";
   const SETTINGS_KEY = "plana_settings";
@@ -1872,9 +1872,9 @@ if (typeof document !== "undefined") (function () {
         '<path d="M20 53 V69 H10 V' + LEAF_TOP + '"/>' +
         '<path d="M29 53 V' + LEAF_TOP + '"/>' +
         '<path d="M38 53 V69 H48 V' + LEAF_TOP + '"/>' +
-        // China-deal question branches to Plans A and S.
-        '<path class="bold" d="M64 53 V70 H68 V' + LEAF_TOP + '"/>' +
-        '<path d="M76 53 V70 H88 V' + LEAF_TOP + '"/>' +
+        // One deal trunk forks to Plans A and S: these are the two example deals.
+        '<path class="bold" d="M70 53 V70 H68 V' + LEAF_TOP + '"/>' +
+        '<path d="M70 70 H88 V' + LEAF_TOP + '"/>' +
       '</svg>' +
       '<div class="flow-q" style="left:50%;top:15%;width:112cqh"><b>Race through the intelligence explosion</b> by having AIs self-improve and putting them in charge of more things (datacenters, factories, weapons) faster than China can?</div>' +
       '<div class="flow-q" style="left:29%;top:47%;width:58cqh">Slow down at least a bit for safety and governance?</div>' +
@@ -1884,7 +1884,7 @@ if (typeof document !== "undefined") (function () {
       '<div class="flow-lbl" style="left:14%;top:66%">&ldquo;Nope.&rdquo;</div>' +
       '<div class="flow-lbl" style="left:29%;top:66%">&ldquo;Yes.&rdquo;</div>' +
       '<div class="flow-lbl" style="left:43%;top:65%">&ldquo;Yes, and slow China down too.&rdquo;</div>' +
-      '<div class="flow-lbl" style="left:79%;top:65%">(Two of many possible deals)</div>';
+      '<div class="flow-lbl" style="left:78%;top:65%;width:36cqh;max-width:36cqh;text-align:center">(Two of many possible deals)</div>';
     box.appendChild(card);
     // down-chevron beneath the highlighted leaf (as the source marks its pick)
     const chev = document.createElement("div");
