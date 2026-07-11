@@ -120,6 +120,10 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     check(gotChoice, "choice menu appears");
     const optCount = await page.locator(".choice-btn").count();
     check(optCount === 5, "choice renders 5 options (got " + optCount + ")");
+    const flowLabels = await page.locator(".flow-lbl").allTextContents();
+    check(flowLabels.some((s) => s.includes("slow China down too")) &&
+          flowLabels.some((s) => s.includes("Two of many possible deals")),
+      "flowchart retains the source branch captions");
     check((await page.locator(".choice-btn.seen").count()) === 0, "no option marked seen on first arrival");
     check(await vis("#choice-history-hint"), "decision shows the clickable History hint");
     await page.locator("#choice-history-hint").click();
@@ -236,6 +240,13 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     await pick("Go back to the covert-project decision");
     await advanceUntil(choiceUp, "return to covert-project decision", 80);
     await pick("Freeze research sharing");
+
+    const dividend = await advanceUntil(() => vis("#bglayer .chart-layer"), "reach Citizen's Dividend chart", 240);
+    check(dividend, "Plan A reaches the Citizen's Dividend chart");
+    const dividendFlows = await page.locator("#bglayer .ch-flow").allTextContents();
+    check(dividendFlows.includes("25% citizens") && dividendFlows.includes("10% world"),
+      "Dividend arrows use the concise citizen/world labels");
+    await shot("e2e-11-dividend.png");
 
     console.log("== turning point: deal breakdown ==");
     const deal = await advanceUntil(choiceUp, "reach deal-breakdown decision", 900);

@@ -264,7 +264,7 @@ if (typeof module !== "undefined" && module.exports) {
 /* ---------------- player (browser only) ---------------- */
 
 if (typeof document !== "undefined") (function () {
-  const APP_VERSION = "1.5.0"; // shown on the title screen and in Settings; bump to release
+  const APP_VERSION = "1.5.1"; // shown on the title screen and in Settings; bump to release
   const $ = (id) => document.getElementById(id);
   const SAVE_KEY = "plana_save";
   const SETTINGS_KEY = "plana_settings";
@@ -1243,10 +1243,11 @@ if (typeof document !== "undefined") (function () {
       });
       return t;
     };
-    const arrow = (x1, y1, x2, y2, label) => {
+    const arrow = (x1, y1, x2, y2, label, labelX, labelY) => {
       let t = '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + CHART_INK +
         '" stroke-width="1.4" marker-end="url(#chArrow)"/>';
-      if (label) t += '<text class="ch-flow" x="' + ((x1 + x2) / 2) + '" y="' + ((y1 + y2) / 2 - 3) + '">' + label + '</text>';
+      if (label) t += '<text class="ch-flow" x="' + (labelX == null ? (x1 + x2) / 2 : labelX) +
+        '" y="' + (labelY == null ? (y1 + y2) / 2 - 3 : labelY) + '">' + label + '</text>';
       return t;
     };
     let g = '<defs><marker id="chArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">' +
@@ -1254,8 +1255,8 @@ if (typeof document !== "undefined") (function () {
     g += box(95, 16, 130, 26, ["Robot &amp; Compute Permits", "capped, then auctioned"]);
     g += arrow(160, 42, 160, 62, "&#36;50 trillion / yr (2032)");
     g += box(110, 62, 100, 24, ["U.S. Treasury"]);
-    g += arrow(140, 86, 95, 110, "25% of fees");
-    g += arrow(182, 86, 232, 110, "10% of fees");
+    g += arrow(140, 86, 95, 110, "25% citizens", 66, 98);
+    g += arrow(182, 86, 232, 110, "10% world", 258, 98);
     g += box(20, 110, 154, 34, ["Compute Dividend Corp.", "&#36;45,000 / U.S. adult"], 1);
     g += box(192, 110, 108, 34, ["International share", "&#36;1,200 / adult", "excluding China"], 1);
     return '<svg class="chart-svg" viewBox="0 0 320 152" preserveAspectRatio="xMidYMid meet">' + g + '</svg>';
@@ -1850,11 +1851,11 @@ if (typeof document !== "undefined") (function () {
      leaf is a `.choice-btn` (so save/seek/seen and the e2e selectors keep
      working) and clicking one calls the normal commitChoice path. */
   const FLOW_PLANS = [ // visual order left -> right: D, C, B, A, S
-    { letter: "D", prefix: "Plan D", name: "Race to ASI",        x: 13 },
-    { letter: "C", prefix: "Plan C", name: "Burn the Lead",      x: 30 },
-    { letter: "B", prefix: "Plan B", name: "Fight China",        x: 47 },
+    { letter: "D", prefix: "Plan D", name: "Race to ASI",        x: 10 },
+    { letter: "C", prefix: "Plan C", name: "Burn the Lead",      x: 29 },
+    { letter: "B", prefix: "Plan B", name: "Fight China",        x: 48 },
     { letter: "A", prefix: "Plan A", name: "Verified Slowdown",  x: 68 },
-    { letter: "S", prefix: "Plan S", name: "Shut it all down",   x: 87 },
+    { letter: "S", prefix: "Plan S", name: "Shut it all down",   x: 88 },
   ];
   function buildFlowchart(c, box) {
     const card = document.createElement("div");
@@ -1864,33 +1865,26 @@ if (typeof document !== "undefined") (function () {
     card.innerHTML =
       '<div class="flow-head">2029: Choose a Path</div>' +
       '<svg class="flow-svg" viewBox="0 0 100 100" preserveAspectRatio="none">' +
-        // Q1 down to the distribution bus
-        '<path d="M50 24 V31"/>' +
-        // the bus, and its three drops
-        '<path d="M13 31 H73"/>' +
-        '<path d="M13 31 V' + LEAF_TOP + '"/>' +          // race -> Plan D (far left)
-        '<path d="M27 31 V42"/>' +                        // -> Slow-down box top
-        '<path class="bold" d="M73 31 V42"/>' +           // -> deal box top (BOLD, route to A)
-        // Slow-down box -> Plan C ("nope")
-        '<path d="M27 53 V70 H30 V' + LEAF_TOP + '"/>' +
-        // Slow-down box <-> deal box ("yes"): touches both inner edges
-        '<path d="M45 47 H55"/>' +
-        // deal box -> Plan B ("slow China too")
-        '<path d="M64 53 V72 H47 V' + LEAF_TOP + '"/>' +
-        // deal box -> Plan A (BOLD)
-        '<path class="bold" d="M73 53 V74 H68 V' + LEAF_TOP + '"/>' +
-        // deal box -> Plan S ("two of many deals")
-        '<path d="M82 53 V74 H87 V' + LEAF_TOP + '"/>' +
+        // Top question splits to the two follow-up questions, as in the source.
+        '<path d="M50 25 V31 H29 V42"/>' +
+        '<path class="bold" d="M50 31 H70 V42"/>' +
+        // Slow-down question branches to Plans D, C, and B.
+        '<path d="M20 53 V69 H10 V' + LEAF_TOP + '"/>' +
+        '<path d="M29 53 V' + LEAF_TOP + '"/>' +
+        '<path d="M38 53 V69 H48 V' + LEAF_TOP + '"/>' +
+        // China-deal question branches to Plans A and S.
+        '<path class="bold" d="M64 53 V70 H68 V' + LEAF_TOP + '"/>' +
+        '<path d="M76 53 V70 H88 V' + LEAF_TOP + '"/>' +
       '</svg>' +
-      '<div class="flow-q" style="left:50%;top:15%;width:150cqh"><b>Race through the intelligence explosion</b> by having AIs self-improve and putting them in charge of more things (datacenters, factories, weapons) faster than China can?</div>' +
-      '<div class="flow-q" style="left:27%;top:47%;width:60cqh">Slow down at least a bit for safety and governance?</div>' +
-      '<div class="flow-q" style="left:73%;top:47%;width:60cqh">Let&rsquo;s make a deal with China. But what?</div>' +
-      '<div class="flow-lbl" style="left:18.5%;top:37%">&ldquo;Yes, and that&rsquo;s good actually and/or we have no choice.&rdquo;</div>' +
-      '<div class="flow-lbl" style="left:63%;top:36%">&ldquo;What? No, that&rsquo;s crazy!&rdquo;</div>' +
-      '<div class="flow-lbl" style="left:22%;top:64%">&ldquo;Nope.&rdquo;</div>' +
-      '<div class="flow-lbl" style="left:50%;top:43.5%">&ldquo;Yes.&rdquo;</div>' +
-      '<div class="flow-lbl" style="left:56%;top:64%">&ldquo;Yes, and slow China down too.&rdquo;</div>' +
-      '<div class="flow-lbl" style="left:84%;top:64%">(Two of many possible deals)</div>';
+      '<div class="flow-q" style="left:50%;top:15%;width:112cqh"><b>Race through the intelligence explosion</b> by having AIs self-improve and putting them in charge of more things (datacenters, factories, weapons) faster than China can?</div>' +
+      '<div class="flow-q" style="left:29%;top:47%;width:58cqh">Slow down at least a bit for safety and governance?</div>' +
+      '<div class="flow-q" style="left:70%;top:47%;width:58cqh">Let&rsquo;s make a deal with China. But what?</div>' +
+      '<div class="flow-lbl" style="left:29%;top:34%">&ldquo;Yes, and that&rsquo;s good actually and/or we have no choice.&rdquo;</div>' +
+      '<div class="flow-lbl" style="left:68%;top:34%">&ldquo;What? No, that&rsquo;s crazy!&rdquo;</div>' +
+      '<div class="flow-lbl" style="left:14%;top:66%">&ldquo;Nope.&rdquo;</div>' +
+      '<div class="flow-lbl" style="left:29%;top:66%">&ldquo;Yes.&rdquo;</div>' +
+      '<div class="flow-lbl" style="left:43%;top:65%">&ldquo;Yes, and slow China down too.&rdquo;</div>' +
+      '<div class="flow-lbl" style="left:79%;top:65%">(Two of many possible deals)</div>';
     box.appendChild(card);
     // down-chevron beneath the highlighted leaf (as the source marks its pick)
     const chev = document.createElement("div");

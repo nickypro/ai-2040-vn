@@ -3,6 +3,16 @@
 All notable changes to the PLAN A visual novel are documented here. Releases use
 [Semantic Versioning](https://semver.org/).
 
+## [1.5.1] — 2026-07-11
+
+### Changed
+
+- The 2029 choice diagram now follows AI 2040's original branch topology and
+  captions more faithfully: the slowdown question leads to Plans D/C/B, while
+  the China-deal question leads to Plans A/S.
+- Citizen's Dividend arrows now read `25% citizens` and `10% world`, with darker
+  labels moved outward from the diagonal lines for easier reading.
+
 ## [1.5.0] — 2026-07-10
 
 ### Added
@@ -126,6 +136,7 @@ All notable changes to the PLAN A visual novel are documented here. Releases use
 
 - Initial visual-novel release.
 
+[1.5.1]: https://github.com/nickypro/ai-2040-vn/compare/v1.5.0...v1.5.1
 [1.5.0]: https://github.com/nickypro/ai-2040-vn/compare/v1.4.1...v1.5.0
 [1.4.1]: https://github.com/nickypro/ai-2040-vn/compare/v1.4.0...v1.4.1
 [1.4.0]: https://github.com/nickypro/ai-2040-vn/compare/v1.3.0...v1.4.0

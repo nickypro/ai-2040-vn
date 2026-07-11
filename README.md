@@ -1,6 +1,6 @@
 # PLAN A — an AI 2040 visual novel
 
-Current release: **v1.5.0** · [Changelog](CHANGELOG.md)
+Current release: **v1.5.1** · [Changelog](CHANGELOG.md)
 
 An interactive visual-novel adaptation of **[ai-2040.com](https://ai-2040.com)** ("Plan A",
 by the [AI Futures Project](https://ai-futures.org): Larsen, Dean, Halstead, Lifland,
