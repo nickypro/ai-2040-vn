@@ -18,7 +18,8 @@
     "bg_dawn": "assets/bg/bg_dawn.png",
     "bg_commuter": "assets/bg/bg_commuter.png",
     "bg_public_seminar": "assets/bg/bg_public_seminar.png",
-    "bg_open_audit": "assets/bg/bg_open_audit.png"
+    "bg_open_audit": "assets/bg/bg_open_audit.png",
+    "bg_compute_map": "assets/bg/bg_compute_map.png"
   },
   "cg": {
     "cg_election": "assets/cg/cg_election.png",

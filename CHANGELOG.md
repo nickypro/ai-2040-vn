@@ -3,6 +3,13 @@
 All notable changes to the PLAN A visual novel are documented here. Releases use
 [Semantic Versioning](https://semver.org/).
 
+## [1.5.3] — 2026-07-11
+
+### Added
+
+- The opening “two workforces” passage now uses a dedicated compute-center map
+  before returning to the West Wing.
+
 ## [1.5.2] — 2026-07-11
 
 ### Fixed
@@ -143,6 +150,7 @@ All notable changes to the PLAN A visual novel are documented here. Releases use
 
 - Initial visual-novel release.
 
+[1.5.3]: https://github.com/nickypro/ai-2040-vn/compare/v1.5.2...v1.5.3
 [1.5.2]: https://github.com/nickypro/ai-2040-vn/compare/v1.5.1...v1.5.2
 [1.5.1]: https://github.com/nickypro/ai-2040-vn/compare/v1.5.0...v1.5.1
 [1.5.0]: https://github.com/nickypro/ai-2040-vn/compare/v1.4.1...v1.5.0

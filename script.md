@@ -31,7 +31,7 @@
 America has two workforces now.
 
 @voiceover off
-@bg bg_westwing fade
+@bg bg_compute_map fade
 @clear
 
 The first is 165 million people.
@@ -39,6 +39,8 @@ The first is 165 million people.
 The second is AI agents. Millions of copies, spun up and shut down every hour, working around the clock at superhuman speed.
 
 Most of their work is slop. But enough of it is good that people are paying $10 billion a month for AIs that can, in theory, do anything on a computer that an employee can.
+
+@bg bg_westwing fade
 
 You know the numbers because keeping track of them is the job. Senior advisor to the President for artificial intelligence, a post that did not exist three years ago.
 
